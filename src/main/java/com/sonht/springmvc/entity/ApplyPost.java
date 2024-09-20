@@ -1,0 +1,114 @@
+package com.sonht.springmvc.entity;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "applypost")
+public class ApplyPost {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private int id;
+
+	@Column(name = "created_at")
+	private String createdAt;
+	
+	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "recruitment_id")
+	private Recruitment recruitment;
+
+	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "user_id")
+	private User user;
+
+	@Column(name = "name_cv")
+	private String nameCv;
+
+	@Column(name = "status")
+	private String status;
+
+	@Column(name = "text")
+	private String text;
+
+	public ApplyPost() {
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(String createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Recruitment getRecruitment() {
+		return recruitment;
+	}
+
+	public void setRecruitment(Recruitment recruitment) {
+		this.recruitment = recruitment;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public String getNameCv() {
+		return nameCv;
+	}
+
+	public void setNameCv(String nameCv) {
+		this.nameCv = nameCv;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public ApplyPost(String createdAt, String nameCv, String status, String text) {
+		this.createdAt = createdAt;
+		this.nameCv = nameCv;
+		this.status = status;
+		this.text = text;
+	}
+
+	@Override
+	public String toString() {
+		return "ApplyPost [id=" + id + ", createdAt=" + createdAt + ", recruitment=" + recruitment + ", user=" + user
+				+ ", nameCv=" + nameCv + ", status=" + status + ", text=" + text + "]";
+	}
+
+}
