@@ -1,5 +1,7 @@
 package com.sonht.springmvc.dao;
 
+import java.util.List;
+
 import com.sonht.springmvc.entity.Company;
 
 public interface CompanyDAO {
@@ -11,5 +13,7 @@ public interface CompanyDAO {
 	void updateImage(String fileName, int userId);
 
 	Long countCompany();
+
+	List<Company> searchByName(String keyword);
 
 }

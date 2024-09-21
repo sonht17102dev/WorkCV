@@ -10,22 +10,6 @@
 <body>
 	<%@ include file="/WEB-INF/view/layouts/navHome.jsp"%>
 	<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-	<c:if test='${ userLogin != null}'>
-	<div class="toast" data-delay="2500"
-		style="position: fixed; top: 100PX; right: 10PX; z-index: 2000; width: 300px">
-		
-		<script>
-			swal({
-				title : 'Đăng nhập thành công',
-				text: `Chào mừng ${userLogin.fullName} đã quay trở lại.`,
-				icon : 'success',
-				timer : 2000,
-				buttons : true,
-				type : 'success'
-			})
-		</script>
-	</div> 
-	</c:if>
 	<div class="hero-wrap img"
 		style="background-image: url(${contextPath}/resources/assets/images/bg_1.jpg);">
 		<div class="overlay"></div>
@@ -93,87 +77,7 @@
 		</div>
 	</div>
 
-	<section class="ftco-section">
-		<div class="container">
-			<div class="row justify-content-center mb-5">
 
-				<div style="display: block"
-					class="col-md-7 heading-section text-center">
-					<span class="subheading">Danh mục công việc</span>
-					<h2 class="mb-0">Top Danh Mục</h2>
-				</div>
-			</div>
-			<div class="row">
-				<c:forEach items="${categories}" var="category">
-					<div class="col-md-3 ">
-						<ul class="category text-center">
-							<li><a style="text-decoration: none !important;"
-								href="/recruitment/category/${category.id}">
-									<p>${category.name}</p>
-									<span class="number">${category.numberChoose}</span>
-									<span>Vị trí</span><i class="ion-ios-arrow-forward"></i>
-							</a></li>
-						</ul>
-					</div>
-				</c:forEach>
-			</div>
-		</div>
-	</section>
-
-	<section class="ftco-section services-section">
-		<div class="container">
-			<div class="row d-flex">
-				<div class="col-md-3 d-flex align-self-stretch ">
-					<div class="media block-6 services d-block">
-						<div class="icon">
-							<span class="flaticon-resume"></span>
-						</div>
-						<div class="media-body">
-							<h3 class="heading mb-3">Tìm kiếm hàng triệu việc làm</h3>
-							<p>Một con sông nhỏ tên là Duden chảy qua nơi ở và nguồn cung
-								cấp của họ.</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-3 d-flex align-self-stretch ">
-					<div class="media block-6 services d-block">
-						<div class="icon">
-							<span class="flaticon-team"></span>
-						</div>
-						<div class="media-body">
-							<h3 class="heading mb-3">Dễ dàng quản lý công việc</h3>
-							<p>Một con sông nhỏ tên là Duden chảy qua nơi ở và nguồn cung
-								cấp của họ.</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-3 d-flex align-self-stretch ">
-					<div class="media block-6 services d-block">
-						<div class="icon">
-							<span class="flaticon-career"></span>
-						</div>
-						<div class="media-body">
-							<h3 class="heading mb-3">Top Nghề nghiệp</h3>
-							<p>Một con sông nhỏ tên là Duden chảy qua nơi ở và nguồn cung
-								cấp của họ.</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-3 d-flex align-self-stretch ">
-					<div class="media block-6 services d-block">
-						<div class="icon">
-							<span class="flaticon-employees"></span>
-						</div>
-						<div class="media-body">
-							<h3 class="heading mb-3">Ứng viên Chuyên gia Tìm kiếm</h3>
-							<p>Một con sông nhỏ tên là Duden chảy qua nơi ở và nguồn cung
-								cấp của họ.</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
 
 	<section class="ftco-section bg-light">
 		<div class="container">
@@ -181,13 +85,41 @@
 				<div class="col-lg-9 pr-lg-5">
 					<div class="row justify-content-center pb-3">
 						<div class="col-md-12 heading-section ">
-							<span class="subheading">CÔNG VIỆC ĐƯỢC NHIỀU NGƯỜI ỨNG
-								TUYỂN</span>
-							<h2 class="mb-4">Các bài đăng về việc làm nổi bật</h2>
+							<span class="subheading">Có ${recruitments.size()} công việc phù hợp với yêu cầu của bạn</span>
+							<h2 class="mb-4">Các bài đăng về việc làm phù hợp với yêu cầu của bạn</h2>
 
 						</div>
 					</div>
 					<div class="row">
+						<c:if test="${companies != null}">
+						
+							<div class="col-lg-3 sidebar">
+								<div class="row justify-content-center pb-3">
+									<div class="col-md-12 heading-section ">
+										<h2 class="mb-4">Công ty nổi bật</h2>
+									</div>
+								</div>
+								<c:forEach var="company" items="${companies}">
+									<div class="sidebar-box">
+										<div class="">
+											<a href="/user/detail-company/${company.id}"
+												class="company-wrap"><img src="${company.logo}"
+												class="img-fluid" alt="Colorlib Free Template"></a>
+											<div class="text p-3">
+												<h3>
+													<a href="/user/detail-company/${company.id}">${company.nameCompany}</a>
+												</h3>
+												<p>
+													<span class="number" style="color: black"></span> 
+													<span>Vị trí ứng tuyển</span>
+												</p>
+											</div>
+										</div>
+									</div>
+								</c:forEach> 
+							</div>
+						</c:if>
+						<c:if test="${recruitments != null}">
 						<c:forEach var="recruitment" items="${recruitments}">
 							<div class="col-md-12 ">
 								<div
@@ -319,33 +251,13 @@
 								</div>
 							</div>
 						</c:forEach>
-
+						</c:if>
+						<c:if test="${recruitments.size() == 0 }">
+	 						<div style="text-align: center">
+		                        <p style="color: red">Không có kết quả nào</p>
+		                    </div>
+	                    </c:if>
 					</div>
-				</div>
-				<div class="col-lg-3 sidebar">
-					<div class="row justify-content-center pb-3">
-						<div class="col-md-12 heading-section ">
-							<h2 class="mb-4">Công ty nổi bật</h2>
-						</div>
-					</div>
-					<c:forEach items="${companiesMap}" var="entry">
-						<div class="sidebar-box">
-							<div class="">
-								<a href="/user/detail-company/${entry.key.id}"
-									class="company-wrap"><img src="${entry.key.logo}"
-									class="img-fluid" alt="Colorlib Free Template"></a>
-								<div class="text p-3">
-									<h3>
-										<a href="/user/detail-company/${entry.key.id}">${entry.key.nameCompany}</a>
-									</h3>
-									<p>
-										<span class="number" style="color: black">${entry.value}</span> 
-										<span>Vị trí ứng tuyển</span>
-									</p>
-								</div>
-							</div>
-						</div>
-					</c:forEach> 
 				</div>
 			</div>
 		</div>

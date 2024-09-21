@@ -1,5 +1,7 @@
 package com.sonht.springmvc.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,12 @@ public class CompanyServiceImpl implements CompanyService {
 	@Transactional
 	public Long countCompany() {
 		return companyDAO.countCompany();
+	}
+
+	@Override
+	@Transactional
+	public List<Company> searchByName(String keyword) {
+		return companyDAO.searchByName(keyword);
 	}
 
 }

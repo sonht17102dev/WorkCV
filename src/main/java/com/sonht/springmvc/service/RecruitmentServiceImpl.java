@@ -71,5 +71,18 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 		return recruitmentDAO.getRecruitmentsByCategory(category);
 	}
 
+	@Override
+	@Transactional
+	public List<Recruitment> searchByKeyword(String keyword) {
+		// TODO Auto-generated method stub
+		return recruitmentDAO.searchByKeyword(keyword);
+	}
+
+	@Override
+	@Transactional
+	public List<Recruitment> searchByAddress(String keyword) {
+		return recruitmentDAO.searchByAddress(keyword);
+	}
+
 
 }

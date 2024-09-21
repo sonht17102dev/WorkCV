@@ -78,4 +78,20 @@ public class RecruitmentDAOImpl implements RecruitmentDAO {
 		return query.getResultList();
 	}
 
+	@Override
+	public List<Recruitment> searchByKeyword(String keyword) {
+		Session session = sessionFactory.getCurrentSession();
+		Query<Recruitment> query = session.createQuery("from Recruitment r where r.title LIKE :keyword", Recruitment.class);
+		query.setParameter("keyword", "%"+keyword+"%");
+		return query.getResultList();
+	}
+
+	@Override
+	public List<Recruitment> searchByAddress(String keyword) {
+		Session session = sessionFactory.getCurrentSession();
+		Query<Recruitment> query = session.createQuery("from Recruitment r where r.address LIKE :keyword", Recruitment.class);
+		query.setParameter("keyword", "%"+keyword+"%");
+		return query.getResultList();
+	}
+
 }
