@@ -24,18 +24,20 @@ import com.sonht.springmvc.dto.CompanyDTO;
 import com.sonht.springmvc.dto.RecruiterDTO;
 import com.sonht.springmvc.entity.Company;
 import com.sonht.springmvc.entity.User;
+import com.sonht.springmvc.service.ApplyPostService;
+import com.sonht.springmvc.service.CategoryService;
 import com.sonht.springmvc.service.CompanyService;
+import com.sonht.springmvc.service.RecruitmentService;
 import com.sonht.springmvc.service.UserService;
 
 @Controller
 @RequestMapping("/user")
-public class ProfileController {
+public class ProfileController extends BaseController {
 
-	@Autowired
-	private UserService userService;
-	
-	@Autowired
-	private CompanyService companyService;
+	public ProfileController(CategoryService categoryService, ApplyPostService applyPostService,
+			CompanyService companyService, RecruitmentService recruitmentService, UserService userService) {
+		super(categoryService, applyPostService, companyService, recruitmentService, userService);
+	}
 
 	@ModelAttribute("recruiterDTO")
 	public RecruiterDTO recruiterDTO() {
@@ -50,8 +52,12 @@ public class ProfileController {
 	@GetMapping("/profile/{id}")
 	public String profile(@PathVariable String id, Model model) {
 		if (id != null) {
-			User recruiter = userService.getUser(Integer.parseInt(id));
-			model.addAttribute("recruiterDTO", recruiter);
+			User user = userService.getUser(Integer.parseInt(id));
+			if (user.getRole().getRoleName().equals("recruiter")) {
+				model.addAttribute("recruiterDTO", user);
+			} else {
+				model.addAttribute("user", user);
+			}
 			Company company = companyService.getCompany(Integer.parseInt(id));
 			model.addAttribute("companyInformation", company);
 		}
@@ -76,6 +82,26 @@ public class ProfileController {
 		userService.saveUser(user);
 
 		model.addAttribute("msg_update_recruiter_success", "success");
+		return "profile";
+	}
+	@PostMapping("/update-profile-user")
+	public String processFormUser(@Valid @ModelAttribute("user") RecruiterDTO user, BindingResult rs,
+			Model model, @RequestParam("id") int id, HttpServletRequest request) throws UnsupportedEncodingException {
+		if (rs.hasErrors()) {
+			// trả về lỗi trên form và điều hướng về trang profile
+			model.addAttribute("user", user);
+			model.addAttribute("msg_update_user_error", "error");
+		}
+		request.setCharacterEncoding("UTF-8");
+		User userFromDB = userService.getUser(id);
+		user.setAddress(user.getAddress());
+		user.setDescription(user.getDescription());
+		user.setEmail(user.getEmail());
+		user.setFullName(user.getFullName());
+		user.setPhoneNumber(user.getPhoneNumber());
+		userService.saveUser(userFromDB);
+
+		model.addAttribute("msg_update_user_success", "success");
 		return "profile";
 	}
 

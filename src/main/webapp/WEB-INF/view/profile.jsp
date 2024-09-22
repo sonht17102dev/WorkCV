@@ -10,6 +10,7 @@
 </head>
 
 <body>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 	<%@ include file="/WEB-INF/view/layouts/navHome.jsp"%>
 <c:if test='${ msg_update_recruiter_success != null}'>
 	<div class="toast" data-delay="2500"
@@ -44,14 +45,14 @@
 		</script>
 	</div>
 </c:if>
-<div class="hero-wrap hero-wrap-2" style="background-image: url('/resources/assets/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+<div class="hero-wrap hero-wrap-2" style="background-image: url('${contextPath}/resources/assets/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
     <div class="overlay"></div>
     <div class="container">
         <div class="row no-gutters slider-text align-items-end justify-content-start">
             <div class="col-md-12 text-center mb-5">
                 <h1 class="mb-3 bread">Hồ sơ </h1>
                 <div class="form-group">
-                	<form action="${pageContext.request.contextPath}/user/upload" method="post" enctype="multipart/form-data">
+                	<form action="${contextPath}/user/upload" method="post" enctype="multipart/form-data">
                     <label class="btn btn-dark btn-md btn-file">
                         Chọn ảnh<input type="file" name="file" id="fileUpload" >
                     </label>
@@ -71,34 +72,36 @@
 </div>
 <!-- HOME -->
 
-<div th:if="${userInformation.status == 0}" class="container-fluid" style="text-align: center">
-    <p style="font-size: 20px;font-weight: bold;color: #aaa;margin-top: 10px">Xác thực email đăng nhập</p>
-    <div style="width: 600px;height: 400px;border-radius: 5px;
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 10px;margin: 20px auto;padding: 15px">
-        <p style="line-height: 35px;font-size: 16px">Xin chào, <span th:text="${userInformation.fullName}" ></span> và làm theo hướng dẫn trong email.
-            Trường hợp không nhận được email, bạn vui lòng bấm nút Nhận email xác thực dưới đây.</p>
-        <div class="row form-group">
-            <form action="/user/confirm-account" method="post" class="col-md-12">
-                <input type="hidden" th:value="${userInformation.email}" name="email" class="btn px-4 btn-primary text-white">
-                <input type="submit" value="Nhận email xác thực" class="btn px-4 btn-primary text-white">
-            </form>
-        </div>
-        <p>Mọi thắc mắc vui lòng liên hệ bộ phận CSKH của WorkCV:<br></p>
-        - Điện thoại:<span style="color:#5f80ec">(024) 6680 5588</span><br>
-        - Email: <a href="#" style="color:#5f80ec"> hotro@workcv.vn</a>
-    </div>
-    <div th:if="${comfirm_await}" style="width: 600px;height: 400px;border-radius: 5px;
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 10px;margin: 20px auto;padding: 15px">
-        <p style="line-height: 35px;font-size: 16px">Xin chào, <span th:text="${userInformation.fullName}" ></span> .Bạn đã gửi yêu cầu xác thực thành công,
-            vui lòng kiểm tra mail để xác thực.Cảm ơn bạn!!!
-        </p>
-        <p>Mọi thắc mắc vui lòng liên hệ bộ phận CSKH của WorkCV:<br></p>
-        - Điện thoại:<span style="color:#5f80ec">(024) 6680 5588</span><br>
-        - Email: <a href="#" style="color:#5f80ec"> hotro@workcv.vn</a>
-    </div>
-</div>
-
-<section th:if="${userInformation.status == 1 && userInformation.role.id == 1}" class="site-section" style="margin-top: 10px">
+<c:if test='${userLogin.status.equals("active") && userLogin.role.roleName.equals("recruiter")}'>
+	<div class="container-fluid" style="text-align: center">
+	    <p style="font-size: 20px;font-weight: bold;color: #aaa;margin-top: 10px">Xác thực email đăng nhập</p>
+	    <div style="width: 600px;height: 400px;border-radius: 5px;
+	    box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 10px;margin: 20px auto;padding: 15px">
+	        <p style="line-height: 35px;font-size: 16px">Xin chào, <span>${userLogin.fullName}</span> và làm theo hướng dẫn trong email.
+	            Trường hợp không nhận được email, bạn vui lòng bấm nút Nhận email xác thực dưới đây.</p>
+	        <div class="row form-group">
+	            <form action="/user/confirm-account" method="post" class="col-md-12">
+	                <input type="hidden" value="${userLogin.email}" name="email" class="btn px-4 btn-primary text-white">
+	                <input type="submit" value="Nhận email xác thực" class="btn px-4 btn-primary text-white">
+	            </form>
+	        </div>
+	        <p>Mọi thắc mắc vui lòng liên hệ bộ phận CSKH của WorkCV:<br></p>
+	        - Điện thoại:<span style="color:#5f80ec">(024) 6680 5588</span><br>
+	        - Email: <a href="#" style="color:#5f80ec"> hotro@workcv.vn</a>
+	    </div>
+	    <div th:if="${comfirm_await}" style="width: 600px;height: 400px;border-radius: 5px;
+	    box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 10px;margin: 20px auto;padding: 15px">
+	        <p style="line-height: 35px;font-size: 16px">Xin chào, <span>${userLogin.fullName}</span> .Bạn đã gửi yêu cầu xác thực thành công,
+	            vui lòng kiểm tra mail để xác thực.Cảm ơn bạn!!!
+	        </p>
+	        <p>Mọi thắc mắc vui lòng liên hệ bộ phận CSKH của WorkCV:<br></p>
+	        - Điện thoại:<span style="color:#5f80ec">(024) 6680 5588</span><br>
+	        - Email: <a href="#" style="color:#5f80ec"> hotro@workcv.vn</a>
+	    </div>
+	</div>
+</c:if>
+ <c:if test='${userLogin.status.equals("active") && userLogin.role.roleName.equals("user")}'>
+<section class="site-section" style="margin-top: 10px">
     <div class="container">
         <form enctype="multipart/form-data">
             <div class="row align-items-center mb-5">
@@ -106,30 +109,43 @@
                     <div class="d-flex align-items-center">
                         <div class="form-group" style="margin-top: 15px">
                             <label class="btn btn-primary btn-md btn-file">
-                                Chọn cv (pdf)<input type="file" name="file" id="fileUpload1" required hidden>
+                                Chọn cv (pdf)<input type="file" path="file" id="fileUpload1" hidden/>
                             </label>
                         </div>
                     </div>
-                    <p id="cvName" th:if="${Cv != null}" th:text="${Cv != null ? Cv.fileName :'Chưa cập nhập'}"></p>
-                    <p id="cvName" th:if="${Cv == null}"></p>
-                    <a id="nameCv" th:if="${Cv !=null}" th:href="${'http://localhost:8080/resources/uploads/'} +${Cv.fileName}" >Xem cv</a>
-                    <a id="nameCv"  th:href="${'http://localhost:8080/resources/uploads/'}" ></a>
-                    <a style="color: red;margin-left: 20px" th:if="${Cv !=null}" data-toggle="modal" data-target="#exampleModal" >Xóa cv</a>
-                    <a style="color: red;margin-left: 20px" th:if="${Cv ==null}" id="xoa" data-toggle="modal" data-target="#exampleModal" ></a>
+                    <c:if test="${Cv != null}">
+                    	<p id="cvName">${Cv != null ? Cv.fileName :'Chưa cập nhập'}</p>
+                    </c:if>
+                    <c:if test="${Cv == null}">
+                    	<p id="cvName"></p>
+                    </c:if>
+                    <c:if test="${Cv != null}">
+                    	<a id="nameCv" href="${contextPath}/resources/uploads/${Cv.fileName}" >Xem cv</a>
+                    </c:if>
+                    	<a id="nameCv" href="${contextPath}/resources/uploads" ></a>
+                    <c:if test="${Cv != null}">
+                    	<a style="color: red;margin-left: 20px" data-toggle="modal" data-target="#exampleModal" >Xóa cv</a>
+                    </c:if>
+                    <c:if test="${Cv == null}">
+                    	<a style="color: red;margin-left: 20px" id="xoa" data-toggle="modal" data-target="#exampleModal" ></a>
+                    </c:if>
                 </div>
 
                 <div class="col-lg-4">
                     <div class="row">
-<!--                        <div class="col-6">-->
-<!--                            <button type="submit" id="myBtn" class="btn btn-block btn-light btn-md"><span class="icon-open_in_new mr-2"></span>Cập nhật cv</button>-->
-<!--                        </div>-->
+                        <div class="col-6">
+                            <button type="submit" id="myBtn" class="btn btn-block btn-light btn-md">
+                            	<span class="icon-open_in_new mr-2"></span>Cập nhật cv
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </form>
 
 
-        <form action="/user/update-profile" method="post" >
+        <form:form modelAttribute="user" action="${contextPath}/user/update-profile-user" method="post" >
+        	<form:hidden path="id" />
             <div class="row align-items-center mb-5">
                 <div class="col-lg-8 mb-4 mb-lg-0">
                     <div class="d-flex align-items-center">
@@ -149,38 +165,48 @@
             </div>
             <div class="row mb-5">
                 <div class="col-lg-12">
-                    <div class="p-4 p-md-5 border rounded" method="post">
+                    <div class="p-4 p-md-5 border rounded">
                         <h3 class="text-black mb-5 border-bottom pb-2">Thông tin chi tiết</h3>
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" th:value="${userInformation.email != null ? userInformation.email : null}" required placeholder="you@yourdomain.com">
+                            <form:input type="text" class="form-control" id="email" path="email" 
+                            value="${userLogin.email != null ? userLogin.email : null}" placeholder="you@yourdomain.com"/>
+                            <form:errors cssClass="text-danger" path="email" />
                         </div>
                         <div class="form-group">
                             <label for="job-title">Full name</label>
-                            <input type="text" class="form-control" name="fullName" th:value="${userInformation.fullName != null ? userInformation.fullName : null}" required id="job-title" placeholder="Full name">
+                            <form:input type="text" class="form-control" path="fullName" 
+                            value="${userLogin.fullName != null ? userLogin.fullName : null}" id="job-title" placeholder="Full name"/>
+                        	<form:errors cssClass="text-danger" path="fullName" />
                         </div>
                         <div class="form-group">
                             <label for="job-location">Địa chỉ</label>
-                            <input type="text" name="address" th:value="${userInformation.address != null ? userInformation.address : null}" class="form-control" id="job-location" required placeholder="e.g. New York">
+                            <form:input type="text" path="address" 
+	                            value="${userLogin.address != null ? userLogin.address : null}" 
+	                            class="form-control" id="job-location" placeholder="e.g. New York"/>
+	                        <form:errors cssClass="text-danger" path="address" />
                         </div>
                         <div class="form-group">
                             <label for="job-location">Số điện thoại</label>
-                            <input type="text" name="phoneNumber" th:value="${userInformation.phoneNumber != null ? userInformation.phoneNumber : null}" class="form-control" id="job-location" required placeholder="+ 84">
+                            <form:input type="text" path="phoneNumber" 
+	                            value="${userLogin.phoneNumber != null ? userLogin.phoneNumber : null}" 
+	                            class="form-control" id="job-location" placeholder="+ 84"/>
+	                        <form:errors cssClass="text-danger" path="phoneNumber" />
                         </div>
                         <div class="form-group">
                             <label for="job-location">Mô tả bản thân</label>
-                            <textarea  name="description" th:text="${userInformation.description != null ? userInformation.description : null}" class="form-control" id="editor" placeholder="Mô tả"></textarea>
+                            <form:textarea  path="description" class="form-control" 
+                            id="editor" placeholder="Mô tả"
+                            value="${userLogin.description != null ? userLogin.description : null}" />
+                            <form:errors cssClass="text-danger" path="description" />
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-        </form>
+        </form:form>
     </div>
 </section>
-
+</c:if>
 <!-- Modal -->
 <div class="modal fade"  id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -218,9 +244,9 @@
 </section>
 </c:if>
 <script>
-
+	
 	ClassicEditor.create(document.querySelector('#editor')).then(edit => {
-	   	edit.setData("${recruiterDTO.description}")
+	   	edit.setData("${recruiterDTO.description != null ? recruiterDTO.description : user.description}")
 	})
     .catch(error => {
         console.error(error);

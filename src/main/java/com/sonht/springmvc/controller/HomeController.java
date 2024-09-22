@@ -10,14 +10,15 @@ import com.sonht.springmvc.service.ApplyPostService;
 import com.sonht.springmvc.service.CategoryService;
 import com.sonht.springmvc.service.CompanyService;
 import com.sonht.springmvc.service.RecruitmentService;
+import com.sonht.springmvc.service.UserService;
 
 @Controller
 public class HomeController extends BaseController{
 
 	@Autowired
 	public HomeController(CategoryService categoryService, ApplyPostService applyPostService,
-			CompanyService companyService, RecruitmentService recruitmentService) {
-		super(categoryService, applyPostService, companyService, recruitmentService);
+			CompanyService companyService, RecruitmentService recruitmentService, UserService userService) {
+		super(categoryService, applyPostService, companyService, recruitmentService, userService);
 	}
 
 	@GetMapping({ "/", "/home" })

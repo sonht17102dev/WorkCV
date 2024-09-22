@@ -21,6 +21,7 @@ import com.sonht.springmvc.service.ApplyPostService;
 import com.sonht.springmvc.service.CategoryService;
 import com.sonht.springmvc.service.CompanyService;
 import com.sonht.springmvc.service.RecruitmentService;
+import com.sonht.springmvc.service.UserService;
 
 @Controller
 public class BaseController {
@@ -28,14 +29,16 @@ public class BaseController {
 	ApplyPostService applyPostService;
 	CompanyService companyService;
 	RecruitmentService recruitmentService;
+	UserService userService;
 
 	@Autowired
 	public BaseController(CategoryService categoryService, ApplyPostService applyPostService,
-			CompanyService companyService, RecruitmentService recruitmentService) {
+			CompanyService companyService, RecruitmentService recruitmentService, UserService userService) {
 		this.categoryService = categoryService;
 		this.applyPostService = applyPostService;
 		this.companyService = companyService;
 		this.recruitmentService = recruitmentService;
+		this.userService = userService;
 	}
 	
 	

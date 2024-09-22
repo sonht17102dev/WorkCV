@@ -3,6 +3,7 @@ package com.sonht.springmvc.dto;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 
 import org.springframework.lang.NonNull;
 import org.springframework.lang.NonNullFields;
@@ -22,6 +23,7 @@ public class RecruiterDTO {
 	private String address;
 
 	@NotEmpty(message = "Hãy nhập số điện thoại")
+	@Pattern(regexp = "^[0-9]{10}", message = "Vui lòng nhập 10 kí tự dạng số")
 	private String phoneNumber;
 
 	@NotEmpty(message = "Hãy chọn mô tả bản thân")

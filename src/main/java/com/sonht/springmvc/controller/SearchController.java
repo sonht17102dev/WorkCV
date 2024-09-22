@@ -1,7 +1,6 @@
 package com.sonht.springmvc.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -13,21 +12,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sonht.springmvc.dto.SearchForm;
-import com.sonht.springmvc.entity.ApplyPost;
-import com.sonht.springmvc.entity.Category;
 import com.sonht.springmvc.entity.Company;
 import com.sonht.springmvc.entity.Recruitment;
 import com.sonht.springmvc.service.ApplyPostService;
 import com.sonht.springmvc.service.CategoryService;
 import com.sonht.springmvc.service.CompanyService;
 import com.sonht.springmvc.service.RecruitmentService;
+import com.sonht.springmvc.service.UserService;
 
 @Controller
 public class SearchController extends BaseController{
 
 	public SearchController(CategoryService categoryService, ApplyPostService applyPostService,
-			CompanyService companyService, RecruitmentService recruitmentService) {
-		super(categoryService, applyPostService, companyService, recruitmentService);
+			CompanyService companyService, RecruitmentService recruitmentService, UserService userService) {
+		super(categoryService, applyPostService, companyService, recruitmentService, userService);
 	}
 	
 	@PostMapping("/search")

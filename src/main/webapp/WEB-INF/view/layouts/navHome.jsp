@@ -27,29 +27,42 @@
 							class="nav-link">Đăng Ký</a></li>	
 					</c:when>
 					<c:otherwise>
-						
-						<li class="nav-item"> <a class="nav-link" href="${contextPath}/logout">Đăng
-						xuất</a></li>
 					</c:otherwise>
 				</c:choose>
 				
 				<c:if test='${userLogin.role.roleName.equals("recruiter")}'>
-				<li class="nav-item cta cta-colored">
-				<a class="dropdown-toggle nav-link" href="#" role="button"
-					data-toggle="dropdown" aria-expanded="false"> ${userLogin.fullName} </a>
-					<ul class="dropdown-menu bg-light">
-						<li><a href="${contextPath}/user/profile/${userLogin.id}">Hồ Sơ</a></li>
-						<li><a href="${contextPath}/recruitment/list-post">Danh sách bài đăng</a></li>
-						<c:if test="${userLogin != null}">
-						<li><a href="${contextPath}/logout">Đăng
-								xuất</a></li>
-						</c:if>
-					</ul></li>
+					<li class="nav-item cta cta-colored">
+					<a class="dropdown-toggle nav-link" href="#" role="button"
+						data-toggle="dropdown" aria-expanded="false"> ${userLogin.fullName} </a>
+						<ul class="dropdown-menu bg-light">
+							<li><a href="${contextPath}/user/profile/${userLogin.id}">Hồ Sơ</a></li>
+							<li><a href="${contextPath}/recruitment/list-post">Danh sách bài đăng</a></li>
+							<c:if test="${userLogin != null}">
+							<li><a href="${contextPath}/logout">Đăng
+									xuất</a></li>
+							</c:if>
+						</ul>
+					</li>
+					<li class="nav-item cta cta-colored"><a
+						class="btn btn-primary" href="${contextPath}/recruitment/post?action=add" > Đăng Tuyển </a>
+					</li>
 				</c:if>
-				<li class="nav-item cta cta-colored"><a
-					class="btn btn-primary" href="#" > Đăng Tuyển </a>
-				</li>
-				
+				<c:if test='${userLogin.role.roleName.equals("user")}'>
+					<li class="nav-item cta cta-colored">
+					<a class="dropdown-toggle nav-link" href="#" role="button"
+						data-toggle="dropdown" aria-expanded="false"> ${userLogin.fullName} </a>
+						<ul class="dropdown-menu bg-light">
+							<li><a href="${contextPath}/user/profile/${userLogin.id}">Hồ Sơ</a></li>
+							<c:if test="${userLogin != null}">
+							<li><a href="${contextPath}/logout">Đăng
+									xuất</a></li>
+							</c:if>
+						</ul>
+					</li>
+					<li class="nav-item cta cta-colored"><a
+						class="btn btn-primary" href="${contextPath}/recruitment/post?action=add" > Đăng Tuyển </a>
+					</li>
+				</c:if>
 			</ul>
 		</div>
 	</div>
