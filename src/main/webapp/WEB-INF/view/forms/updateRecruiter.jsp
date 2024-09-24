@@ -5,8 +5,9 @@
 	<h2 class="mb-4">Thông tin cá nhân</h2>
 	<form:form
 		action="${pageContext.request.contextPath}/user/update-profile"
-		modelAttribute="recruiterDTO" method="post">
-		<form:hidden path="id" id="recruiterId" />
+		modelAttribute="userDTO" method="post">
+		<form:hidden path="id"  />
+		<form:hidden path="image" value="${userDTO.image}"/>
 		<div class="row mb-5">
 			<div class="col-lg-12">
 				<div class="p-4 p-md-5 border rounded">

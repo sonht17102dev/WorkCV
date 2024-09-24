@@ -118,9 +118,9 @@ INSERT INTO role (role_name) VALUES ('user'),('recruiter');
 -- add data samples
 INSERT INTO user (address, description, email, full_name, image, password, phone_number, status, role_id, cv_id) VALUES
 ('Thành phố HCM', 'mô tả 1', 'test@gmail.com', 'Hương Phạm', 'person_1.jpg', 'Zxc!1234','1234567890', 'active', 1, 1),
-('Thành phố Hà Nội', 'mô tả 2', 'test1@gmail.com', 'FPT Software', 'person_2.jpg', 'Zxc!1234','1234567890', 'active', 2, 1),
+('Thành phố Hà Nội', 'mô tả 2', 'test1@gmail.com', 'FPT Software', 'person_2.jpg', 'Zxc!1234','1234567890', 'active', 2, 3),
 ('Thành phố Đà Nẵng', 'mô tả 3', 'test2@gmail.com', 'Nam Nguyễn', 'person_3.jpg', 'Zxc!1234','1234567890', 'active', 1, 2),
-('Thành phố Hà Nội', 'mô tả 4', 'test3@gmail.com', 'Viettel digital', 'person_3.jpg', 'Zxc!1234','1234567890', 'active', 2, 1),
+('Thành phố Hà Nội', 'mô tả 4', 'test3@gmail.com', 'Viettel digital', 'person_3.jpg', 'Zxc!1234','1234567890', 'active', 2, 3),
 ('Thành phố HCM', 'mô tả 5', 'test4@gmail.com', 'Minh Nguyễn', 'person_4.jpg', 'Zxc!1234','1234567890', 'active', 1, 3);
 
 INSERT INTO cv (file_name, user_id) VALUES 
@@ -130,8 +130,12 @@ INSERT INTO cv (file_name, user_id) VALUES
 
 INSERT INTO company (address, description, email, logo, name_company, phone_number, status, user_id) VALUES
 ('Đà Nẵng', 'Tham gia dự án Logistic ứng viên nhận SIGNING BONUS iphone 12 pro-max', 'tuyendungnhansu@gmail.com',
-'https://cdn-new.topcv.vn/unsafe/140x/https://static.topcv.vn/company_logos/56e34c4b61a8abfd95a8f25209407e62-5f59fb4eb81ca.jpg', 'FPT Software', '0394073712', 'active', 2),
-('Hà Nội', 'Tổng Công ty Dịch vụ số Viettel (Viettel Digital) – Tổng Công ty thành viên thứ 8 của Tập đoàn Công nghiệp – Viễn thông Quân đội. Sự ra đời của Tổng Công ty nhằm tạo nền móng cho quá trình chuyển dịch số, thực hiện chiến lược phát triển của Viettel trong giai đoạn mới – giai đoạn Kiến tạo xã hội số. Từ nay tới 2025, Tổng Công ty đặt hai mục tiêu trọng tâm lớn: Có 26 triệu khách hàng trên hệ sinh thái; phát triển 600.000 điểm chấp nhận thanh toán & cung cấp dịch vụ.
+'FPT_logo.jpg', 'FPT Software', '0394073712', 'active', 2),
+('Hà Nội', 'Tổng Công ty Dịch vụ số Viettel (Viettel Digital) – Tổng Công ty thành viên thứ 8 của Tập đoàn Công 
+nghiệp – Viễn thông Quân đội. Sự ra đời của Tổng Công ty nhằm tạo nền móng cho quá trình chuyển dịch số, thực hiện 
+chiến lược phát triển của Viettel trong giai đoạn mới – giai đoạn Kiến tạo xã hội số. Từ nay tới 2025, Tổng Công ty
+ đặt hai mục tiêu trọng tâm lớn: Có 26 triệu khách hàng trên hệ sinh thái; phát triển 600.000 điểm chấp nhận thanh
+ toán & cung cấp dịch vụ.
 
 Sứ mệnh của chúng tôi
 - Phổ cập dịch vụ số từ thành thị tới nông thôn
@@ -143,7 +147,7 @@ Sản phẩm của chúng tôi
 - Lĩnh vực tài chính số: Hệ sinh thái và ngân hàng số ViettelPay, ViettelPay Pro, Bank Plus, Mobile Money
 - Lĩnh vực dịch vụ dữ liệu: Triển khai dịch vụ Digital marketing, Quảng cáo số dựa trên dữ liệu điện tử, Big data', 
 'tuyendungvietteldigital@gmail.com',
-'https://cdn-new.topcv.vn/unsafe/140x/https://static.topcv.vn/company_logos/viettel-digital-611bdc03b779c.jpg', 
+'Viettel_logo.png', 
 'Viettel Digital', '0989888888', 'active', 4);
 
 INSERT INTO category (name, number_choose) VALUES

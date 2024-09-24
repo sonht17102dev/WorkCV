@@ -3,6 +3,9 @@ package com.sonht.springmvc.controller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -18,15 +21,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sonht.springmvc.dto.CompanyDTO;
 import com.sonht.springmvc.dto.RecruiterDTO;
 import com.sonht.springmvc.entity.Company;
+import com.sonht.springmvc.entity.Cv;
 import com.sonht.springmvc.entity.User;
 import com.sonht.springmvc.service.ApplyPostService;
 import com.sonht.springmvc.service.CategoryService;
 import com.sonht.springmvc.service.CompanyService;
+import com.sonht.springmvc.service.CvService;
 import com.sonht.springmvc.service.RecruitmentService;
 import com.sonht.springmvc.service.UserService;
 
@@ -35,8 +41,8 @@ import com.sonht.springmvc.service.UserService;
 public class ProfileController extends BaseController {
 
 	public ProfileController(CategoryService categoryService, ApplyPostService applyPostService,
-			CompanyService companyService, RecruitmentService recruitmentService, UserService userService) {
-		super(categoryService, applyPostService, companyService, recruitmentService, userService);
+			CompanyService companyService, RecruitmentService recruitmentService, UserService userService, CvService cvService) {
+		super(categoryService, applyPostService, companyService, recruitmentService, userService, cvService);
 	}
 
 	@ModelAttribute("recruiterDTO")
@@ -51,57 +57,40 @@ public class ProfileController extends BaseController {
 
 	@GetMapping("/profile/{id}")
 	public String profile(@PathVariable String id, Model model) {
+		pushDataProfile(id, model);
+		return "profile";
+	}
+	public void pushDataProfile(String id, Model model) {
 		if (id != null) {
 			User user = userService.getUser(Integer.parseInt(id));
-			if (user.getRole().getRoleName().equals("recruiter")) {
-				model.addAttribute("recruiterDTO", user);
-			} else {
-				model.addAttribute("user", user);
-			}
+			model.addAttribute("userDTO", user);
 			Company company = companyService.getCompany(Integer.parseInt(id));
 			model.addAttribute("companyInformation", company);
 		}
-		return "profile";
 	}
-
 	@PostMapping("/update-profile")
-	public String processFormRecruiter(@Valid @ModelAttribute("recruiterDTO") RecruiterDTO recruiter, BindingResult rs,
+	public String processFormRecruiter(@Valid @ModelAttribute("userDTO") RecruiterDTO user, BindingResult rs,
 			Model model, @RequestParam("id") int id, HttpServletRequest request) throws UnsupportedEncodingException {
 		if (rs.hasErrors()) {
 			// trả về lỗi trên form và điều hướng về trang profile
-			model.addAttribute("recruiterDTO", recruiter);
-			model.addAttribute("msg_update_recruiter_error", "error");
-		}
-		request.setCharacterEncoding("UTF-8");
-		User user = userService.getUser(id);
-		user.setAddress(recruiter.getAddress());
-		user.setDescription(recruiter.getDescription());
-		user.setEmail(recruiter.getEmail());
-		user.setFullName(recruiter.getFullName());
-		user.setPhoneNumber(recruiter.getPhoneNumber());
-		userService.saveUser(user);
-
-		model.addAttribute("msg_update_recruiter_success", "success");
-		return "profile";
-	}
-	@PostMapping("/update-profile-user")
-	public String processFormUser(@Valid @ModelAttribute("user") RecruiterDTO user, BindingResult rs,
-			Model model, @RequestParam("id") int id, HttpServletRequest request) throws UnsupportedEncodingException {
-		if (rs.hasErrors()) {
-			// trả về lỗi trên form và điều hướng về trang profile
-			model.addAttribute("user", user);
+			model.addAttribute("recruiterDTO", user);
 			model.addAttribute("msg_update_user_error", "error");
+			Company company = companyService.getCompany(id);
+			model.addAttribute("companyInformation", company);
+			return "profile";
 		}
-		request.setCharacterEncoding("UTF-8");
 		User userFromDB = userService.getUser(id);
-		user.setAddress(user.getAddress());
-		user.setDescription(user.getDescription());
-		user.setEmail(user.getEmail());
-		user.setFullName(user.getFullName());
-		user.setPhoneNumber(user.getPhoneNumber());
+		userFromDB.setAddress(user.getAddress());
+		userFromDB.setDescription(user.getDescription());
+		userFromDB.setEmail(user.getEmail());
+		userFromDB.setFullName(user.getFullName());
+		userFromDB.setPhoneNumber(user.getPhoneNumber());
+		userFromDB.setImage(user.getImage());
 		userService.saveUser(userFromDB);
 
 		model.addAttribute("msg_update_user_success", "success");
+		Company company = companyService.getCompany(id);
+		model.addAttribute("companyInformation", company);
 		return "profile";
 	}
 
@@ -117,7 +106,38 @@ public class ProfileController extends BaseController {
 		
 		return "redirect:/user/profile/" + recruiterId;
 	}
+	@PostMapping("/uploadCV")
+	public String uploadCVUser(@RequestParam("file") MultipartFile file, HttpSession session,
+			@RequestParam("userId") String userId, Model model) {
+		User user = userService.getUser(Integer.parseInt(userId));
+		if (file.isEmpty()) {
+			model.addAttribute("userDTO", user);
+			return "redirect:/user/profile/" + userId;
+		}
+		System.out.println(file.getOriginalFilename());
+//		uploadImgUserOrCompany(session, file, userId, user, null);
+		
+		return "redirect:/user/profile/" + userId;
+	}
 	
+	@GetMapping("/deleteCv")
+	@ResponseBody
+	public Map<String, String> deleteCV(@RequestParam("idCv") String idCv, Model model, HttpServletRequest request) {
+		Map<String, String> map = new HashMap<String, String>();
+		
+		map.put("status", "success");
+		map.put("msg_delete_success", "Xoá CV cá nhân thành công!");
+		Cv cvDeleteFromDB = cvService.deleteCv(idCv);
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("userLogin");
+		for(Cv cv: user.getCvList()) {
+			if(cv.getId()==cvDeleteFromDB.getId()) {
+				user.getCvList().remove(cv);
+				break;
+			}
+		}
+		return map;
+	}
 	
 	@PostMapping("/update-company")
 	public String processFormCompany(@Valid @ModelAttribute("companyDTO") CompanyDTO companyDTO, BindingResult rs,

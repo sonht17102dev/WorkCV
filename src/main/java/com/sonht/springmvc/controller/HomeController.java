@@ -9,6 +9,7 @@ import com.sonht.springmvc.dto.SearchForm;
 import com.sonht.springmvc.service.ApplyPostService;
 import com.sonht.springmvc.service.CategoryService;
 import com.sonht.springmvc.service.CompanyService;
+import com.sonht.springmvc.service.CvService;
 import com.sonht.springmvc.service.RecruitmentService;
 import com.sonht.springmvc.service.UserService;
 
@@ -17,8 +18,8 @@ public class HomeController extends BaseController{
 
 	@Autowired
 	public HomeController(CategoryService categoryService, ApplyPostService applyPostService,
-			CompanyService companyService, RecruitmentService recruitmentService, UserService userService) {
-		super(categoryService, applyPostService, companyService, recruitmentService, userService);
+			CompanyService companyService, RecruitmentService recruitmentService, UserService userService, CvService cvService) {
+		super(categoryService, applyPostService, companyService, recruitmentService, userService, cvService);
 	}
 
 	@GetMapping({ "/", "/home" })

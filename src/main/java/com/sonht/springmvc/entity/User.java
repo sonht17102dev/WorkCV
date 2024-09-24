@@ -51,8 +51,8 @@ public class User {
 	@JoinColumn(name = "role_id")
 	private Role role;
 
-	@OneToMany(mappedBy = "user", cascade = { CascadeType.DETACH, CascadeType.MERGE,
-			CascadeType.PERSIST, CascadeType.REFRESH })
+	@OneToMany(mappedBy = "user", cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
+			CascadeType.REFRESH })
 	private List<ApplyPost> applyPosts;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = { CascadeType.DETACH, CascadeType.MERGE,

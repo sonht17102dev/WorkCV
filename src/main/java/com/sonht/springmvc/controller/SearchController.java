@@ -17,6 +17,7 @@ import com.sonht.springmvc.entity.Recruitment;
 import com.sonht.springmvc.service.ApplyPostService;
 import com.sonht.springmvc.service.CategoryService;
 import com.sonht.springmvc.service.CompanyService;
+import com.sonht.springmvc.service.CvService;
 import com.sonht.springmvc.service.RecruitmentService;
 import com.sonht.springmvc.service.UserService;
 
@@ -24,8 +25,8 @@ import com.sonht.springmvc.service.UserService;
 public class SearchController extends BaseController{
 
 	public SearchController(CategoryService categoryService, ApplyPostService applyPostService,
-			CompanyService companyService, RecruitmentService recruitmentService, UserService userService) {
-		super(categoryService, applyPostService, companyService, recruitmentService, userService);
+			CompanyService companyService, RecruitmentService recruitmentService, UserService userService, CvService cvService) {
+		super(categoryService, applyPostService, companyService, recruitmentService, userService, cvService);
 	}
 	
 	@PostMapping("/search")

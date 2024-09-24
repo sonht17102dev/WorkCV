@@ -59,9 +59,7 @@
 							</c:if>
 						</ul>
 					</li>
-					<li class="nav-item cta cta-colored"><a
-						class="btn btn-primary" href="${contextPath}/recruitment/post?action=add" > Đăng Tuyển </a>
-					</li>
+					
 				</c:if>
 			</ul>
 		</div>
