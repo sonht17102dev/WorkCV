@@ -55,17 +55,10 @@ public class User {
 			CascadeType.REFRESH })
 	private List<ApplyPost> applyPosts;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = { CascadeType.DETACH, CascadeType.MERGE,
-			CascadeType.PERSIST, CascadeType.REFRESH })
-	private List<Cv> cvList;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "cv_id")
+	private Cv cv;
 
-	public List<Cv> getCvList() {
-		return cvList;
-	}
-
-	public void setCvList(List<Cv> cvList) {
-		this.cvList = cvList;
-	}
 
 	public List<ApplyPost> getApplyPosts() {
 		return applyPosts;
@@ -182,6 +175,14 @@ public class User {
 		return role;
 	}
 
+	public Cv getCv() {
+		return cv;
+	}
+
+	public void setCv(Cv cv) {
+		this.cv = cv;
+	}
+
 	public void setRole(Role role) {
 		this.role = role;
 	}
@@ -190,7 +191,8 @@ public class User {
 	public String toString() {
 		return "User [id=" + id + ", address=" + address + ", description=" + description + ", email=" + email
 				+ ", fullName=" + fullName + ", image=" + image + ", password=" + password + ", phoneNumber="
-				+ phoneNumber + ", status=" + status + ", role=" + role + "]";
+				+ phoneNumber + ", status=" + status + ", role=" + role + ", applyPosts=" + applyPosts + ", cv=" + cv
+				+ "]";
 	}
 
 }

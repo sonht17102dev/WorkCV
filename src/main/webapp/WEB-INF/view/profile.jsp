@@ -28,6 +28,37 @@
 		</script>
 	</div>
 </c:if>
+<c:if test='${ message_upload_cv.equals("success")}'>
+	<div class="toast" data-delay="2500"
+		style="position: fixed; top: 100PX; right: 10PX; z-index: 2000; width: 300px">
+
+		<script>
+			swal({
+				title : 'Cập nhật Cv thành công',
+				icon : 'success',
+				timer : 1000,
+				buttons : true,
+				type : 'success'
+			})
+		</script>
+	</div>
+</c:if>
+<c:if test='${ message_upload_cv.equals("error")}'>
+	<div class="toast" data-delay="2500"
+		style="position: fixed; top: 100PX; right: 10PX; z-index: 2000; width: 300px">
+
+		<script>
+			swal({
+				title : 'Cập nhật Cv thất bại',
+				text : 'Hãy chọn cv',
+				icon : 'error',
+				timer : 1000,
+				buttons : true,
+				type : 'error'
+			})
+		</script>
+	</div>
+</c:if>
 
 <c:if test='${ msg_update_recruiter_error != null}'>
 	<div class="toast" data-delay="2500"
@@ -137,7 +168,8 @@
 <section class="site-section" style="margin-top: 10px">
     <div class="container">
         <form action="${contextPath}/user/uploadCV" method="post" enctype="multipart/form-data">
-        	<input type="hidden" name="userId" value="${userLogin.id}" />
+        	<input type="hidden" name="userIdUpload" value="${userLogin.id}" />
+        	<input type="hidden"  name="idCv" value="${userLogin.cv.id}">
             <div class="row align-items-center mb-5">
                 <div class="col-lg-8 ">
                     <div class="d-flex align-items-center">
@@ -147,50 +179,19 @@
                             </label>
                         </div>
                     </div>
-                    <c:if test="${userLogin.cvList != null}">
-                    	<c:if test="${userLogin.cvList.size() == 0}">
-                    		<p id="cvName">Chưa cập nhập</p>
-                    	</c:if>
-                    	<c:if test="${userLogin.cvList.size() > 0}">
-                    	<c:forEach var="cv" items="${userLogin.cvList}">
-                    		<p id="cvName">
-                    			<strong>Tên file Cv: </strong><em>${cv.fileName}</em> 
-                    			<a id="nameCv" class="btn btn-primary btn-sm text-light"  
-                    			href="${contextPath}/resources/assets/images/${cv.fileName}" >Xem cv</a>
-                    			<a class="btn btn-danger btn-sm text-light" data-toggle="modal" 
-                    			data-target="#modalDeleteCV${cv.id}" >Xóa cv</a>
-                    		</p>
-                    		<!-- Modal -->
-							<div class="modal fade"  id="modalDeleteCV${cv.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-							    <div class="modal-dialog" role="document">
-							        <div class="modal-content">
-							            <div class="modal-header">
-							                <h5 class="modal-title" id="exampleModalLabel">Bạn có chắc chắn muốn xóa ?</h5>
-							                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							                    <span aria-hidden="true">&times;</span>
-							                </button>
-							            </div>
-							            <div class="modal-body">
-							                Cv : <span id="cvXoa" ></span>
-							                <c:if test="${cv != null}">
-							                	<span>${cv.fileName}</span>
-							                </c:if>
-							               <%--  <form action="${contextPath}/user/deleteCv" method="post"> --%>
-							                    <div class="modal-footer mt-1">
-							                        <input type="hidden"  name="idCv" value="${cv.id}">
-							                        <input type="hidden"  name="userId" value="${userLogin.id}">
-							                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-							                        <button type="button" class="btn btn-danger" onclick="handlerDeleteButton(${cv.id})">Xóa</button>
-							                    </div>
-							               <!--  </form> -->
-							            </div>
-							
-							        </div>
-							    </div>
-							</div>
-                    	</c:forEach>
-                    	</c:if>
-                    </c:if>
+                   	<c:if test="${userLogin.cv == null}">
+                   		<p id="cvName">Chưa cập nhập</p>
+                   	</c:if>
+                   	<c:if test="${userLogin.cv != null}">
+                  		<p id="cvName">
+                  			<strong>Tên file Cv: </strong><em>${userLogin.cv.fileName}</em> 
+                  			<a class="btn btn-primary btn-sm text-light"  
+                  			href="${contextPath}/resources/assets/images/${userLogin.cv.fileName}" target="_blank">Xem cv</a>
+                  			<a class="btn btn-danger btn-sm text-light" data-toggle="modal" 
+                  			data-target="#modalDeleteCV" >Xóa cv</a>
+                  		</p>
+                  		
+                   	</c:if>
                 </div>
 
                 <div class="col-lg-4">
@@ -203,8 +204,33 @@
                     </div>
                 </div>
             </div>
-        </form>
-
+       </form>
+<!-- Modal -->
+					<div class="modal fade"  id="modalDeleteCV" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					    <div class="modal-dialog" role="document">
+					        <div class="modal-content">
+					            <div class="modal-header">
+					                <h5 class="modal-title" id="exampleModalLabel">Bạn có chắc chắn muốn xóa ?</h5>
+					                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					                    <span aria-hidden="true">&times;</span>
+					                </button>
+					            </div>
+					            <div class="modal-body">
+					                Cv : <span id="cvXoa" ></span>
+					                <c:if test="${userLogin.cv != null}">
+					                	<span>${userLogin.cv.fileName}</span>
+					                </c:if>
+				                    <div class="modal-footer mt-1">
+				                        <input type="hidden"  name="idCv" value="${userLogin.cv.id}">
+				                        <input type="hidden"  name="userId" value="${userLogin.id}">
+				                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+				                        <button type="button" class="btn btn-danger" onclick="handlerDeleteButton(${userLogin.cv.id})">Xóa</button>
+				                    </div>
+					            </div>
+					
+					        </div>
+					    </div>
+					</div>
  		<%@ include file="/WEB-INF/view/forms/updateUser.jsp"%>
     </div>
 </section>
@@ -233,7 +259,7 @@
 	function handlerDeleteButton(idCv) {
 		 $.ajax({
             url: '${contextPath}/user/deleteCv?idCv=' + idCv,
-            type: 'GET',
+            type: 'POST',
             success: function(response) {
                 showToast(response.msg_delete_success, 'success');
                 document.getElementById("cvName").innerHTML = "Chưa cập nhật";
@@ -262,6 +288,7 @@
             document.body.removeChild(toastDiv);
         });
     }
+	 
 </script>
 
 

@@ -18,4 +18,5 @@ public interface UserService {
 	public User getUserByEmail(String email);
 
 	public void updateImage(String photo, int id);
+
 }

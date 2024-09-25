@@ -12,11 +12,20 @@ public class CvDAOImpl implements CvDAO {
 	
 	@Autowired
 	SessionFactory sessionFactory;
+	
 	@Override
-	public Cv deleteCv(String id) {
+	public void deleteCv(String id) {
 		Session currentSession = sessionFactory.getCurrentSession();
 		Cv cv = currentSession.get(Cv.class, Integer.parseInt(id));
+		cv.getUser().setCv(null);
 		currentSession.delete(cv);
+		
+	}
+
+	@Override
+	public Cv getCv(String idCv) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		Cv cv = currentSession.get(Cv.class, Integer.parseInt(idCv));
 		return cv;
 	}
 

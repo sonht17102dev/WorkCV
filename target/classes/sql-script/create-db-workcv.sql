@@ -40,10 +40,7 @@ DROP TABLE IF EXISTS `cv`;
 CREATE TABLE `cv` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `file_name` varchar(255) DEFAULT NULL,
-  `user_id` int(11),
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`user_id`) 
-  REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `category`;
@@ -118,15 +115,17 @@ INSERT INTO role (role_name) VALUES ('user'),('recruiter');
 -- add data samples
 INSERT INTO user (address, description, email, full_name, image, password, phone_number, status, role_id, cv_id) VALUES
 ('Thành phố HCM', 'mô tả 1', 'test@gmail.com', 'Hương Phạm', 'person_1.jpg', 'Zxc!1234','1234567890', 'active', 1, 1),
-('Thành phố Hà Nội', 'mô tả 2', 'test1@gmail.com', 'FPT Software', 'person_2.jpg', 'Zxc!1234','1234567890', 'active', 2, 3),
-('Thành phố Đà Nẵng', 'mô tả 3', 'test2@gmail.com', 'Nam Nguyễn', 'person_3.jpg', 'Zxc!1234','1234567890', 'active', 1, 2),
-('Thành phố Hà Nội', 'mô tả 4', 'test3@gmail.com', 'Viettel digital', 'person_3.jpg', 'Zxc!1234','1234567890', 'active', 2, 3),
-('Thành phố HCM', 'mô tả 5', 'test4@gmail.com', 'Minh Nguyễn', 'person_4.jpg', 'Zxc!1234','1234567890', 'active', 1, 3);
+('Thành phố Hà Nội', 'mô tả 2', 'test1@gmail.com', 'FPT Software', 'person_2.jpg', 'Zxc!1234','1234567890', 'active', 2, 2),
+('Thành phố Đà Nẵng', 'mô tả 3', 'test2@gmail.com', 'Nam Nguyễn', 'person_3.jpg', 'Zxc!1234','1234567890', 'active', 1, 3),
+('Thành phố Hà Nội', 'mô tả 4', 'test3@gmail.com', 'Viettel digital', 'person_3.jpg', 'Zxc!1234','1234567890', 'active', 2, 4),
+('Thành phố HCM', 'mô tả 5', 'test4@gmail.com', 'Minh Nguyễn', 'person_4.jpg', 'Zxc!1234','1234567890', 'active', 1, 5);
 
-INSERT INTO cv (file_name, user_id) VALUES 
-('1636909614848chotot.pdf', 1),
-('1636909614848chotot.pdf', 3),
-('1636909614848chotot.pdf', 5);
+INSERT INTO cv (file_name) VALUES 
+('1636909614848chotot.pdf'),
+('1636909614848chotot.pdf'),
+('1636909614848chotot.pdf'),
+('1636909614848chotot.pdf'),
+('1636909614848chotot.pdf');
 
 INSERT INTO company (address, description, email, logo, name_company, phone_number, status, user_id) VALUES
 ('Đà Nẵng', 'Tham gia dự án Logistic ứng viên nhận SIGNING BONUS iphone 12 pro-max', 'tuyendungnhansu@gmail.com',

@@ -102,40 +102,40 @@ public class ProfileController extends BaseController {
 			model.addAttribute("recruiterDTO", user);
 			return "redirect:/user/profile/" + recruiterId;
 		}
-		uploadImgUserOrCompany(session, file, recruiterId, user, null);
+		uploadFile(session, file, recruiterId, user, null);
 		
 		return "redirect:/user/profile/" + recruiterId;
 	}
 	@PostMapping("/uploadCV")
 	public String uploadCVUser(@RequestParam("file") MultipartFile file, HttpSession session,
-			@RequestParam("userId") String userId, Model model) {
-		User user = userService.getUser(Integer.parseInt(userId));
+			@RequestParam("userIdUpload") String userId, @RequestParam("idCv")String idCv, Model model) {
+		User user = (User) session.getAttribute("userLogin");
 		if (file.isEmpty()) {
-			model.addAttribute("userDTO", user);
-			return "redirect:/user/profile/" + userId;
+			pushDataProfile(userId, model);
+			model.addAttribute("message_upload_cv", "error");
+			return "profile";
 		}
 		System.out.println(file.getOriginalFilename());
-//		uploadImgUserOrCompany(session, file, userId, user, null);
-		
-		return "redirect:/user/profile/" + userId;
+		Cv cv = cvService.getCv(idCv);
+		cv.setFileName(file.getOriginalFilename());
+		user.setCv(cv);
+		userService.saveUser(user);
+		pushDataProfile(userId, model);
+		model.addAttribute("message_upload_cv", "success");
+		return "profile";
 	}
 	
-	@GetMapping("/deleteCv")
+	@PostMapping("/deleteCv")
 	@ResponseBody
 	public Map<String, String> deleteCV(@RequestParam("idCv") String idCv, Model model, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("userLogin");
+		user.setCv(null);
+		cvService.deleteCv(idCv);
 		Map<String, String> map = new HashMap<String, String>();
 		
 		map.put("status", "success");
 		map.put("msg_delete_success", "Xoá CV cá nhân thành công!");
-		Cv cvDeleteFromDB = cvService.deleteCv(idCv);
-		HttpSession session = request.getSession();
-		User user = (User) session.getAttribute("userLogin");
-		for(Cv cv: user.getCvList()) {
-			if(cv.getId()==cvDeleteFromDB.getId()) {
-				user.getCvList().remove(cv);
-				break;
-			}
-		}
 		return map;
 	}
 	
@@ -167,35 +167,8 @@ public class ProfileController extends BaseController {
 			return "redirect:/user/profile/" + recruiterId;
 		}
 		
-		uploadImgUserOrCompany(session, file, recruiterId, null, company);
+		uploadFile(session, file, recruiterId, null, company);
 		
 		return "redirect:/user/profile/" + recruiterId;
-	}
-	
-	public void uploadImgUserOrCompany(HttpSession session, MultipartFile file, String recruiterId, User user, Company company) {
-		// Lấy tên file gốc
-		String fileName = file.getOriginalFilename();
-		// Tạo chuỗi đường dẫn file
-		String filePath = session.getServletContext().getRealPath("/") + "resources"  
-				+ File.separator + "assets" 
-				+ File.separator + "images"
-				+ File.separator + fileName;
-		
-		try {
-			File newFile = new File(filePath);
-			FileOutputStream outputStream = new FileOutputStream(newFile);
-			outputStream.write(file.getBytes());
-			outputStream.close();
-			if(user != null) {
-				userService.updateImage(fileName, Integer.parseInt(recruiterId));
-				user.setImage(fileName);
-			} 
-			if(company != null) {
-				companyService.updateImage(fileName, Integer.parseInt(recruiterId));
-				company.setLogo(fileName);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 }

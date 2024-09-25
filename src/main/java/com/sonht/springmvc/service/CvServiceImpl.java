@@ -16,8 +16,15 @@ public class CvServiceImpl implements CvService {
 	
 	@Override
 	@Transactional
-	public Cv deleteCv(String id) {
-		return cvDAO.deleteCv(id);
+	public void deleteCv(String id) {
+		cvDAO.deleteCv(id);
 	}
+
+	@Override
+	@Transactional
+	public Cv getCv(String idCv) {
+		return cvDAO.getCv(idCv);
+	}
+
 
 }

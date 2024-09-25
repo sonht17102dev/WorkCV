@@ -1,5 +1,7 @@
 package com.sonht.springmvc.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -8,9 +10,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sonht.springmvc.entity.ApplyPost;
 import com.sonht.springmvc.entity.Category;
@@ -109,5 +114,32 @@ public class BaseController {
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 
 		return sortedMap;
+	}
+	
+	public void uploadFile(HttpSession session, MultipartFile file, String recruiterId, User user, Company company) {
+		// Lấy tên file gốc
+		String fileName = file.getOriginalFilename();
+		// Tạo chuỗi đường dẫn file
+		String filePath = session.getServletContext().getRealPath("/") + "resources"  
+				+ File.separator + "assets" 
+				+ File.separator + "images"
+				+ File.separator + fileName;
+		
+		try {
+			File newFile = new File(filePath);
+			FileOutputStream outputStream = new FileOutputStream(newFile);
+			outputStream.write(file.getBytes());
+			outputStream.close();
+			if(user != null) {
+				userService.updateImage(fileName, Integer.parseInt(recruiterId));
+				user.setImage(fileName);
+			} 
+			else if(company != null) {
+				companyService.updateImage(fileName, Integer.parseInt(recruiterId));
+				company.setLogo(fileName);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
