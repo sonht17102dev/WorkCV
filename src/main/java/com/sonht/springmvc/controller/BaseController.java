@@ -37,6 +37,7 @@ public class BaseController {
 	RecruitmentService recruitmentService;
 	UserService userService;
 	CvService cvService;
+	
 
 	@Autowired
 	public BaseController(CategoryService categoryService, ApplyPostService applyPostService,

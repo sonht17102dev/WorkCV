@@ -11,19 +11,17 @@ import com.sonht.springmvc.service.RecruitmentService;
 import com.sonht.springmvc.service.UserService;
 
 @Controller
-public class ApplyJobController extends BaseController{
-	
-	public ApplyJobController(CategoryService categoryService, ApplyPostService applyPostService,
+public class SaveJobController extends BaseController {
+
+	public SaveJobController(CategoryService categoryService, ApplyPostService applyPostService,
 			CompanyService companyService, RecruitmentService recruitmentService, UserService userService,
 			CvService cvService) {
 		super(categoryService, applyPostService, companyService, recruitmentService, userService, cvService);
 	}
-
-	@GetMapping("list-apply-job")
-	public String listjobs() {
+	
+	@GetMapping("list-save-job")
+	public String listSaveJob() {
 		
-		return "list_apply_job";
+		return "list-save-job";
 	}
-	
-	
 }

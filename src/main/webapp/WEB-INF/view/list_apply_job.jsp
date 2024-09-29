@@ -23,12 +23,13 @@
 	        </div>
 	    </div>
 	</div>
-	
-	<section class="ftco-section bg-light" th:if="${session.user.role.id == 1 }">
+	<c:if test='${userLogin.role.roleName.equals("user")}'>
+	<section class="ftco-section bg-light">
 	    <div class="container">
 	        <div class="row">
 	            <div class="col-lg-12 pr-lg-5">
-	                <div th:if="${saveJobList.totalPages > 0}" class="row">
+	            	<c:if test="${saveJobList.totalPages > 0}">
+	                <div class="row">
 	                        <div class="col-md-12 ">
 	                            <div class="job-post-item p-4 d-block d-lg-flex align-items-center">
 	                                <div class="one-third mb-4 mb-md-0">
@@ -92,18 +93,27 @@
 	                        </div>
 	
 	                </div>
-	                <div style="text-align: center" th:if="${saveJobList.totalPages < 1}">
+	                </c:if>
+	                <c:if test="${saveJobList.totalPages < 1}">
+	                <div style="text-align: center">
 	                    <p style="color:red;">Danh sách trống</p>
 	                </div>
+	                </c:if>
 	                <div class="row mt-5">
 	                    <div class="col text-center">
 	                        <div class="block-27">
 	                            <ul>
-	                                <li th:if="${numberPage>0}"><a th:href="@{/save-job/get-list(page = ${saveJobList.number - 1})}">&lt;</a></li>
-	                                <th:block th:each="recruitment,state  : ${recruitmentList}">
-	                                    <li th:class="${numberPage == state.index  ? 'active' : null }"><a th:href="@{/save-job/get-list(page = ${state.index})}" th:text="${state.index + 1}"></a></li>
-	                                </th:block>
-	                                <li th:if="${numberPage<saveJobList.totalPages - 1}"><a th:href="@{/save-job/get-list(page = ${saveJobList.number + 1})}">&gt;</a></li>
+	                            	<c:if test="${numberPage>0}">
+	                                	<li><a href="${contextPath}/save-job/get-list?page=${saveJobList.number - 1}">&lt;</a></li>
+	                                </c:if>
+	                                <c:forEach var= "recruitment" items="${recruitmentList}">
+	                                    <li class="${numberPage == state.index  ? 'active' : null }">
+	                                   		<a href="${contextPath}/save-job/get-list?page=${state.index}">${state.index + 1}</a>
+	                                    </li>
+	                                </c:forEach>
+	                                <c:if test="${numberPage<saveJobList.totalPages - 1}">
+	                                	<li><a href="${contextPath}/save-job/get-list?page=${saveJobList.number + 1}">&gt;</a></li>
+	                                </c:if>
 	                            </ul>
 	                        </div>
 	                    </div>
@@ -113,6 +123,7 @@
 	        </div>
 	    </div>
 	</section>
+	</c:if>
 	<script>
 	    function apply(id){
 	        var name = "#idRe" +id;

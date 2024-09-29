@@ -1,5 +1,6 @@
 package com.sonht.springmvc.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -10,7 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -55,18 +57,14 @@ public class User {
 			CascadeType.REFRESH })
 	private List<ApplyPost> applyPosts;
 
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE,
+			CascadeType.REFRESH })
+	@JoinTable(name = "save_job", joinColumns = @JoinColumn(name = "recruitment_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+	private List<Recruitment> recruitments;
+
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "cv_id")
 	private Cv cv;
-
-
-	public List<ApplyPost> getApplyPosts() {
-		return applyPosts;
-	}
-
-	public void setApplyPosts(List<ApplyPost> applyPosts) {
-		this.applyPosts = applyPosts;
-	}
 
 	public User() {
 	}
@@ -97,6 +95,20 @@ public class User {
 		this.fullName = fullName;
 		this.image = image;
 		this.phoneNumber = phoneNumber;
+	}
+	// add a convenience method
+	public void addRecruitment(Recruitment recruitment) {
+		if(recruitment == null) 
+			recruitments = new ArrayList<Recruitment>();
+		
+		recruitments.add(recruitment);
+	}
+	public void setApplyPosts(List<ApplyPost> applyPosts) {
+		this.applyPosts = applyPosts;
+	}
+
+	public List<ApplyPost> getApplyPosts() {
+		return applyPosts;
 	}
 
 	public String getPassword() {

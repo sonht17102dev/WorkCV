@@ -12,11 +12,6 @@
 				<li class="nav-item active"><a
 					href="${contextPath}/" class="nav-link">Trang
 						chủ</a></li>
-				<li class="'nav-item"><a href="/" class="nav-link">Công
-						việc</a></li>
-				<li class="nav-item"><a href="${contextPath}/list-apply-job" class="nav-link">Ứng cử
-						viên</a></li>
-				
 				<c:choose>
 					<c:when test="${userLogin.role.roleName == null }">
 						<li class="nav-item cta cta-colored"><a
@@ -31,6 +26,8 @@
 				</c:choose>
 				
 				<c:if test='${userLogin.role.roleName.equals("recruiter")}'>
+					<li class="nav-item"><a href="${contextPath}/list-apply-job" class="nav-link">Ứng cử
+						viên</a></li>
 					<li class="nav-item cta cta-colored">
 					<a class="dropdown-toggle nav-link" href="#" role="button"
 						data-toggle="dropdown" aria-expanded="false"> ${userLogin.fullName} </a>
@@ -48,6 +45,10 @@
 					</li>
 				</c:if>
 				<c:if test='${userLogin.role.roleName.equals("user")}'>
+					<li class="'nav-item"><a href="${contextPath}/list-save-job" class="nav-link">Công
+						việc</a></li>
+					<li class="'nav-item"><a href="${contextPath}/list-follow-company" class="nav-link">Công
+						ty</a></li>
 					<li class="nav-item cta cta-colored">
 					<a class="dropdown-toggle nav-link" href="#" role="button"
 						data-toggle="dropdown" aria-expanded="false"> ${userLogin.fullName} </a>

@@ -43,4 +43,18 @@ public class ApplyPostServiceImpl implements ApplyPostService {
 		return applyPostDAO.getAlls();
 	}
 
+	@Override
+	@Transactional
+	public void updateTextByRecruitmentId(int recruitmentId, int userLoginId, String text) {
+		applyPostDAO.updateTextByRecruitmentId(recruitmentId, userLoginId, text);
+	}
+
+	@Override
+	@Transactional
+	public boolean checkUserApplied(int recruitmentId, int userLoginId, String text) {
+		// TODO Auto-generated method stub
+		return applyPostDAO.checkUserApplied(recruitmentId, userLoginId, text);
+	}
+
+
 }

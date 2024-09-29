@@ -1,5 +1,6 @@
 package com.sonht.springmvc.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -10,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -65,18 +68,17 @@ public class Recruitment {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "applypost")
 	private List<ApplyPost> applyPosts;
+	
+	@ManyToMany(fetch = FetchType.LAZY, 
+			cascade = { CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH })
+	@JoinTable(
+			name="save_job",
+			joinColumns = @JoinColumn(name="user_id"),
+			inverseJoinColumns = @JoinColumn(name="recruitment_id")
+			)
+	private List<User> users;
+	
 
-	public List<ApplyPost> getApplyPosts() {
-		return applyPosts;
-	}
-
-	public void setApplyPosts(List<ApplyPost> applyPosts) {
-		this.applyPosts = applyPosts;
-	}
-
-	public void setRanked(String ranked) {
-		this.ranked = ranked;
-	}
 
 	@Column(name = "deadline")
 	private String deadline;
@@ -100,7 +102,24 @@ public class Recruitment {
 		this.company = company;
 		this.deadline = deadline;
 	}
-
+	// add a convenience method
+	public void addUser(User user) {
+		if(user == null) 
+			users = new ArrayList<User>();
+		
+		users.add(user);
+	}
+	public List<ApplyPost> getApplyPosts() {
+		return applyPosts;
+	}
+	
+	public void setApplyPosts(List<ApplyPost> applyPosts) {
+		this.applyPosts = applyPosts;
+	}
+	
+	public void setRanked(String ranked) {
+		this.ranked = ranked;
+	}
 	@Override
 	public String toString() {
 		return "Recruitment [id=" + id + ", address=" + address + ", createdAt=" + createdAt + ", description="

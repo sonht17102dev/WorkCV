@@ -14,4 +14,7 @@ public interface ApplyPostDAO {
 
 	List<ApplyPost> getAlls();
 
+	void updateTextByRecruitmentId(int recruitmentId, int userLoginId, String text);
+
+	boolean checkUserApplied(int recruitmentId, int userLoginId, String text);
 }

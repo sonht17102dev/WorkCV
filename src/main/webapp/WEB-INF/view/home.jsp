@@ -232,7 +232,7 @@
 									<c:if test='${not session.userLogin}'>
 									<div class="one-forth ml-auto d-flex align-items-center mt-4 md-md-0">
 										<div>
-											<a onclick="save(${recruitment.id})'"
+											<a onclick="save(${recruitment.id})"
 												class="icon text-center d-flex justify-content-center align-items-center icon mr-2">
 												<span class="icon-heart"></span>
 											</a>
@@ -261,39 +261,36 @@
 												<span aria-hidden="true">&times;</span>
 											</button>
 										</div>
-										<%-- <form method="post" action="/user/apply-job">
+										<form method="post" action="/user/apply-job">
+											<input type="hidden" id="userLoginId" value="${userLogin.id}"/>
 											<div class="modal-body">
 												<div class="row">
 													<div class="col-12">
 														<select id="choose${recruitment.id}"
-															onchange="choosed('${recruitment.id}')'"
+															onchange="choosed(${recruitment.id})"
 															class="form-control" aria-label="Default select example">
 															<option selected>Chọn phương thức nộp</option>
 															<option value="1">Dùng cv đã cập nhật</option>
 															<option value="2">Nộp cv mới</option>
 														</select>
 													</div>
-													<div th:id="${'loai1'}+${recruitment.id}"
+													<div id="loai1${recruitment.id}"
 														style="display: none" class="col-12">
 														<label for="fileUpload" class="col-form-label">Giới
 															thiệu:</label>
 														<textarea rows="10" cols="3" class="form-control"
-															th:id="${'text'}+${recruitment.id}">
-
-                                                    </textarea>
+															id="text${recruitment.id}"></textarea>
 													</div>
-													<div th:id="${'loai2'}+${recruitment.id}"
+													<div id="loai2${recruitment.id}"
 														style="display: none" class="col-12">
 
 														<label for="fileUpload" class="col-form-label">Chọn
 															cv:</label> <input type="file" class="form-control"
-															th:id="${'fileUpload'}+${recruitment.id}" name="file"
+															id="fileUpload${recruitment.id}" name="file"
 															required> <label for="fileUpload"
 															class="col-form-label">Giới thiệu:</label>
 														<textarea rows="10" cols="3" class="form-control"
-															th:id="${'text'}+${recruitment.id}">
-
-                                                    </textarea>
+															id="text${recruitment.id}"></textarea>
 													</div>
 
 												</div>
@@ -301,18 +298,18 @@
 													<button type="button" class="btn btn-secondary"
 														data-dismiss="modal">Đóng</button>
 													<button type="button"
-														th:id="${'button1'}+${recruitment.id}"
+														id="button1${recruitment.id}"
 														style="display: none"
-														th:onclick="'apply1(' +${recruitment.id}+ ')'"
+														onclick="apply1(${recruitment.id})"
 														class="btn btn-primary">Nộp</button>
 													<button type="button"
-														th:id="${'button2'}+${recruitment.id}"
+														id="button2${recruitment.id}"
 														style="display: none"
-														th:onclick="'apply(' +${recruitment.id}+ ')'"
+														onclick="apply(${recruitment.id})'"
 														class="btn btn-primary">Nộp</button>
 												</div>
 											</div>
-										</form> --%>
+										</form>
 
 
 									</div>
@@ -354,17 +351,20 @@
 		function save(id) {
 			var name = "#idRe" + id;
 			var idRe = $(name).val();
+			var userIdInput = "#userLoginId";
+			var userId = $(userIdInput).val();
 			var formData = new FormData();
 			formData.append('idRe', idRe);
+			formData.append('userLoginId', userId);
 			$.ajax({
 				type : 'POST',
-				url : '/save-job/save/',
+				url : '${contextPath}/save-job/save/',
 				contentType : false,
 				processData : false,
 				data : formData,
 				success : function(data) {
 					console.log(data);
-					if (data == "false") {
+					if (data.message == 'error') {
 						swal({
 							title : 'Bạn cần phải đăng nhập!',
 							/* text: 'Redirecting...', */
@@ -373,7 +373,7 @@
 							buttons : true,
 							type : 'error'
 						})
-					} else if (data == "true") {
+					} else if (data.message == 'success') {
 						swal({
 							title : 'Lưu thành công!',
 							/* text: 'Redirecting...', */
@@ -421,17 +421,21 @@
 
 		function apply(id) {
 			var name = "#idRe" + id;
+			var userIdInput = "#userLoginId";
+			var userId = $(userIdInput).val();
 			var nameModal = "#exampleModal" + id;
 			var nameFile = "#fileUpload" + id;
 			var nameText = "#text" + id;
 			var idRe = $(name).val();
 			var textvalue = $(nameText).val();
 			var fileUpload = $(nameFile).get(0);
+			
 			var files = fileUpload.files;
 			var formData = new FormData();
 			formData.append('file', files[0]);
 			formData.append('idRe', idRe);
 			formData.append('text', textvalue);
+			formData.append('userLoginId', userId);
 			if (files[0] == null) {
 				swal({
 					title : 'Bạn cần phải chọn cv!',
@@ -444,15 +448,15 @@
 			} else {
 				$.ajax({
 					type : 'POST',
-					url : '/user/apply-job/',
+					url : '${contextPath}/user/apply-job/',
 					contentType : false,
 					processData : false,
 					data : formData,
 					success : function(data) {
-						if (data == "false") {
+						console.log(data)
+						/* if (data == "false") {
 							swal({
 								title : 'Bạn cần phải đăng nhập!',
-								/* text: 'Redirecting...', */
 								icon : 'error',
 								timer : 3000,
 								buttons : true,
@@ -461,7 +465,6 @@
 						} else if (data == "true") {
 							swal({
 								title : 'Ứng tuyển thành công!',
-								/* text: 'Redirecting...', */
 								icon : 'success',
 								timer : 3000,
 								buttons : true,
@@ -472,7 +475,6 @@
 						} else {
 							swal({
 								title : 'Bạn đã ứng tuyển công việc này!',
-								/* text: 'Redirecting...', */
 								icon : 'error',
 								timer : 3000,
 								buttons : true,
@@ -480,7 +482,7 @@
 							})
 							$(nameModal).modal('hide');
 							$('#fileUpload').val("");
-						}
+						} */
 					},
 					error : function(err) {
 						alert(err);
@@ -491,6 +493,8 @@
 		}
 		function apply1(id) {
 			var name = "#idRe" + id;
+			var userIdInput = "#userLoginId";
+			var userId = $(userIdInput).val();
 			var nameModal = "#exampleModal" + id;
 			var nameFile = "#fileUpload" + id;
 			var nameText = "#text" + id;
@@ -499,39 +503,40 @@
 			var formData = new FormData();
 			formData.append('idRe', idRe);
 			formData.append('text', textvalue);
+			formData.append('userLoginId', userId);
 			$.ajax({
 				type : 'POST',
-				url : '/user/apply-job1/',
+				url : '${contextPath}/user/apply-job1/',
 				contentType : false,
 				processData : false,
 				data : formData,
 				success : function(data) {
-					if (data == "false") {
+					console.log(data);
+					if (data.message == 'error') {
 						swal({
 							title : 'Bạn cần phải đăng nhập!',
-							/* text: 'Redirecting...', */
 							icon : 'error',
-							timer : 3000,
+							timer : 1000,
 							buttons : true,
 							type : 'error'
 						})
-					} else if (data == "true") {
+					} 
+					else if (data.message == 'success') {
 						swal({
 							title : 'Ứng tuyển thành công!',
-							/* text: 'Redirecting...', */
 							icon : 'success',
-							timer : 3000,
+							timer : 1000,
 							buttons : true,
 							type : 'success'
 						})
 						$(nameModal).modal('hide');
 						$('#fileUpload').val("");
-					} else {
+					} 
+					else {
 						swal({
 							title : 'Bạn đã ứng tuyển công việc này!',
-							/* text: 'Redirecting...', */
 							icon : 'error',
-							timer : 3000,
+							timer : 1000,
 							buttons : true,
 							type : 'error'
 						})

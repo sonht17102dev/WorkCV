@@ -107,6 +107,23 @@ CREATE TABLE `applypost` (
   REFERENCES `recruitment` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=1;
 
+CREATE TABLE `save_job` (
+  `recruitment_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  
+  PRIMARY KEY (`recruitment_id`,`user_id`),
+  
+  KEY `FK_SAVEJOB_idx` (`user_id`),
+  
+  CONSTRAINT `FK_USER_SAVEJOB` FOREIGN KEY (`user_id`) 
+  REFERENCES `user` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION,
+  
+  CONSTRAINT `FK_RECRUITMENT_SAVEJOB` FOREIGN KEY (`recruitment_id`) 
+  REFERENCES `recruitment` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- add data samples
@@ -165,3 +182,8 @@ INSERT INTO applypost (created_at, recruitment_id, user_id, name_cv, status, tex
 ('2024-09-16', 1, 1, '1636909614848chotot.pdf', 0, null),
 ('2024-09-16', 1, 3, '1636909614848chotot.pdf', 0, null),
 ('2024-09-19', 2, 5, '1636909614848chotot.pdf', 0, null); 
+
+INSERT INTO save_job (recruitment_id, user_id) VALUES 
+(1, 1),
+(2, 1),
+(2, 3); 
