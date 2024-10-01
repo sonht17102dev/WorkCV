@@ -6,7 +6,7 @@ import com.sonht.springmvc.entity.Company;
 
 public interface CompanyDAO {
 
-	Company getCompany(int userId);
+	Company getCompany(int id);
 
 	void saveCompany(Company company);
 
@@ -15,5 +15,7 @@ public interface CompanyDAO {
 	Long countCompany();
 
 	List<Company> searchByName(String keyword);
+
+	Company getCompanyByUserId(int userId);
 
 }

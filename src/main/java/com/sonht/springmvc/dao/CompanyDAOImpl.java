@@ -18,7 +18,7 @@ public class CompanyDAOImpl implements CompanyDAO {
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public Company getCompany(int userId) {
+	public Company getCompanyByUserId(int userId) {
 		Session currentSession = sessionFactory.getCurrentSession();
 
 		Query<Company> query = currentSession.createQuery("from Company where user_id=:theUserId", Company.class);
@@ -64,6 +64,13 @@ public class CompanyDAOImpl implements CompanyDAO {
 		Query<Company> query = session.createQuery("from Company c where c.nameCompany LIKE :keyword", Company.class);
 		query.setParameter("keyword", "%"+keyword+"%");
 		return query.getResultList();
+	}
+
+	@Override
+	public Company getCompany(int id) {
+		Session session = sessionFactory.getCurrentSession();
+		Company company = session.get(Company.class, id);
+		return company;
 	}
 
 }

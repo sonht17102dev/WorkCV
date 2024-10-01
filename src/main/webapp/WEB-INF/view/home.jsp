@@ -196,7 +196,7 @@
 										<div class="job-post-item-header align-items-center">
 											<span class="subadge">${recruitment.type}</span>
 											<h2 class="mr-3 text-black">
-												<a href="/recruitment/detail/${recruitment.id}">${recruitment.title}</a>
+												<a href="${contextPath}/recruitment/detail/${recruitment.id}">${recruitment.title}</a>
 											</h2>
 										</div>
 										<div class="job-post-item-body d-block d-md-flex">
@@ -212,9 +212,9 @@
 									</div>
 									<input type="hidden" id="idRe${recruitment.id}"
 										value="${recruitment.id}">
-									<c:if test="${sessionScope.userLogin != null}">
+									<c:if test="${userLogin != null}">
 									<div class="one-forth ml-auto d-flex align-items-center mt-4 md-md-0">
-										<c:if test='${sessionScope.userLogin.role.id.equals("recruiter")}'>
+										<c:if test='${userLogin.role.id.equals("recruiter")}'>
 										<div>
 											<a onclick="save(${recruitment.id})'"
 												class="icon text-center d-flex justify-content-center align-items-center icon mr-2">
@@ -222,7 +222,7 @@
 											</a>
 										</div>
 										</c:if>
-										<c:if test='${sessionScope.userLogin.role.id.equals("recruiter")}'>
+										<c:if test='${userLogin.role.id.equals("recruiter")}'>
 										<a data-toggle="modal"
 											data-target="#exampleModal${recruitment.id}"
 											class="btn btn-primary py-2">Apply Job</a>
@@ -328,12 +328,12 @@
 					<c:forEach items="${companiesMap}" var="entry">
 						<div class="sidebar-box">
 							<div class="">
-								<a href="/user/detail-company/${entry.key.id}"
-									class="company-wrap"><img src="${entry.key.logo}"
+								<a href="${contextPath}/detail-company/${entry.key.id}"
+									class="company-wrap"><img src="${contextPath}/resources/assets/images/${entry.key.logo}"
 									class="img-fluid" alt="Colorlib Free Template"></a>
 								<div class="text p-3">
 									<h3>
-										<a href="/user/detail-company/${entry.key.id}">${entry.key.nameCompany}</a>
+										<a href="${contextPath}/detail-company/${entry.key.id}">${entry.key.nameCompany}</a>
 									</h3>
 									<p>
 										<span class="number" style="color: black">${entry.value}</span> 
@@ -348,6 +348,7 @@
 		</div>
 	</section>
 	<script>
+		var isSaved = true;
 		function save(id) {
 			var name = "#idRe" + id;
 			var idRe = $(name).val();
@@ -356,47 +357,77 @@
 			var formData = new FormData();
 			formData.append('idRe', idRe);
 			formData.append('userLoginId', userId);
-			$.ajax({
-				type : 'POST',
-				url : '${contextPath}/save-job/save/',
-				contentType : false,
-				processData : false,
-				data : formData,
-				success : function(data) {
-					console.log(data);
-					if (data.message == 'error') {
-						swal({
-							title : 'Bạn cần phải đăng nhập!',
-							/* text: 'Redirecting...', */
-							icon : 'error',
-							timer : 3000,
-							buttons : true,
-							type : 'error'
-						})
-					} else if (data.message == 'success') {
-						swal({
-							title : 'Lưu thành công!',
-							/* text: 'Redirecting...', */
-							icon : 'success',
-							timer : 3000,
-							buttons : true,
-							type : 'success'
-						})
-					} else {
-						swal({
-							title : 'Bạn đã lưu bài này rồi!',
-							/* text: 'Redirecting...', */
-							icon : 'error',
-							timer : 3000,
-							buttons : true,
-							type : 'error'
-						})
+			if(isSaved) {
+				$.ajax({
+					type : 'POST',
+					url : '${contextPath}/save-job/save/',
+					contentType : false,
+					processData : false,
+					data : formData,
+					success : function(data) {
+						console.log(data);
+						if (data.message == 'error') {
+							swal({
+								title : 'Bạn cần phải đăng nhập!',
+								/* text: 'Redirecting...', */
+								icon : 'error',
+								timer : 3000,
+								buttons : true,
+								type : 'error'
+							})
+						} else if (data.message == 'saveSuccess') {
+							
+							swal({
+								title : 'Lưu thành công!',
+								/* text: 'Redirecting...', */
+								icon : 'success',
+								timer : 3000,
+								buttons : true,
+								type : 'success'
+							})
+						} 
+						
+					},
+					error : function(err) {
+						alert(err);
 					}
-				},
-				error : function(err) {
-					alert(err);
-				}
-			})
+				})
+			} else {
+				$.ajax({
+					type : 'POST',
+					url : '${contextPath}/save-job/unsave/',
+					contentType : false,
+					processData : false,
+					data : formData,
+					success : function(data) {
+						console.log(data);
+						if (data.message == 'error') {
+							swal({
+								title : 'Bạn cần phải đăng nhập!',
+								icon : 'error',
+								timer : 3000,
+								buttons : true,
+								type : 'error'
+							})
+						} else if (data.message == 'unSaveSuccess') {
+							
+							swal({
+								title : 'Bỏ lưu thành công!',
+								icon : 'success',
+								timer : 3000,
+								buttons : true,
+								type : 'success'
+							})
+						} 						
+					},
+					error : function(err) {
+						alert(err);
+					}
+				})
+				
+			}
+			isSaved = !isSaved; // Đảo trạng thái lưu
+			
 		}
 
 		function choosed(id) {
@@ -554,10 +585,6 @@
 
 
 	<%@ include file="/WEB-INF/view/layouts/footer.jsp"%>
-
-
-	<!-- loader -->
-	<!--<div th:replace="public/fragments :: loading" id="ftco-loader" class="show fullscreen"></div>-->
 
 </body>
 

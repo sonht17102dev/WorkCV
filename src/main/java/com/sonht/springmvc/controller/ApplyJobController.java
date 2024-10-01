@@ -13,6 +13,8 @@ import com.sonht.springmvc.service.UserService;
 @Controller
 public class ApplyJobController extends BaseController{
 	
+	
+	
 	public ApplyJobController(CategoryService categoryService, ApplyPostService applyPostService,
 			CompanyService companyService, RecruitmentService recruitmentService, UserService userService,
 			CvService cvService) {

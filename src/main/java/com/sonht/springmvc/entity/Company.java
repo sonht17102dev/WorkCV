@@ -5,7 +5,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -48,9 +47,13 @@ public class Company {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinColumn(name = "recruitment_id")
 	private List<Recruitment> recruitments;
+	
+	@OneToMany(mappedBy = "company", cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
+			CascadeType.REFRESH })
+	private List<FollowCompany> followCompanies;
 	
 	public Company() {
 	}
@@ -64,6 +67,23 @@ public class Company {
 		this.nameCompany = nameCompany;
 		this.phoneNumber = phoneNumber;
 		this.status = status;
+	}
+
+	
+	public List<Recruitment> getRecruitments() {
+		return recruitments;
+	}
+
+	public void setRecruitments(List<Recruitment> recruitments) {
+		this.recruitments = recruitments;
+	}
+
+	public List<FollowCompany> getFollowCompanies() {
+		return followCompanies;
+	}
+
+	public void setFollowCompanies(List<FollowCompany> followCompanies) {
+		this.followCompanies = followCompanies;
 	}
 
 	public int getId() {
@@ -142,7 +162,7 @@ public class Company {
 	public String toString() {
 		return "Company [id=" + id + ", address=" + address + ", description=" + description + ", email=" + email
 				+ ", logo=" + logo + ", nameCompany=" + nameCompany + ", phoneNumber=" + phoneNumber + ", status="
-				+ status + ", user=" + user + "]";
+				+ status + "]";
 	}
 
 }

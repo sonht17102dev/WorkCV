@@ -18,8 +18,8 @@ public class CompanyServiceImpl implements CompanyService {
 	
 	@Override
 	@Transactional
-	public Company getCompany(int userId) {
-		return companyDAO.getCompany(userId);
+	public Company getCompanyByUserId(int userId) {
+		return companyDAO.getCompanyByUserId(userId);
 	}
 
 	@Override
@@ -45,6 +45,12 @@ public class CompanyServiceImpl implements CompanyService {
 	@Transactional
 	public List<Company> searchByName(String keyword) {
 		return companyDAO.searchByName(keyword);
+	}
+
+	@Override
+	@Transactional
+	public Company getCompany(int id) {
+		return companyDAO.getCompany(id);
 	}
 
 }

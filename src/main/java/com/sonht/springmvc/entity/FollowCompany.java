@@ -11,28 +11,30 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "save_job")
-public class SaveJob {
-
+@Table(name = "follow_company")
+public class FollowCompany {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
 	
 	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	@JoinColumn(name = "recruitment_id")
-	private Recruitment recruitment;
+	@JoinColumn(name = "company_id")
+	private Company company;
 
 	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinColumn(name = "user_id")
 	private User user;
-	
-	public SaveJob() {}
 
-	public SaveJob(Recruitment recruitment, User user) {
-		this.recruitment = recruitment;
+	
+	public FollowCompany() {}
+	
+	
+	public FollowCompany(Company company, User user) {
+		this.company = company;
 		this.user = user;
 	}
+
 
 	public int getId() {
 		return id;
@@ -42,13 +44,12 @@ public class SaveJob {
 		this.id = id;
 	}
 
-
-	public Recruitment getRecruitment() {
-		return recruitment;
+	public Company getCompany() {
+		return company;
 	}
 
-	public void setRecruitment(Recruitment recruitment) {
-		this.recruitment = recruitment;
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
 	public User getUser() {

@@ -4,8 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,9 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.sonht.springmvc.dto.RecruitmentDTO;
 import com.sonht.springmvc.entity.ApplyPost;
 import com.sonht.springmvc.entity.Company;
-import com.sonht.springmvc.entity.Cv;
 import com.sonht.springmvc.entity.Recruitment;
-import com.sonht.springmvc.entity.User;
 import com.sonht.springmvc.service.ApplyPostService;
 import com.sonht.springmvc.service.CompanyService;
 import com.sonht.springmvc.service.RecruitmentService;
@@ -103,7 +99,7 @@ public class ManagePostController {
 		LocalDate currentDate = LocalDate.now();
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
 		SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd");
-		Company company = companyService.getCompany(reDTO.getUserId());
+		Company company = companyService.getCompanyByUserId(reDTO.getUserId());
 		Recruitment re = new Recruitment(reDTO.getAddress(), currentDate.format(dateTimeFormatter),
 				reDTO.getDescription(), reDTO.getExperience(), reDTO.getQuantity(), reDTO.getSalary(), "active",
 				reDTO.getTitle(), reDTO.getType(), reDTO.getCategory(), company, sim.format(reDTO.getDeadline()));

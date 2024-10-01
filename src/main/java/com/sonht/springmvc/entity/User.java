@@ -1,18 +1,14 @@
 package com.sonht.springmvc.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -57,10 +53,13 @@ public class User {
 			CascadeType.REFRESH })
 	private List<ApplyPost> applyPosts;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE,
+	@OneToMany(mappedBy = "user", cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
 			CascadeType.REFRESH })
-	@JoinTable(name = "save_job", joinColumns = @JoinColumn(name = "recruitment_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-	private List<Recruitment> recruitments;
+	private List<SaveJob> saveJobs;
+	
+	@OneToMany(mappedBy = "user", cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
+			CascadeType.REFRESH })
+	private List<FollowCompany> followCompanies;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "cv_id")
@@ -96,13 +95,24 @@ public class User {
 		this.image = image;
 		this.phoneNumber = phoneNumber;
 	}
-	// add a convenience method
-	public void addRecruitment(Recruitment recruitment) {
-		if(recruitment == null) 
-			recruitments = new ArrayList<Recruitment>();
-		
-		recruitments.add(recruitment);
+
+	
+	public List<FollowCompany> getFollowCompanies() {
+		return followCompanies;
 	}
+
+	public void setFollowCompanies(List<FollowCompany> followCompanies) {
+		this.followCompanies = followCompanies;
+	}
+
+	public List<SaveJob> getSaveJobs() {
+		return saveJobs;
+	}
+
+	public void setSaveJobs(List<SaveJob> saveJobs) {
+		this.saveJobs = saveJobs;
+	}
+
 	public void setApplyPosts(List<ApplyPost> applyPosts) {
 		this.applyPosts = applyPosts;
 	}
@@ -203,8 +213,8 @@ public class User {
 	public String toString() {
 		return "User [id=" + id + ", address=" + address + ", description=" + description + ", email=" + email
 				+ ", fullName=" + fullName + ", image=" + image + ", password=" + password + ", phoneNumber="
-				+ phoneNumber + ", status=" + status + ", role=" + role + ", applyPosts=" + applyPosts + ", cv=" + cv
-				+ "]";
+				+ phoneNumber + ", status=" + status + "]";
 	}
+
 
 }

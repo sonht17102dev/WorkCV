@@ -107,14 +107,13 @@ CREATE TABLE `applypost` (
   REFERENCES `recruitment` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=1;
 
+DROP TABLE IF EXISTS `save_job`;
 CREATE TABLE `save_job` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `recruitment_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   
-  PRIMARY KEY (`recruitment_id`,`user_id`),
-  
-  KEY `FK_SAVEJOB_idx` (`user_id`),
-  
+  PRIMARY KEY (`id`),
   CONSTRAINT `FK_USER_SAVEJOB` FOREIGN KEY (`user_id`) 
   REFERENCES `user` (`id`) 
   ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -124,6 +123,21 @@ CREATE TABLE `save_job` (
   ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+DROP TABLE IF EXISTS `follow_company`;
+CREATE TABLE `follow_company` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  
+  PRIMARY KEY (`id`),
+  CONSTRAINT `FK_USER_FOLLOW` FOREIGN KEY (`user_id`) 
+  REFERENCES `user` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION,
+  
+  CONSTRAINT `FK_COMPANY_FOLLOW` FOREIGN KEY (`company_id`) 
+  REFERENCES `company` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- add data samples
@@ -184,6 +198,11 @@ INSERT INTO applypost (created_at, recruitment_id, user_id, name_cv, status, tex
 ('2024-09-19', 2, 5, '1636909614848chotot.pdf', 0, null); 
 
 INSERT INTO save_job (recruitment_id, user_id) VALUES 
+(1, 1),
+(2, 1),
+(2, 3); 
+
+INSERT INTO follow_company (company_id, user_id) VALUES 
 (1, 1),
 (2, 1),
 (2, 3); 

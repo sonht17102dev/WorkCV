@@ -21,6 +21,7 @@
         </div>
     </div>
 </div>
+<c:if test='${userLogin == null}'>
 <div class="hero-wrap hero-wrap-2" style="background-image: url('user/assets/images/bg_1.jpg');" data-stellar-background-ratio="0.5" th:if="${session.user.role.id == 2 }">
     <div class="overlay"></div>
     <div class="container">
@@ -32,45 +33,54 @@
         </div>
     </div>
 </div>
-
-<section class="ftco-section bg-light" th:if="${session.user.role.id == 1 }">
+</c:if>
+<c:if test='${userLogin != null && userLogin.role.roleName.equals("user")}'>
+<section class="ftco-section bg-light" >
     <div class="container">
         <div class="row">
             <div class="col-lg-12 pr-lg-5">
-                <div th:if="${saveJobList.totalPages > 0}" class="row">
-                    <th:block th:each="saveJob : ${saveJobList.content}">
+            	<c:if test="${followCompaniesList.size() > 0}">
+                <div class="row">
+                    <c:forEach var="fc" items="${followCompaniesList}">
                         <div class="col-md-12 ">
                             <div class="job-post-item p-4 d-block d-lg-flex align-items-center">
                                 <div class="one-third mb-4 mb-md-0">
                                     <div class="job-post-item-header align-items-center">
 <!--                                        <span class="subadge" th:text="${saveJob.com.type}"></span>-->
-                                        <h2 class="mr-3 text-black" ><a th:text="${saveJob.company.nameCompany}" th:href="${'/user/detail-company/'}+${saveJob.company.id}"></a></h2>
+                                        <h2 class="mr-3 text-black" >
+                                        	<a href="${contextPath}/detail-company/${fc.company.id}">${fc.company.nameCompany}</a>
+                                        </h2>
                                     </div>
                                     <div class="job-post-item-body d-block d-md-flex">
-                                        <div class="mr-3"><span class="icon-layers"></span> <a href="#" th:text="${saveJob.company.email}" ></a></div>
-                                        <div class="mr-3"><span class="icon-my_location"></span> <span th:text="${saveJob.company.address}"></span></div>
-                                        <div style="margin-left: 10"><span class="icon-my_location"></span> <span th:text="${saveJob.company.phoneNumber}"></span></div>
+                                        <div class="mr-3"><span class="icon-layers"></span> <a href="#">${fc.company.email}</a></div>
+                                        <div class="mr-3"><span class="icon-my_location"></span> <span>${fc.company.address}"</span></div>
+                                        <div style="margin-left: 10"><span class="icon-my_location"></span> 
+                                        <span>${fc.company.phoneNumber}</span></div>
                                     </div>
                                 </div>
-                                <input type="hidden" th:id="${'idRe'}+${saveJob.company.id}" th:value="${saveJob.company.id}">
+                                <input type="hidden" id="idRe${fc.company.id}" value="${fc.company.id}">
                                 <div class="one-forth ml-auto d-flex align-items-center mt-4 md-md-0" style="width:370px !important;">
                                     <div>
-                                        <a  th:href="${'/user/delete-follow/'}+${saveJob.id}" class="icon text-center d-flex justify-content-center align-items-center icon mr-2">
+                                        <a href="${contextPath}/user/delete-follow/${fc.id}" 
+                                        class="icon text-center d-flex justify-content-center align-items-center icon mr-2">
                                             <span class="icon-delete"></span>
                                         </a>
                                     </div>
-                                    <a th:href="${'/user/detail-company/'}+${saveJob.company.id}" class="btn btn-primary py-2">Chi tiết</a>
-                                    <a th:href="${'/user/company-post/'}+${saveJob.company.id}" class="btn btn-warning py-2 ml-1">Danh sách bài đăng</a>
+                                    <a href="${contextPath}/detail-company/${fc.company.id}" class="btn btn-primary py-2">Chi tiết</a>
+                                    <a href="${contextPath}/company-post/${fc.company.id}" class="btn btn-warning py-2 ml-1">Danh sách bài đăng</a>
                                 </div>
                             </div>
                         </div><!-- end -->
-                    </th:block>
+                    </c:forEach>
 
                 </div>
-                <div style="text-align: center" th:if="${saveJobList.totalPages < 1}">
-                    <p style="color:red;">Danh sách trống</p>
-                </div>
-                <div class="row mt-5">
+                </c:if>
+                <c:if test="${followCompaniesList.size() < 1}">
+	                <div style="text-align: center">
+	                    <p style="color:red;">Danh sách trống</p>
+	                </div>
+                </c:if>
+                <%-- <div class="row mt-5">
                     <div class="col text-center">
                         <div class="block-27">
                             <ul>
@@ -82,12 +92,13 @@
                             </ul>
                         </div>
                     </div>
-                </div>
+                </div> --%>
             </div>
 
         </div>
     </div>
 </section>
+</c:if>
 <script>
     function save(id){
         var name = "#idRe" +id;
@@ -138,5 +149,6 @@
         )
     }
 </script>
+<%@ include file="/WEB-INF/view/layouts/footer.jsp"%>
 </body>
 </html>

@@ -1,18 +1,14 @@
 package com.sonht.springmvc.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -66,18 +62,11 @@ public class Recruitment {
 	private Company company;
 
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "applypost")
 	private List<ApplyPost> applyPosts;
 	
-	@ManyToMany(fetch = FetchType.LAZY, 
-			cascade = { CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH })
-	@JoinTable(
-			name="save_job",
-			joinColumns = @JoinColumn(name="user_id"),
-			inverseJoinColumns = @JoinColumn(name="recruitment_id")
-			)
-	private List<User> users;
-	
+	@OneToMany(mappedBy = "recruitment", cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
+			CascadeType.REFRESH })
+	private List<SaveJob> saveJobs;
 
 
 	@Column(name = "deadline")
@@ -102,17 +91,20 @@ public class Recruitment {
 		this.company = company;
 		this.deadline = deadline;
 	}
-	// add a convenience method
-	public void addUser(User user) {
-		if(user == null) 
-			users = new ArrayList<User>();
-		
-		users.add(user);
-	}
+	
+
 	public List<ApplyPost> getApplyPosts() {
 		return applyPosts;
 	}
 	
+	public List<SaveJob> getSaveJobs() {
+		return saveJobs;
+	}
+
+	public void setSaveJobs(List<SaveJob> saveJobs) {
+		this.saveJobs = saveJobs;
+	}
+
 	public void setApplyPosts(List<ApplyPost> applyPosts) {
 		this.applyPosts = applyPosts;
 	}
@@ -125,7 +117,7 @@ public class Recruitment {
 		return "Recruitment [id=" + id + ", address=" + address + ", createdAt=" + createdAt + ", description="
 				+ description + ", experience=" + experience + ", quantity=" + quantity + ", ranked=" + ranked
 				+ ", salary=" + salary + ", status=" + status + ", title=" + title + ", type=" + type + ", view=" + view
-				+ ", category=" + category + ", company=" + company + ", deadline=" + deadline + "]";
+				+ ", deadline=" + deadline + "]";
 	}
 
 	public int getId() {

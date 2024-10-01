@@ -50,7 +50,6 @@ public class RecruitmentDAOImpl implements RecruitmentDAO {
 		Recruitment recruitment = currentSession.get(Recruitment.class, Integer.parseInt(id));
 		if(recruitment != null) {
 			currentSession.delete(recruitment);
-			System.out.println("Bài đăng đã được xoá.");
 		}
 	}
 
