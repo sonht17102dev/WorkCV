@@ -14,4 +14,6 @@ public interface FollowCompanyService {
 
 	List<FollowCompany> getListFollowCompaniesByUserId(int userId);
 
+	FollowCompany getFollowCompany(String followCompanyId);
+
 }

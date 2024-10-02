@@ -202,7 +202,7 @@
 										<div class="job-post-item-body d-block d-md-flex">
 											<div class="mr-3">
 												<span class="icon-layers"></span> 
-												<a href="#">${recruitment.company.nameCompany}</a>
+												<a href="${contextPath}/detail-company/${recruitment.company.id}">${recruitment.company.nameCompany}</a>
 											</div>
 											<div>
 												<span class="icon-my_location"></span> 
@@ -214,22 +214,18 @@
 										value="${recruitment.id}">
 									<c:if test="${userLogin != null}">
 									<div class="one-forth ml-auto d-flex align-items-center mt-4 md-md-0">
-										<c:if test='${userLogin.role.id.equals("recruiter")}'>
 										<div>
 											<a onclick="save(${recruitment.id})'"
 												class="icon text-center d-flex justify-content-center align-items-center icon mr-2">
 												<span class="icon-heart"></span>
 											</a>
 										</div>
-										</c:if>
-										<c:if test='${userLogin.role.id.equals("recruiter")}'>
 										<a data-toggle="modal"
 											data-target="#exampleModal${recruitment.id}"
 											class="btn btn-primary py-2">Apply Job</a>
-										</c:if>
 									</div>
 									</c:if>
-									<c:if test='${not session.userLogin}'>
+									<c:if test='${userLogin == null}'>
 									<div class="one-forth ml-auto d-flex align-items-center mt-4 md-md-0">
 										<div>
 											<a onclick="save(${recruitment.id})"

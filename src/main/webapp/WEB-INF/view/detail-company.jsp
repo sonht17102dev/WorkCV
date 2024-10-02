@@ -45,19 +45,18 @@
             <div class="col-lg-4">
                 <div class="row">
                 	<c:if test="${userLogin != null }">
-                	
-                    <div class="col-6">
-                    	<c:if test='${userLogin.role.roleName.equals("user")}'>
-	                        <a onclick="follow()" class="btn btn-block btn-light btn-md">
-	                        <span class="icon-heart-o mr-2 text-danger"></span>Theo dõi</a>
-                        </c:if>
-                    </div>
+	                    <div class="col-6">
+	                    	<c:if test='${userLogin.role.roleName.equals("user")}'>
+		                        <a onclick="follow()" class="btn btn-block btn-light btn-md">
+		                        <span class="icon-heart-o mr-2 text-danger"></span>Theo dõi</a>
+	                        </c:if>
+	                    </div>
                     </c:if>
                     <c:if test="${userLogin == null }">
-                    <div class="col-6">
-                        <a onclick="follow()" class="btn btn-block btn-light btn-md">
-                        <span class="icon-heart-o mr-2 text-danger"></span>Theo dõi</a>
-                    </div>
+	                    <div class="col-6">
+	                        <a onclick="follow()" class="btn btn-block btn-light btn-md">
+	                        <span class="icon-heart-o mr-2 text-danger"></span>Theo dõi</a>
+	                    </div>
                     </c:if>
                     <div class="col-6">
 
@@ -68,8 +67,8 @@
         <div class="row">
             <div class="col-lg-8">
                 <div class="mb-5">
-
-                    <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-align-left mr-3"></span>Mô tả công việc</h3>
+                    <h3 class="h5 d-flex align-items-center mb-4 text-primary">
+                    <span class="icon-align-left mr-3"></span>Mô tả công việc</h3>
                     <p>${company.description}</p>
                 </div>
 
@@ -116,14 +115,14 @@
 	               processData: false,
 	               data: formData,
 	               success: function (data) {
-	               	if (data.message == 'error') {
-	                       swal({
-	                           title: 'Bạn cần phải đăng nhập!',
-	                           icon: 'error',
-	                           timer: 3000,
-	                           buttons: true,
-	                           type: 'error'
-	                       })
+		               if (data.message == 'error') {
+		                       swal({
+		                           title: 'Bạn cần phải đăng nhập!',
+		                           icon: 'error',
+		                           timer: 3000,
+		                           buttons: true,
+		                           type: 'error'
+		                       })
 	                   }else if (data.message == 'saveSuccess') {
 	                       swal({
 	                           title: 'Theo dõi thành công!',

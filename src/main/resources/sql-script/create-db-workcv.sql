@@ -193,9 +193,9 @@ VALUES
 'fulltime', 0, 'JAVA', 2, '2024-09-30');
 
 INSERT INTO applypost (created_at, recruitment_id, user_id, name_cv, status, text) VALUES 
-('2024-09-16', 1, 1, '1636909614848chotot.pdf', 0, null),
-('2024-09-16', 1, 3, '1636909614848chotot.pdf', 0, null),
-('2024-09-19', 2, 5, '1636909614848chotot.pdf', 0, null); 
+('2024-09-16', 1, 1, '1636909614848chotot.pdf', 0, 'Giới thiệu 1'),
+('2024-09-16', 1, 3, '1636909614848chotot.pdf', 0, 'Giới thiệu 2'),
+('2024-09-19', 2, 5, '1636909614848chotot.pdf', 0, 'Giới thiệu 3'); 
 
 INSERT INTO save_job (recruitment_id, user_id) VALUES 
 (1, 1),

@@ -14,4 +14,6 @@ public interface FollowCompanyDAO {
 
 	List<FollowCompany> getListFollowCompaniesByUserId(int userId);
 
+	FollowCompany getFollowCompany(String followCompanyId);
+
 }

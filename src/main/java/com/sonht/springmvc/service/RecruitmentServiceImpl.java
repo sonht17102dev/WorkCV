@@ -84,5 +84,11 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 		return recruitmentDAO.searchByAddress(keyword);
 	}
 
+	@Override
+	@Transactional
+	public List<Recruitment> getRecruitmentsByCompany(String companyId) {
+		return recruitmentDAO.getRecruitmentsByCompany(companyId);
+	}
+
 
 }

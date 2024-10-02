@@ -93,11 +93,11 @@
 	    </div>
 	</section>
 
-
+	
 	<section class="site-section">
 	    <div class="container">
 	    <form:form action="${contextPath}/recruitment/add" method="post" modelAttribute="recruitmentDTO">
-	    	<form:input type="hidden" path="userId" value="${sessionScope.userLogin.id}" />
+	    	<form:input type="hidden" path="userId" value="${userLogin.id}" />
 	    	<form:input type="hidden" path="id" />
 	        <div class="row align-items-center mb-5">
 	            <div class="col-lg-8 mb-4 mb-lg-0">

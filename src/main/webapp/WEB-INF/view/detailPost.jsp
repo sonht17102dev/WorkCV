@@ -56,16 +56,6 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4">
-                <div  class="row">
-                    <div class="col-6">
-                        <a class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Lưu</a>
-                    </div>
-                    <div class="col-6">
-                        <button data-toggle="modal" data-target="#modalApply" class="btn btn-block btn-primary btn-md">Ứng tuyển</button>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="row">
             <div class="col-lg-8">
@@ -145,15 +135,12 @@
 
         <div class="row my-5 justify-content-center">
             <div class="col-md-7 text-center">
-            	<c:if test="${applyPosts != null}">
-                <h2 class="section-title mb-2">Danh sách ứng viên ứng tuyển</h2>
-                </c:if>
-                <c:if test="${applyPosts == null}">
-                <h2 class="section-title mb-2">Những công việc liên quan</h2>
-                </c:if>
+                <h2 class="section-title mb-2">
+                ${userLogin.role.roleName.equals("recruiter") && applyPosts == null ? "Danh sách ứng viên ứng tuyển" : "Những công việc liên quan"}
+                </h2>
             </div>
         </div>
-        <c:if test="${applyPosts != null}">
+        <c:if test='${userLogin.role.roleName.equals("recruiter") && applyPosts != null}'>
         <div class="row">
             <div class="col-lg-12 pr-lg-4">
                 <div class="row">
@@ -191,14 +178,14 @@
                         </div>
                     </c:forEach>
                     </c:if>
-                    <c:if test="${applyPosts.size() == 0}">
+                    <c:if test='${userLogin.role.roleName.equals("recruiter") && applyPosts.size() == 0}'>
                         <p>Chưa có ứng cử viên nào ứng tuyển</p>
 					</c:if>
                 </div>
             </div>
         </div>
         </c:if>
-		<%-- 
+		<c:if test='${userLogin.role.roleName.equals("user")}'>
 		<c:forEach var="recruitment" items="${recruitment_list}">
         <div class="col-md-12 ">
             <div class="job-post-item p-4 d-block d-lg-flex align-items-center">
@@ -226,7 +213,7 @@
             </div>
         </div>
      	</c:forEach> 
-     	--%>
+     	</c:if>
 
     </div>
 </section> 

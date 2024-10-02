@@ -56,5 +56,23 @@ public class ApplyPostServiceImpl implements ApplyPostService {
 		return applyPostDAO.checkUserApplied(recruitmentId, userLoginId, text);
 	}
 
+	@Override
+	@Transactional
+	public List<ApplyPost> getApplyPostsByUserId(int userId) {
+		return applyPostDAO.getApplyPostsByUserId(userId);
+	}
+
+	@Override
+	@Transactional
+	public ApplyPost getApplyPostByRecruitmentIdAndUserId(int recruitmentId, int userId) {
+		return applyPostDAO.getApplyPostByRecruitmentIdAndUserId(recruitmentId, userId);
+	}
+
+	@Override
+	@Transactional
+	public void save(ApplyPost aPost) {
+		applyPostDAO.save(aPost);
+	}
+
 
 }

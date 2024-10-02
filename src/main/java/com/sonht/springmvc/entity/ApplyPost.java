@@ -34,7 +34,7 @@ public class ApplyPost {
 	private String nameCv;
 
 	@Column(name = "status")
-	private String status;
+	private int status;
 
 	@Column(name = "text")
 	private String text;
@@ -82,11 +82,12 @@ public class ApplyPost {
 		this.nameCv = nameCv;
 	}
 
-	public String getStatus() {
+
+	public int getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
 
@@ -98,7 +99,7 @@ public class ApplyPost {
 		this.text = text;
 	}
 
-	public ApplyPost(String createdAt, String nameCv, String status, String text) {
+	public ApplyPost(String createdAt, String nameCv, int status, String text) {
 		this.createdAt = createdAt;
 		this.nameCv = nameCv;
 		this.status = status;

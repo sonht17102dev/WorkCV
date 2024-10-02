@@ -10,7 +10,24 @@
 <body>
 	<%@ include file="/WEB-INF/view/layouts/navHome.jsp"%>
 	<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-<div class="hero-wrap hero-wrap-2" style="background-image: url('user/assets/images/bg_1.jpg');" data-stellar-background-ratio="0.5" th:if="${session.user.role.id == 1 }">
+	
+<c:if test='${ deleteSuccess != null}'>
+	<div class="toast" data-delay="2500"
+		style="position: fixed; top: 100PX; right: 10PX; z-index: 2000; width: 300px">
+		
+		<script>
+			swal({
+				title : 'Xoá công ty đã theo dõi thành công',
+				icon : 'success',
+				timer : 2000,
+				buttons : true,
+				type : 'success'
+			})
+		</script>
+	</div> 
+</c:if>
+<c:if test='${userLogin.role.roleName.equals("user")}'>
+<div class="hero-wrap hero-wrap-2" style="background-image: url('user/assets/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
     <div class="overlay"></div>
     <div class="container">
         <div class="row no-gutters slider-text align-items-end justify-content-start">
@@ -21,6 +38,7 @@
         </div>
     </div>
 </div>
+</c:if>
 <c:if test='${userLogin == null}'>
 <div class="hero-wrap hero-wrap-2" style="background-image: url('user/assets/images/bg_1.jpg');" data-stellar-background-ratio="0.5" th:if="${session.user.role.id == 2 }">
     <div class="overlay"></div>
@@ -46,14 +64,13 @@
                             <div class="job-post-item p-4 d-block d-lg-flex align-items-center">
                                 <div class="one-third mb-4 mb-md-0">
                                     <div class="job-post-item-header align-items-center">
-<!--                                        <span class="subadge" th:text="${saveJob.com.type}"></span>-->
                                         <h2 class="mr-3 text-black" >
                                         	<a href="${contextPath}/detail-company/${fc.company.id}">${fc.company.nameCompany}</a>
                                         </h2>
                                     </div>
                                     <div class="job-post-item-body d-block d-md-flex">
                                         <div class="mr-3"><span class="icon-layers"></span> <a href="#">${fc.company.email}</a></div>
-                                        <div class="mr-3"><span class="icon-my_location"></span> <span>${fc.company.address}"</span></div>
+                                        <div class="mr-3"><span class="icon-my_location"></span> <span>${fc.company.address}</span></div>
                                         <div style="margin-left: 10"><span class="icon-my_location"></span> 
                                         <span>${fc.company.phoneNumber}</span></div>
                                     </div>
@@ -61,7 +78,7 @@
                                 <input type="hidden" id="idRe${fc.company.id}" value="${fc.company.id}">
                                 <div class="one-forth ml-auto d-flex align-items-center mt-4 md-md-0" style="width:370px !important;">
                                     <div>
-                                        <a href="${contextPath}/user/delete-follow/${fc.id}" 
+                                        <a data-toggle="modal" data-target="#deleteModal${fc.company.id}"
                                         class="icon text-center d-flex justify-content-center align-items-center icon mr-2">
                                             <span class="icon-delete"></span>
                                         </a>
@@ -71,6 +88,30 @@
                                 </div>
                             </div>
                         </div><!-- end -->
+                        <!-- Modal delete-->
+                        <div class="modal fade" id="deleteModal${fc.company.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Bạn có chắc chắn muốn xóa ?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Công ty đang theo dõi: <span>${fc.company.nameCompany}</span>
+                                        <form action="${contextPath}/delete-follow/" method="post">
+                                            <input type="hidden" name="id" value="${fc.id}">
+                                            <div class="modal-footer mt-1">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                <button type="submit" class="btn btn-danger">Xóa</button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
                     </c:forEach>
 
                 </div>

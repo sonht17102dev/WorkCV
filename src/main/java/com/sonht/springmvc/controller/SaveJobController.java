@@ -33,7 +33,7 @@ public class SaveJobController extends BaseController {
 		super(categoryService, applyPostService, companyService, recruitmentService, userService, cvService);
 	}
 	
-	@GetMapping("list-save-job")
+	@GetMapping("/user/list-save-job")
 	public String displaySaveJob(Model model, HttpSession session) {
 		listSaveJobs(model, session);
 		

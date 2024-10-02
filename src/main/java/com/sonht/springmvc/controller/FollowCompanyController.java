@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sonht.springmvc.entity.Company;
 import com.sonht.springmvc.entity.FollowCompany;
+import com.sonht.springmvc.entity.Recruitment;
 import com.sonht.springmvc.entity.SaveJob;
 import com.sonht.springmvc.entity.User;
 import com.sonht.springmvc.service.ApplyPostService;
@@ -38,11 +39,9 @@ public class FollowCompanyController extends BaseController {
 		super(categoryService, applyPostService, companyService, recruitmentService, userService, cvService);
 	}
 	
-	@GetMapping("/list-follow-company")
+	@GetMapping("/user/list-follow-company")
 	public String listFollowCompany(HttpSession session, Model model) {
-		User user = (User) session.getAttribute("userLogin");
-		List<FollowCompany> followCompanies = followCompanyService.getListFollowCompaniesByUserId(user.getId());
-		model.addAttribute("followCompaniesList", followCompanies);
+		listFollowCompanies(session, model);
 		return "list-follow-company";
 	}
 	
@@ -51,6 +50,24 @@ public class FollowCompanyController extends BaseController {
 		Company companyFromDB = companyService.getCompany(Integer.parseInt(companyId));
 		model.addAttribute("company", companyFromDB);
 		return "detail-company";
+	}
+	
+	@GetMapping("/company-post/{companyId}")
+	public String listRecruitmentOfCompany(@PathVariable("companyId") String companyId, Model model) {
+		Company companyFromDB = companyService.getCompany(Integer.parseInt(companyId));
+		model.addAttribute("company", companyFromDB);
+		List<Recruitment> recruitments = recruitmentService.getRecruitmentsByCompany(companyId);
+		model.addAttribute("recruitment_list", recruitments);
+		return "managePosts";
+	}
+	
+	@PostMapping("/delete-follow")
+	public String deleteFollow(@RequestParam("id") String followCompanyId, Model model, HttpSession session) {
+		FollowCompany fc = followCompanyService.getFollowCompany(followCompanyId);
+		followCompanyService.delete(fc);
+		model.addAttribute("deleteSuccess", "success");
+		listFollowCompanies(session, model);
+		return "list-follow-company";
 	}
 	
 	@PostMapping("/user/follow-company/")
@@ -86,5 +103,11 @@ public class FollowCompanyController extends BaseController {
 		
 		messages.put("message", "unSaveSuccess");
 		return messages;
+	}
+	
+	private void listFollowCompanies(HttpSession session, Model model) {
+		User user = (User) session.getAttribute("userLogin");
+		List<FollowCompany> followCompanies = followCompanyService.getListFollowCompaniesByUserId(user.getId());
+		model.addAttribute("followCompaniesList", followCompanies);
 	}
 }

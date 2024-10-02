@@ -29,7 +29,7 @@ public class FollowCompanyDAOImpl implements FollowCompanyDAO {
 		Query<FollowCompany> query = currentSession.createQuery(hql, FollowCompany.class);
 		query.setParameter("companyId", companyId);
 		query.setParameter("userId", userId);
-		return query.getSingleResult();
+		return query.getResultList().get(0);
 	}
 
 	@Override
@@ -45,6 +45,13 @@ public class FollowCompanyDAOImpl implements FollowCompanyDAO {
 		Query<FollowCompany> query = currentSession.createQuery(hql, FollowCompany.class);
 		query.setParameter("userId", userId);
 		return query.getResultList();
+	}
+
+	@Override
+	public FollowCompany getFollowCompany(String followCompanyId) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		FollowCompany fc = currentSession.get(FollowCompany.class, Integer.parseInt(followCompanyId));
+		return fc;
 	}
 
 }

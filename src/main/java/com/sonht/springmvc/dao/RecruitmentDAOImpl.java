@@ -93,4 +93,12 @@ public class RecruitmentDAOImpl implements RecruitmentDAO {
 		return query.getResultList();
 	}
 
+	@Override
+	public List<Recruitment> getRecruitmentsByCompany(String companyId) {
+		Session session = sessionFactory.getCurrentSession();
+		Query<Recruitment> query = session.createQuery("from Recruitment  where company_id=:companyId", Recruitment.class);
+		query.setParameter("companyId", Integer.parseInt(companyId));
+		return query.getResultList();
+	}
+
 }

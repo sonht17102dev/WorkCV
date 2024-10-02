@@ -26,4 +26,6 @@ public interface RecruitmentService {
 
 	public List<Recruitment> searchByAddress(String keyword);
 
+	public List<Recruitment> getRecruitmentsByCompany(String companyId);
+
 }

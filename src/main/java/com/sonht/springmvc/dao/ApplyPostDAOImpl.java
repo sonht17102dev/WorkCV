@@ -78,5 +78,32 @@ public class ApplyPostDAOImpl implements ApplyPostDAO {
 		return true;
 	}
 
+	@Override
+	public List<ApplyPost> getApplyPostsByUserId(int userId) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		Query<ApplyPost> query = currentSession.createQuery("From ApplyPost where user_id=:userId", ApplyPost.class);
+		query.setParameter("userId", userId);
+		return query.getResultList();
+	}
+
+	@Override
+	public ApplyPost getApplyPostByRecruitmentIdAndUserId(int recruitmentId, int userId) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		String hql = "from ApplyPost where recruitment_id=:theReId and user_id=:theUserId";
+		Query query = currentSession.createQuery(hql);
+		query.setParameter("theReId", recruitmentId);
+		query.setParameter("theUserId", userId);
+		if(query.getResultList().isEmpty()) {
+			return null;
+		}
+		return (ApplyPost) query.getResultList().get(0);
+	}
+
+	@Override
+	public void save(ApplyPost aPost) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		currentSession.saveOrUpdate(aPost);
+	}
+
 
 }

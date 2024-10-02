@@ -12,8 +12,8 @@
 <body>
 	<%@ include file="/WEB-INF/view/layouts/navHome.jsp"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-<!-- Modal deleteCV -->
 
+<c:if test='${userLogin.role.roleName.equals("recruiter")}'>
 <div class="hero-wrap hero-wrap-2" style="background-image: url('${contextPath}/resources/assets/images/bg_1.jpg');" 
 data-stellar-background-ratio="0.5" >
     <div class="overlay"></div>
@@ -26,7 +26,21 @@ data-stellar-background-ratio="0.5" >
         </div>
     </div>
 </div>
+</c:if>
+<c:if test='${userLogin.role.roleName.equals("user")}'>
+<div class="hero-wrap hero-wrap-2" style="background-image: url('user/assets/images/bg_1.jpg');" data-stellar-background-ratio="0.5" >
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text align-items-end justify-content-start">
+            <div class="col-md-12 text-center mb-5">
+                <p class="breadcrumbs mb-0"><span class="mr-3"><a href="/">Trang chủ <i class="ion-ios-arrow-forward"></i></a></span>Công việc <span></span></p>
+                <h1 class="mb-3 bread">Danh sách công việc của công ty : <strong>${company.nameCompany}</strong></h1>
+            </div>
+        </div>
+    </div>
+</div>
 
+</c:if>
 <c:if test='${mgs_delete_success != null }'>
 <div class="toast" data-delay="2500" style="position:fixed; top: 100PX; left: 10PX;z-index: 2000;width: 300px">
     <script>
@@ -46,7 +60,7 @@ data-stellar-background-ratio="0.5" >
         <div class="row">
             <div class="col-lg-12 pr-lg-4">
                 <div class="row">
-                    
+                    <c:if test='${userLogin.role.roleName.equals("recruiter")}'>
                         <div class="row form-group" >
                             <label for="company-website-tw d-block">Danh sách bài tuyển dụng </label> <br>
                             <div class="col-md-12">
@@ -54,8 +68,8 @@ data-stellar-background-ratio="0.5" >
                                 <a href="${contextPath}/recruitment/post?action=add" class="btn px-4 btn-primary text-white">Đăng tuyển</a>
                             </div>
                         </div>
-
-               			<c:forEach var="recruitment" items="${recruitment_list}">
+					</c:if>
+               		<c:forEach var="recruitment" items="${recruitment_list}">
                         <div class="col-md-12 ">
                             <div class="job-post-item p-4 d-block d-lg-flex align-items-center">
                                 <div class="one-third mb-4 mb-md-0">
@@ -73,24 +87,28 @@ data-stellar-background-ratio="0.5" >
                                         <div><span class="icon-my_location"></span> <span>${recruitment.address}</span></div>
                                     </div>
                                 </div>
-
+								
                                 <div class="one-forth ml-auto d-flex align-items-center mt-4 md-md-0" style="width: 330px !important;">
-                                    <div>
-                                        <a href="#" class="icon text-center d-flex justify-content-center align-items-center icon mr-2">
-                                            <span class="icon-heart"></span>
-                                        </a>
-                                    </div>
-                                    <a href="${contextPath}/recruitment/detail/${recruitment.id}"  
-                                    class="btn btn-primary py-2 ml-2">Xem chi tiết</a>
-                                    <c:url var="urlUpdate" value="/recruitment/post">
-	                            		<c:param name="action" value="update"/>
-	                            		<c:param name="id" value="${recruitment.id}" />
-	                            		<c:param name="userId" value="${sessionScope.userLogin.id}" />
-	                            	</c:url>
-                                    <a href="${urlUpdate}"  class="btn btn-warning py-2 ml-2">Cập nhật</a>
-                                    <button class="btn btn-danger py-2 ml-2" 
-                                    data-toggle="modal" data-target="#modalDelete${recruitment.id}">Xóa</button>
-
+                                    
+                                    <c:if test='${userLogin.role.roleName.equals("recruiter")}'>
+	                                    <a href="${contextPath}/recruitment/detail/${recruitment.id}"  
+	                                    class="btn btn-primary py-2 ml-2">Xem chi tiết</a>
+	                                    <c:url var="urlUpdate" value="/recruitment/post">
+		                            		<c:param name="action" value="update"/>
+		                            		<c:param name="id" value="${recruitment.id}" />
+		                            		<c:param name="userId" value="${sessionScope.userLogin.id}" />
+		                            	</c:url>
+	                                    <a href="${urlUpdate}"  class="btn btn-warning py-2 ml-2">Cập nhật</a>
+	                                    <button class="btn btn-danger py-2 ml-2" 
+	                                    data-toggle="modal" data-target="#modalDelete${recruitment.id}">Xóa</button>
+									</c:if>
+                                    <c:if test='${userLogin.role.roleName.equals("user")}'>
+                                    	<a href="${contextPath}/recruitment/detail/${recruitment.id}"  
+	                                    class="btn btn-primary py-2 mr-2">Xem chi tiết</a>
+	                                    <a data-toggle="modal"
+											data-target="#exampleModal${recruitment.id}"
+											class="btn btn-primary py-2 ml-2">Apply Job</a>
+									</c:if>				
                                 </div>
                             </div>
                         </div><!-- end -->
@@ -152,7 +170,6 @@ data-stellar-background-ratio="0.5" >
         </div>
     </div>
 </section>
-
 	<%@ include file="/WEB-INF/view/layouts/footer.jsp"%>
 </body>
 </html>

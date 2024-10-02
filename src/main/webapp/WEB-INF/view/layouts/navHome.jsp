@@ -45,15 +45,18 @@
 					</li>
 				</c:if>
 				<c:if test='${userLogin.role.roleName.equals("user")}'>
-					<li class="'nav-item"><a href="${contextPath}/list-save-job" class="nav-link">Công
+					<li class="nav-item"><a href="${contextPath}/user/list-save-job" class="nav-link">Công
 						việc</a></li>
-					<li class="'nav-item"><a href="${contextPath}/list-follow-company" class="nav-link">Công
+					<li class="nav-item"><a href="${contextPath}/user/list-follow-company" class="nav-link">Công
 						ty</a></li>
 					<li class="nav-item cta cta-colored">
 					<a class="dropdown-toggle nav-link" href="#" role="button"
 						data-toggle="dropdown" aria-expanded="false"> ${userLogin.fullName} </a>
 						<ul class="dropdown-menu bg-light">
 							<li><a href="${contextPath}/user/profile/${userLogin.id}">Hồ Sơ</a></li>
+							<li><a href="${contextPath}/user/list-save-job">Công việc đã lưu</a></li>
+							<li><a href="${contextPath}/user/list-follow-company">Công ty đã lưu</a></li>
+							<li ><a href="${contextPath}/user/get-list-apply" >Công việc đã ứng tuyển</a></li>
 							<c:if test="${userLogin != null}">
 							<li><a href="${contextPath}/logout">Đăng
 									xuất</a></li>

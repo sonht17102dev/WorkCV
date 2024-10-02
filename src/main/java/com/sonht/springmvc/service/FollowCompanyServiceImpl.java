@@ -40,4 +40,10 @@ public class FollowCompanyServiceImpl implements FollowCompanyService {
 		return followCompanyDAO.getListFollowCompaniesByUserId(userId);
 	}
 
+	@Override
+	@Transactional
+	public FollowCompany getFollowCompany(String followCompanyId) {
+		return followCompanyDAO.getFollowCompany(followCompanyId);
+	}
+
 }
