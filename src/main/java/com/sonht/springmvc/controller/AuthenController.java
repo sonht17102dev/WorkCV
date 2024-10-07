@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sonht.springmvc.dto.UserDTO;
 import com.sonht.springmvc.dto.UserLoginDTO;
@@ -48,7 +49,7 @@ public class AuthenController {
     }
 	@PostMapping("/login")
 	public String loginPost(@Valid @ModelAttribute("userLoginDTO") UserLoginDTO userLoginDTO, BindingResult result, Model model,
-			HttpServletRequest request) {
+			HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		User user = authService.getUserByEmail(userLoginDTO.getEmailLogin());
 		// nếu email không tồn tại
 		if(user == null) {
@@ -79,7 +80,12 @@ public class AuthenController {
 		HttpSession session  = request.getSession();
 		session.setAttribute("userLogin", user); // Đặt đối tượng vào session
 //		session.setMaxInactiveInterval(15*60);  // phiên 15 phút
-		return "redirect:/";
+		if(user.getRole().getRoleName().equals("user")) {
+			redirectAttributes.addFlashAttribute("msg_userLogin_success", "success");
+			return "redirect:/";
+		}
+		redirectAttributes.addFlashAttribute("msg_userLogin_success", "success");
+		return "redirect:/user/profile/"+user.getId();
 		
 	}
 
@@ -110,7 +116,7 @@ public class AuthenController {
 		// Khởi tạo đối tượng Role và User
 		Role role = new Role(userDTO.getRoleName());
 		User user = new User(userDTO.getEmailSignUp(), userDTO.getFullName(), userDTO.getPasswordSignup(), "active", role);
-		
+		user.setIsVerified(0);
 		// Lưu vào cơ sở dữ liệu
 		authService.saveUser(user);
 		model.addAttribute("msg_register_success", "success");

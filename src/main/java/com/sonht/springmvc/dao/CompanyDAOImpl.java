@@ -73,4 +73,21 @@ public class CompanyDAOImpl implements CompanyDAO {
 		return company;
 	}
 
+	@Override
+	public List<Company> findPaginated(int page, int size) {
+		Session session = sessionFactory.getCurrentSession();
+		Query<Company> query = session.createQuery("FROM Company", Company.class);
+        query.setFirstResult((page - 1) * size);
+        query.setMaxResults(size);
+        return query.getResultList();
+	}
+
+
+	@Override
+	public long count() {
+		Session session = sessionFactory.getCurrentSession();
+        Query<Long> query = session.createQuery("SELECT COUNT(*) FROM Company", Long.class);
+        return query.getSingleResult();
+	}
+
 }

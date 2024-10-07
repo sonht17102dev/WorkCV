@@ -16,8 +16,6 @@ CREATE TABLE `role` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
-
-
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -31,9 +29,10 @@ CREATE TABLE `user` (
   `status` varchar(20) DEFAULT NULL,
   `role_id` int(11) DEFAULT NULL,
   `cv_id` int(11) DEFAULT NULL,
+  `is_verified` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `FK_ROLE` FOREIGN KEY (`role_id`) 
-  REFERENCES `role` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  REFERENCES `role` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION 
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `cv`;
@@ -62,6 +61,7 @@ CREATE TABLE `company` (
   `phone_number` varchar(255) DEFAULT NULL,
   `status` varchar(20) DEFAULT NULL,  
   `user_id` int(11) DEFAULT NULL,
+
   PRIMARY KEY (`id`),
   CONSTRAINT `FK_USER` FOREIGN KEY (`user_id`) 
   REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -144,12 +144,12 @@ SET FOREIGN_KEY_CHECKS = 1;
 INSERT INTO role (role_name) VALUES ('user'),('recruiter');
 
 -- add data samples
-INSERT INTO user (address, description, email, full_name, image, password, phone_number, status, role_id, cv_id) VALUES
-('Thành phố HCM', 'mô tả 1', 'test@gmail.com', 'Hương Phạm', 'person_1.jpg', 'Zxc!1234','1234567890', 'active', 1, 1),
-('Thành phố Hà Nội', 'mô tả 2', 'test1@gmail.com', 'FPT Software', 'person_2.jpg', 'Zxc!1234','1234567890', 'active', 2, 2),
-('Thành phố Đà Nẵng', 'mô tả 3', 'test2@gmail.com', 'Nam Nguyễn', 'person_3.jpg', 'Zxc!1234','1234567890', 'active', 1, 3),
-('Thành phố Hà Nội', 'mô tả 4', 'test3@gmail.com', 'Viettel digital', 'person_3.jpg', 'Zxc!1234','1234567890', 'active', 2, 4),
-('Thành phố HCM', 'mô tả 5', 'test4@gmail.com', 'Minh Nguyễn', 'person_4.jpg', 'Zxc!1234','1234567890', 'active', 1, 5);
+INSERT INTO user (address, description, email, full_name, image, password, phone_number, status, role_id, cv_id, is_verified) VALUES
+('Thành phố HCM', 'mô tả 1', 'test@gmail.com', 'Hương Phạm', 'person_1.jpg', 'Zxc!1234','1234567890', 'active', 1, 1, 1),
+('Thành phố Hà Nội', 'mô tả 2', 'test1@gmail.com', 'FPT Software', 'person_2.jpg', 'Zxc!1234','1234567890', 'active', 2, 2, 1),
+('Thành phố Đà Nẵng', 'mô tả 3', 'test2@gmail.com', 'Nam Nguyễn', 'person_3.jpg', 'Zxc!1234','1234567890', 'active', 1, 3, 1),
+('Thành phố Hà Nội', 'mô tả 4', 'test3@gmail.com', 'Viettel digital', 'person_3.jpg', 'Zxc!1234','1234567890', 'active', 2, 4, 1),
+('Thành phố HCM', 'mô tả 5', 'test4@gmail.com', 'Minh Nguyễn', 'person_4.jpg', 'Zxc!1234','1234567890', 'active', 1, 5, 1);
 
 INSERT INTO cv (file_name) VALUES 
 ('1636909614848chotot.pdf'),

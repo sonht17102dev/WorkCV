@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,17 @@ public class BaseController {
 		this.userService = userService;
 		this.cvService = cvService;
 	}
-	
+	protected void listRecruitment(HttpServletRequest request, int page, int size) {
+		List<Recruitment> recruitments = recruitmentService.findPaginated(page, size);
+		int totalPages = recruitmentService.getTotalPages(size);
+		long totalItems = recruitmentService.count();
+
+		request.setAttribute("recruitment_list", recruitments);
+		request.setAttribute("currentPage", page);
+		request.setAttribute("totalPages", totalPages);
+		request.setAttribute("totalItems", totalItems);
+		request.setAttribute("pageSize", size);
+	}
 	
 	protected void homeData(Model model) {
 		Long numberCompany = companyService.countCompany();

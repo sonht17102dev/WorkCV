@@ -47,6 +47,9 @@ public class SaveJobDAOImpl implements SaveJobDAO {
 		Query<SaveJob> query = currentSession.createQuery(hql, SaveJob.class);
 		query.setParameter("userId", userId);
 		query.setParameter("recruitmentId", recruitmentId);
+		if (query.getResultList().isEmpty()) {
+			return null;
+		}
 		return query.getResultList().get(0);
 	}
 

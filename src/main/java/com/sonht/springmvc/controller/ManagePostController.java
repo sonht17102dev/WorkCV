@@ -19,27 +19,28 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sonht.springmvc.dto.RecruitmentDTO;
 import com.sonht.springmvc.entity.ApplyPost;
 import com.sonht.springmvc.entity.Company;
 import com.sonht.springmvc.entity.Recruitment;
 import com.sonht.springmvc.service.ApplyPostService;
+import com.sonht.springmvc.service.CategoryService;
 import com.sonht.springmvc.service.CompanyService;
+import com.sonht.springmvc.service.CvService;
 import com.sonht.springmvc.service.RecruitmentService;
+import com.sonht.springmvc.service.UserService;
 
 @Controller
 @RequestMapping("/recruitment")
-public class ManagePostController {
+public class ManagePostController extends BaseController{
 
-	@Autowired
-	RecruitmentService recruitmentService;
-
-	@Autowired
-	CompanyService companyService;
-	
-	@Autowired
-	ApplyPostService applyPostService;
+	public ManagePostController(CategoryService categoryService, ApplyPostService applyPostService,
+			CompanyService companyService, RecruitmentService recruitmentService, UserService userService,
+			CvService cvService) {
+		super(categoryService, applyPostService, companyService, recruitmentService, userService, cvService);
+	}
 
 	@GetMapping("/list-post")
 	public String listPosts(HttpServletRequest request, @RequestParam(defaultValue = "1") int page,
@@ -75,13 +76,7 @@ public class ManagePostController {
 	@GetMapping("/detail/{id}")
 	public String detailPost(@PathVariable("id") String id, Model model) {
 		loadDetail(id, model);
-		return "detailPost";
-	}
-	
-	@GetMapping("/approve/{id}")
-	public String approve(@PathVariable("id") String id, Model model) {
-		applyPostService.approveCV(id);
-		loadDetail(id, model);
+		model.addAttribute("recruitmentId", id);
 		return "detailPost";
 	}
 
@@ -95,7 +90,6 @@ public class ManagePostController {
 			model.addAttribute("msg_error", "Đăng bài thất bại");
 			return "post";
 		}
-//		System.out.println(reDTO);
 		LocalDate currentDate = LocalDate.now();
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
 		SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd");
@@ -122,17 +116,7 @@ public class ManagePostController {
 		
 	}
 	
-	private void listRecruitment(HttpServletRequest request, int page, int size) {
-		List<Recruitment> recruitments = recruitmentService.findPaginated(page, size);
-		int totalPages = recruitmentService.getTotalPages(size);
-		long totalItems = recruitmentService.count();
-
-		request.setAttribute("recruitment_list", recruitments);
-		request.setAttribute("currentPage", page);
-		request.setAttribute("totalPages", totalPages);
-		request.setAttribute("totalItems", totalItems);
-		request.setAttribute("pageSize", size);
-	}
+	
 	
 	@PostMapping("/delete")
 	public String deleteRecruitment(@RequestParam("id") String id, HttpServletRequest request) {

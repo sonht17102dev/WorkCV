@@ -18,4 +18,8 @@ public interface CompanyDAO {
 
 	Company getCompanyByUserId(int userId);
 
+	List<Company> findPaginated(int page, int size);
+
+	long count();
+
 }

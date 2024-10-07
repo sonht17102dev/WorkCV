@@ -49,10 +49,12 @@
             <div class="col-lg-4">
                 <div class="row">
                     <div class="col-6">
-                        <a class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Lưu</a>
+                        <a class="btn btn-block btn-light btn-md" onclick="save(${recruitment.id})">
+                        <span class="icon-heart-o mr-2 text-danger"></span>Lưu</a>
                     </div>
                     <div class="col-6">
-                        <a data-toggle="modal" class="btn btn-block btn-primary btn-md">Ứng tuyển</a>
+                        <a data-toggle="modal" data-target="#exampleModal${recruitment.id}" 
+                        class="btn btn-block btn-primary btn-md">Ứng tuyển</a>
                     </div>
                 </div>
             </div>
@@ -95,49 +97,94 @@
         </div>
     </div>
 </section>
+<input type="hidden" id="idRe${recruitment.id}" value="${recruitment.id}">
 <!-- Modal -->
-<div class="modal fade" tabindex="-1" role="dialog" id="modalApply" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ứng tuyển: <span></span></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="post" action="/user/apply-job">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-12">
-                            <label for="fileUpload"
-                                   class="col-form-label">Chọn cv:</label>
-                            <input type="file" class="form-control"
-                                   name="file"   required>
-                            <label for="fileUpload"
-                                   class="col-form-label">Giới thiệu:</label>
-                            <textarea rows="10" cols="3" class="form-control" > </textarea>
-                        </div>
+<div class="modal fade"
+	id="exampleModal${recruitment.id}" tabindex="-1"
+	role="dialog" aria-labelledby="exampleModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">
+					Ứng tuyển: <span>${recruitment.title}</span>
+				</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form method="post" action="/user/apply-job">
+				<input type="hidden" id="userLoginId" value="${userLogin.id}"/>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-12">
+							<select id="choose${recruitment.id}"
+								onchange="choosed(${recruitment.id})"
+								class="form-control" aria-label="Default select example">
+								<option selected>Chọn phương thức nộp</option>
+								<option value="1">Dùng cv đã cập nhật</option>
+								<option value="2">Nộp cv mới</option>
+							</select>
+						</div>
+						<div id="loai1${recruitment.id}"
+							style="display: none" class="col-12">
+							<label for="fileUpload" class="col-form-label">Giới
+								thiệu:</label>
+							<textarea rows="10" cols="3" class="form-control"
+								id="text${recruitment.id}"></textarea>
+						</div>
+						<div id="loai2${recruitment.id}"
+							style="display: none" class="col-12">
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                        <button type="button"  class="btn btn-primary">Nộp</button>
-                    </div>
-                </div>
-            </form>
+							<label for="fileUpload" class="col-form-label">Chọn
+								cv:</label> 
+							<input type="file" class="form-control"
+								id="fileUpload${recruitment.id}" name="file"
+								required> 
+							<p class="text-error" id="errorFile"></p>
+							<label for="fileUpload"
+								class="col-form-label">Giới thiệu:</label>
+							<p class="text-error" id="errorText"></p>
+							<textarea rows="10" cols="3" class="form-control"
+								id="text${recruitment.id}"></textarea>
+						</div>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Đóng</button>
+						<button type="button"
+							id="button1${recruitment.id}"
+							style="display: none"
+							onclick="apply1(${recruitment.id})"
+							class="btn btn-primary">Nộp</button>
+						<button type="button"
+							id="button2${recruitment.id}"
+							style="display: none"
+							onclick="apply(${recruitment.id})"
+							class="btn btn-primary">Nộp</button>
+					</div>
+				</div>
+			</form>
 
 
-        </div>
-    </div>
+		</div>
+	</div>
 </div>
 <section class="site-section" id="next">
     <div class="container">
 
         <div class="row my-5 justify-content-center">
             <div class="col-md-7 text-center">
-                <h2 class="section-title mb-2">
-                ${userLogin.role.roleName.equals("recruiter") && applyPosts == null ? "Danh sách ứng viên ứng tuyển" : "Những công việc liên quan"}
-                </h2>
+            	<c:if test='${userLogin.role.roleName.equals("recruiter")}'>
+                <a href="${contextPath}/recruitment/get-list-apply?id=${recruitmentId}">
+                <h2 class="section-title mb-2">Danh sách ứng viên ứng tuyển </h2>
+                </a>
+                </c:if>
+            	<c:if test='${userLogin.role.roleName.equals("user")}'>
+                <h2 class="section-title mb-2">Những công việc liên quan</h2>
+                </c:if>
             </div>
         </div>
         <c:if test='${userLogin.role.roleName.equals("recruiter") && applyPosts != null}'>
@@ -165,7 +212,8 @@
                                       	</c:if>
                                         <c:if test="${applyPost.status == 0}">
                                         <p style="margin-left: 10px">
-                                        	<a class="btn btn-outline-primary" href="${contextPath}/recruitment/approve/${applyPost.id}" >Duyệt</a>
+                                        	<a class="btn btn-outline-primary" 
+                                        	href="${contextPath}/recruitment/approve?id=${applyPost.id}&recruitmentId=${applyPost.recruitment.id}" >Duyệt</a>
                                         </p>
                                         </c:if>
                                         <c:if test="${applyPost.status == 1}">
@@ -206,7 +254,7 @@
                 </div>
 
                 <div class="one-forth ml-auto d-flex align-items-center mt-4 md-md-0" style="width: 330px !important;">
-                    <a href="${contextPath}/recruitment/detail/${recruitment.id}"  
+                    <a data-toggle="modal" data-target="#exampleModal${recruitment.id}" 
                     class="btn btn-primary py-2 ml-2">Apply Job</a>
 
                 </div>
@@ -217,6 +265,251 @@
 
     </div>
 </section> 
+<script>
+
+	var isSaved = true;
+	function save(id) {
+		var name = "#idRe" + id;
+		var idRe = $(name).val();
+		var userIdInput = "#userLoginId";
+		var userId = $(userIdInput).val();
+		var formData = new FormData();
+		formData.append('idRe', idRe);
+		formData.append('userLoginId', userId);
+		if (isSaved) {
+			$.ajax({
+				type: 'POST',
+				url: '${contextPath}/save-job/save/',
+				contentType: false,
+				processData: false,
+				data: formData,
+				success: function(data) {
+					console.log(data);
+					if (data.message == 'error') {
+						swal({
+							title: 'Bạn cần phải đăng nhập!',
+							icon: 'error',
+							timer: 3000,
+							buttons: true,
+							type: 'error'
+						})
+					} else if (data.message == 'saveSuccess') {
+
+						swal({
+							title: 'Lưu thành công!',
+							icon: 'success',
+							timer: 3000,
+							buttons: true,
+							type: 'success'
+						})
+					} else if (data.message == "errorSaveDuplicated") {
+						swal({
+							title: 'Bạn đã lưu công việc này rồi!',
+							icon: 'error',
+							timer: 3000,
+							buttons: true,
+							type: 'error'
+						})
+					}
+
+				},
+				error: function(err) {
+					alert(err);
+				}
+			})
+		} else {
+			$.ajax({
+				type: 'POST',
+				url: '${contextPath}/save-job/unsave/',
+				contentType: false,
+				processData: false,
+				data: formData,
+				success: function(data) {
+					console.log(data);
+					if (data.message == 'error') {
+						swal({
+							title: 'Bạn cần phải đăng nhập!',
+							icon: 'error',
+							timer: 3000,
+							buttons: true,
+							type: 'error'
+						})
+					} else if (data.message == 'unSaveSuccess') {
+
+						swal({
+							title: 'Bỏ lưu thành công!',
+							icon: 'success',
+							timer: 3000,
+							buttons: true,
+							type: 'success'
+						})
+					}
+				},
+				error: function(err) {
+					alert(err);
+				}
+			})
+
+		}
+		isSaved = !isSaved; // Đảo trạng thái lưu
+
+	}
+
+	function choosed(id) {
+		var name = '#choose' + id;
+		var name1 = 'loai1' + id;
+		var name2 = 'loai2' + id;
+		var button1 = 'button1' + id;
+		var button2 = 'button2' + id;
+		var giaitri = $(name).val();
+		if (giaitri == 1) {
+			document.getElementById(name1).style.display = 'block'
+			document.getElementById(name2).style.display = 'none'
+			document.getElementById(button1).style.display = 'block'
+			document.getElementById(button2).style.display = 'none'
+		} else {
+			document.getElementById(name2).style.display = 'block'
+			document.getElementById(name1).style.display = 'none'
+			document.getElementById(button2).style.display = 'block'
+			document.getElementById(button1).style.display = 'none'
+		}
+	}
+
+	function apply(id) {
+		var name = "#idRe" + id;
+		var userIdInput = "#userLoginId";
+		var userId = $(userIdInput).val();
+		var nameModal = "#exampleModal" + id;
+		var nameFile = "#fileUpload" + id;
+		var nameText = "#text" + id;
+		var idRe = $(name).val();
+		var textvalue = $(nameText).val();
+		var fileUpload = $(nameFile).get(0);
+		var files = fileUpload.files;
+		var formData = new FormData();
+		formData.append('file', files[0]);
+		formData.append('idRe', idRe);
+		formData.append('text', textvalue);
+		formData.append('userLoginId', userId);
+		console.log(textvalue);
+		if (files[0] == null) {
+			swal({
+				title: 'Bạn cần phải chọn cv!',
+				icon: 'error',
+				timer: 3000,
+				buttons: true,
+				type: 'error'
+			})
+		} else {
+			$.ajax({
+				type: 'POST',
+				url: '${contextPath}/user/apply-job/',
+				contentType: false,
+				processData: false,
+				data: formData,
+				success: function(data) {
+					console.log(data)
+					if (data.message == 'errorNotLogin') {
+						swal({
+							title: 'Bạn cần phải đăng nhập!',
+							icon: 'error',
+							timer: 3000,
+							buttons: true,
+							type: 'error'
+						})
+					}
+					else if (data.message == "success") {
+						swal({
+							title: 'Ứng tuyển thành công!',
+							icon: 'success',
+							timer: 3000,
+							buttons: true,
+							type: 'success'
+						})
+						$(nameModal).modal('hide');
+						$('#fileUpload').val("");
+					}
+					else {
+						swal({
+							title: 'Bạn đã ứng tuyển công việc này!',
+							icon: 'error',
+							timer: 3000,
+							buttons: true,
+							type: 'error'
+						})
+						$(nameModal).modal('hide');
+						$('#fileUpload').val("");
+					}
+				},
+				error: function(err) {
+					alert(err);
+				}
+			})
+		}
+
+	}
+	function apply1(id) {
+		var name = "#idRe" + id;
+		var userIdInput = "#userLoginId";
+		var userId = $(userIdInput).val();
+		var nameModal = "#exampleModal" + id;
+		var nameFile = "#fileUpload" + id;
+		var nameText = "#text" + id;
+		var idRe = $(name).val();
+		var textvalue = $(nameText).val();
+		var formData = new FormData();
+		formData.append('idRe', idRe);
+		formData.append('text', textvalue);
+		formData.append('userLoginId', userId);
+		$.ajax({
+			type: 'POST',
+			url: '${contextPath}/user/apply-job1/',
+			contentType: false,
+			processData: false,
+			data: formData,
+			success: function(data) {
+				console.log(data);
+				if (data.message == 'errorNotLogin') {
+					swal({
+						title: 'Bạn cần phải đăng nhập!',
+						icon: 'error',
+						timer: 1000,
+						buttons: true,
+						type: 'error'
+					})
+				}
+				else if (data.message == 'success') {
+					swal({
+						title: 'Ứng tuyển thành công!',
+						icon: 'success',
+						timer: 1000,
+						buttons: true,
+						type: 'success'
+					})
+					$(nameModal).modal('hide');
+					$('#fileUpload').val("");
+				}
+				else {
+					swal({
+						title: 'Bạn đã ứng tuyển công việc này!',
+						icon: 'error',
+						timer: 1000,
+						buttons: true,
+						type: 'error'
+					})
+					$(nameModal).modal('hide');
+					$('#fileUpload').val("");
+				}
+			},
+			error: function(err) {
+				alert(err);
+			}
+		})
+
+	}		
+	</script>
+
+
 <%@ include file="/WEB-INF/view/layouts/footer.jsp"%>
 </body>
 </html>

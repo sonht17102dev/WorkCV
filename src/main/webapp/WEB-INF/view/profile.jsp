@@ -12,6 +12,22 @@
 <body>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 	<%@ include file="/WEB-INF/view/layouts/navHome.jsp"%>
+<c:if test='${ msg_userLogin_success != null}'>
+	<div class="toast" data-delay="2500"
+		style="position: fixed; top: 100PX; right: 10PX; z-index: 2000; width: 300px">
+
+		<script>
+			swal({
+				title : 'Đăng nhập thành công',
+				text : 'Hãy cập nhật thông tin công ty',
+				icon : 'success',
+				timer : 1000,
+				buttons : true,
+				type : 'success'
+			})
+		</script>
+	</div>
+</c:if>
 <c:if test='${ msg_update_recruiter_success != null}'>
 	<div class="toast" data-delay="2500"
 		style="position: fixed; top: 100PX; right: 10PX; z-index: 2000; width: 300px">
@@ -91,6 +107,21 @@
 		</script>
 	</div>
 </c:if>
+<c:if test='${ confirm_success != null}'>
+	<div class="toast" data-delay="2500"
+		style="position: fixed; top: 100PX; right: 10PX; z-index: 2000; width: 300px">
+
+		<script>
+			swal({
+				title : 'Xác thực tài khoản thành công',
+				icon : 'success',
+				timer : 1000,
+				buttons : true,
+				type : 'success'
+			})
+		</script>
+	</div>
+</c:if>
 
 <c:if test='${ msg_update_user_error != null}'>
 	<div class="toast" data-delay="2500"
@@ -136,16 +167,17 @@
 </div>
 <!-- HOME -->
 
-<c:if test='${userLogin.status.equals("active") && userLogin.role.roleName.equals("recruiter")}'>
+<c:if test='${userLogin.status.equals("active") && userLogin.role.roleName.equals("recruiter") && userLogin.isVerified == 0}'>
 	<div class="container-fluid" style="text-align: center">
 	    <p style="font-size: 20px;font-weight: bold;color: #aaa;margin-top: 10px">Xác thực email đăng nhập</p>
-	    <div style="width: 600px;height: 400px;border-radius: 5px;
+	    <div id="confirmEmail" class='${confirm_await != null ? "d-none" : ""}' style="width: 600px;height: 400px;border-radius: 5px;
 	    box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 10px;margin: 20px auto;padding: 15px">
 	        <p style="line-height: 35px;font-size: 16px">Xin chào, <span>${userLogin.fullName}</span> và làm theo hướng dẫn trong email.
 	            Trường hợp không nhận được email, bạn vui lòng bấm nút Nhận email xác thực dưới đây.</p>
 	        <div class="row form-group">
-	            <form action="/user/confirm-account" method="post" class="col-md-12">
+	            <form action="${contextPath}/user/confirm-account" method="post" class="col-md-12">
 	                <input type="hidden" value="${userLogin.email}" name="email" class="btn px-4 btn-primary text-white">
+	                <input type="hidden" value="${userLogin.id}" name="idUser" class="btn px-4 btn-primary text-white">
 	                <input type="submit" value="Nhận email xác thực" class="btn px-4 btn-primary text-white">
 	            </form>
 	        </div>
@@ -153,7 +185,8 @@
 	        - Điện thoại:<span style="color:#5f80ec">(024) 6680 5588</span><br>
 	        - Email: <a href="#" style="color:#5f80ec"> hotro@workcv.vn</a>
 	    </div>
-	    <div th:if="${comfirm_await}" style="width: 600px;height: 400px;border-radius: 5px;
+	    
+	    <div id="confirmed" class='${confirm_await != null ? "" : "d-none"} ' style="width: 600px;height: 400px;border-radius: 5px;
 	    box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 10px;margin: 20px auto;padding: 15px">
 	        <p style="line-height: 35px;font-size: 16px">Xin chào, <span>${userLogin.fullName}</span> .Bạn đã gửi yêu cầu xác thực thành công,
 	            vui lòng kiểm tra mail để xác thực.Cảm ơn bạn!!!
@@ -164,6 +197,7 @@
 	    </div>
 	</div>
 </c:if>
+
  <c:if test='${userLogin.status.equals("active") && userLogin.role.roleName.equals("user")}'>
 <section class="site-section" style="margin-top: 10px">
     <div class="container">
@@ -236,8 +270,8 @@
 </section>
 </c:if>
 
-<c:if test='${userLogin.status.equals("active") && userLogin.role.roleName.equals("recruiter")}'>
-<section class="site-section" style="margin-top: 10px">
+<c:if test='${userLogin.status.equals("active") && userLogin.role.roleName.equals("recruiter") && userLogin.isVerified == 1}'>
+<section class="site-section" style="margin-top: 10px" id="recruiterForm">
     <div class="container">
         <div class="row">
             <%@ include file="/WEB-INF/view/forms/updateRecruiter.jsp"%>
@@ -255,6 +289,20 @@
     .catch(error => {
         console.error(error);
     });
+	
+/* 	var divConfirm = document.getElementById("confirmEmail");
+	var divConfirmed = document.getElementById("confirmed");
+	var recruiterForm = document.getElementById("recruiterForm");
+	if('${userLogin.isVerified}') {
+		divConfirm.classList.add("d-none");
+		recruiterForm.classList.add("d-none");
+		divConfirmed.classList.remove("d-none");
+	} else {
+		divConfirm.classList.remove("d-none");
+		recruiterForm.classList.remove("d-none");
+		divConfirmed.classList.add("d-none");
+	} */
+	
 	
 	function handlerDeleteButton(idCv) {
 		 $.ajax({

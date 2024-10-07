@@ -53,4 +53,23 @@ public class CompanyServiceImpl implements CompanyService {
 		return companyDAO.getCompany(id);
 	}
 
+	@Override
+	@Transactional
+	public List<Company> findPaginated(int page, int size) {
+		return companyDAO.findPaginated(page, size);
+	}
+
+	@Override
+	@Transactional
+	public int getTotalPages(int pageSize) {
+		long totalItems = count();
+        return (int) Math.ceil((double) totalItems / pageSize);
+	}
+
+	@Override
+	@Transactional
+	public long count() {
+		return companyDAO.count();
+	}
+
 }

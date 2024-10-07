@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -64,7 +65,10 @@ public class User {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "cv_id")
 	private Cv cv;
-
+	
+	@Column(name = "is_verified")
+	private int isVerified = 0;
+	
 	public User() {
 	}
 
@@ -95,8 +99,15 @@ public class User {
 		this.image = image;
 		this.phoneNumber = phoneNumber;
 	}
-
 	
+	public int getIsVerified() {
+		return isVerified;
+	}
+
+	public void setIsVerified(int isVerified) {
+		this.isVerified = isVerified;
+	}
+
 	public List<FollowCompany> getFollowCompanies() {
 		return followCompanies;
 	}

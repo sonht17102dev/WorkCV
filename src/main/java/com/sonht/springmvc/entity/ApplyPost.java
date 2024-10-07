@@ -112,4 +112,5 @@ public class ApplyPost {
 				+ ", nameCv=" + nameCv + ", status=" + status + ", text=" + text + "]";
 	}
 
+
 }

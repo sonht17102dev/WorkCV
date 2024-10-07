@@ -14,4 +14,5 @@ public interface SaveJobService {
 
 	SaveJob findSaveJobByUserIdAndRecruitmentId(int userId, int recruitmentId);
 
+
 }

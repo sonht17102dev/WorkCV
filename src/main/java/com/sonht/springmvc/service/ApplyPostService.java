@@ -24,4 +24,5 @@ public interface ApplyPostService {
 
 	void save(ApplyPost aPost);
 
+
 }

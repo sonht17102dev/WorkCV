@@ -17,4 +17,10 @@ public interface CompanyService {
 	List<Company> searchByName(String keyword);
 
 	Company getCompanyByUserId(int userId);
+
+	List<Company> findPaginated(int page, int size);
+
+	int getTotalPages(int size);
+
+	long count();
 }
