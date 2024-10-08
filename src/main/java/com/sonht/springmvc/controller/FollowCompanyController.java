@@ -45,12 +45,7 @@ public class FollowCompanyController extends BaseController {
 		return "list-follow-company";
 	}
 	
-	@GetMapping("/detail-company/{companyId}")
-	public String detailCompany(@PathVariable("companyId") String companyId, Model model) {
-		Company companyFromDB = companyService.getCompany(Integer.parseInt(companyId));
-		model.addAttribute("company", companyFromDB);
-		return "detail-company";
-	}
+
 	
 	@GetMapping("/company-post/{companyId}")
 	public String listRecruitmentOfCompany(@PathVariable("companyId") String companyId, Model model) {

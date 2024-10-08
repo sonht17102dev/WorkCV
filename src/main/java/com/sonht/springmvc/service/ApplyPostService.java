@@ -24,5 +24,7 @@ public interface ApplyPostService {
 
 	void save(ApplyPost aPost);
 
+	void deleteApplyJob(int applyJobId);
+
 
 }

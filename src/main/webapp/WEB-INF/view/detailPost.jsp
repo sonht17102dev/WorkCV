@@ -13,12 +13,12 @@
 	<%@ include file="/WEB-INF/view/layouts/navHome.jsp"%>
 	<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
     
-<div class="hero-wrap hero-wrap-2" style="background-image: url('/resources/assets/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+<div class="hero-wrap hero-wrap-2" style="background-image: url('${contextPath}/resources/assets/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
     <div class="overlay"></div>
     <div class="container">
         <div class="row no-gutters slider-text align-items-end justify-content-start">
             <div class="col-md-12 text-center mb-5">
-                <p class="breadcrumbs mb-0"><span class="mr-3"><a href="index.html">Trang chủ <i class="ion-ios-arrow-forward"></i></a></span>Chi tiết <span></span></p>
+                <p class="breadcrumbs mb-0"><span class="mr-3"><a href="${contextPath}/">Trang chủ <i class="ion-ios-arrow-forward"></i></a></span>Chi tiết <span></span></p>
                 <h1 class="mb-3 bread">Chi tiết công việc</h1>
             </div>
         </div>
@@ -178,12 +178,12 @@
         <div class="row my-5 justify-content-center">
             <div class="col-md-7 text-center">
             	<c:if test='${userLogin.role.roleName.equals("recruiter")}'>
-                <a href="${contextPath}/recruitment/get-list-apply?id=${recruitmentId}">
-                <h2 class="section-title mb-2">Danh sách ứng viên ứng tuyển </h2>
+                <a href="${contextPath}/recruitment/get-list-apply/${recruitmentId}">
+                	<h2 class="section-title mb-2">Danh sách ứng viên ứng tuyển </h2>
                 </a>
                 </c:if>
             	<c:if test='${userLogin.role.roleName.equals("user")}'>
-                <h2 class="section-title mb-2">Những công việc liên quan</h2>
+                	<h2 class="section-title mb-2">Những công việc liên quan</h2>
                 </c:if>
             </div>
         </div>

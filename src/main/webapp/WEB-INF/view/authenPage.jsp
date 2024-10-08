@@ -184,8 +184,8 @@
 								</div>
 							</div>
 
-							<div class="row form-group">
-								<div class="col-md-12">
+							<div class="row form-group justify-content-between">
+								<div class="col-md-6">
 									<input type="submit" value="Đăng nhập"
 										class="btn px-4 btn-primary text-white">
 								</div>

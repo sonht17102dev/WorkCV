@@ -25,16 +25,6 @@ public class RecruiterDTO {
 	@NotEmpty(message = "Hãy chọn mô tả bản thân")
 	private String description;
 	
-	@NotEmpty(message="Hãy chọn hình ảnh tải lên")
-	private String image;
-
-	public String getImage() {
-		return image;
-	}
-
-	public void setImage(String image) {
-		this.image = image;
-	}
 
 	public String getEmail() {
 		return email;

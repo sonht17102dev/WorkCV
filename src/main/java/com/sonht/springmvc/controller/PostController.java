@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sonht.springmvc.dto.RecruitmentDTO;
 import com.sonht.springmvc.entity.ApplyPost;
+import com.sonht.springmvc.entity.Category;
 import com.sonht.springmvc.entity.Company;
 import com.sonht.springmvc.entity.Recruitment;
 import com.sonht.springmvc.service.ApplyPostService;
@@ -34,9 +35,9 @@ import com.sonht.springmvc.service.UserService;
 
 @Controller
 @RequestMapping("/recruitment")
-public class ManagePostController extends BaseController{
+public class PostController extends BaseController{
 
-	public ManagePostController(CategoryService categoryService, ApplyPostService applyPostService,
+	public PostController(CategoryService categoryService, ApplyPostService applyPostService,
 			CompanyService companyService, RecruitmentService recruitmentService, UserService userService,
 			CvService cvService) {
 		super(categoryService, applyPostService, companyService, recruitmentService, userService, cvService);
@@ -55,7 +56,8 @@ public class ManagePostController extends BaseController{
 	@GetMapping("/post")
 	public String addPostGet(@RequestParam("action") String action, Model model,
 			HttpServletRequest request) throws NumberFormatException, ParseException {
-		model.addAttribute("categories", new String[] { "Java", "NodeJS", ".NET", "React" });
+		List<Category> categories = categoryService.getAlls();
+		model.addAttribute("categories", categories);
 		model.addAttribute("types", new String[] { "fulltime", "parttime", "freelancer" });
 		
 		if (action != null && action.equals("add")) {

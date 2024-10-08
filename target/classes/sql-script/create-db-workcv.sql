@@ -161,21 +161,7 @@ INSERT INTO cv (file_name) VALUES
 INSERT INTO company (address, description, email, logo, name_company, phone_number, status, user_id) VALUES
 ('Đà Nẵng', 'Tham gia dự án Logistic ứng viên nhận SIGNING BONUS iphone 12 pro-max', 'tuyendungnhansu@gmail.com',
 'FPT_logo.jpg', 'FPT Software', '0394073712', 'active', 2),
-('Hà Nội', 'Tổng Công ty Dịch vụ số Viettel (Viettel Digital) – Tổng Công ty thành viên thứ 8 của Tập đoàn Công 
-nghiệp – Viễn thông Quân đội. Sự ra đời của Tổng Công ty nhằm tạo nền móng cho quá trình chuyển dịch số, thực hiện 
-chiến lược phát triển của Viettel trong giai đoạn mới – giai đoạn Kiến tạo xã hội số. Từ nay tới 2025, Tổng Công ty
- đặt hai mục tiêu trọng tâm lớn: Có 26 triệu khách hàng trên hệ sinh thái; phát triển 600.000 điểm chấp nhận thanh
- toán & cung cấp dịch vụ.
-
-Sứ mệnh của chúng tôi
-- Phổ cập dịch vụ số từ thành thị tới nông thôn
-- Bùng nổ thanh toán số với phương thức Mobile Banking
-- Là nền tảng, hạ tầng tài chính số - thương mại số
-- Góp phần giữ gìn nền kinh tế nước nhà
-
-Sản phẩm của chúng tôi
-- Lĩnh vực tài chính số: Hệ sinh thái và ngân hàng số ViettelPay, ViettelPay Pro, Bank Plus, Mobile Money
-- Lĩnh vực dịch vụ dữ liệu: Triển khai dịch vụ Digital marketing, Quảng cáo số dựa trên dữ liệu điện tử, Big data', 
+('Hà Nội', 'Tổng Công ty Dịch vụ số Viettel (Viettel Digital) – Tổng Công ty thành viên thứ 8 của Tập đoàn Công nghiệp – Viễn thông Quân đội.', 
 'tuyendungvietteldigital@gmail.com',
 'Viettel_logo.png', 
 'Viettel Digital', '0989888888', 'active', 4);

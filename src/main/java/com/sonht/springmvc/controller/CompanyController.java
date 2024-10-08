@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sonht.springmvc.entity.Company;
@@ -41,4 +42,10 @@ public class CompanyController extends BaseController {
 		return "list-company";
 	}
 	
+	@GetMapping("/user/detail-company/{companyId}")
+	public String detailCompany(@PathVariable("companyId") String companyId, Model model) {
+		Company companyFromDB = companyService.getCompany(Integer.parseInt(companyId));
+		model.addAttribute("company", companyFromDB);
+		return "detail-company";
+	}
 }

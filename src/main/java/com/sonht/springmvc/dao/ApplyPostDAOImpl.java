@@ -105,5 +105,12 @@ public class ApplyPostDAOImpl implements ApplyPostDAO {
 		currentSession.saveOrUpdate(aPost);
 	}
 
+	@Override
+	public void deleteApplyJob(int applyJobId) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		ApplyPost applyPost = currentSession.get(ApplyPost.class, applyJobId);
+		currentSession.delete(applyPost);
+	}
+
 
 }

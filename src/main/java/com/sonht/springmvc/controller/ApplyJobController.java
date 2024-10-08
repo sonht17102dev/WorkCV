@@ -1,8 +1,6 @@
 package com.sonht.springmvc.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -13,14 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sonht.springmvc.entity.ApplyPost;
-import com.sonht.springmvc.entity.Cv;
-import com.sonht.springmvc.entity.Recruitment;
-import com.sonht.springmvc.entity.SaveJob;
 import com.sonht.springmvc.entity.User;
 import com.sonht.springmvc.service.ApplyPostService;
 import com.sonht.springmvc.service.CategoryService;
@@ -50,11 +43,11 @@ public class ApplyJobController extends BaseController {
 		return "list_apply_job";
 	}
 
-	@GetMapping("/recruitment/get-list-apply")
-	public String listjobsOfRecruiter(@RequestParam("id") String recruitmentId, Model model) {
+	@GetMapping("/recruitment/get-list-apply/{recruitmentId}")
+	public String listjobsOfRecruiter(@PathVariable("recruitmentId") String recruitmentId, Model model) {
 		List<ApplyPost> applyPosts = applyPostService.getApplyPostsByRecruitmentId(Integer.parseInt(recruitmentId));
 		model.addAttribute("listApplyPosts", applyPosts);
-
+		System.out.println(applyPosts.size());
 		return "list_apply_job";
 	}
 
@@ -63,8 +56,13 @@ public class ApplyJobController extends BaseController {
 			Model model, RedirectAttributes rd) {
 		applyPostService.approveCV(id);
 		rd.addFlashAttribute("message", "success");
-		return "redirect:/recruitment/get-list-apply?id=" + recruitmentId;
+		return "redirect:/recruitment/get-list-apply/" + recruitmentId;
 	}
 
-
+	@PostMapping("/user/delete-apply/") 
+	public String deleteApply(@RequestParam("id") String applyJobId, RedirectAttributes rd) {
+		applyPostService.deleteApplyJob(Integer.parseInt(applyJobId));
+		rd.addFlashAttribute("delete_success", "success");
+		return "redirect:/user/get-list-apply";
+	}
 }

@@ -107,11 +107,10 @@
 	                    </div>
 	                </div>
 	            </div>
-	            <c:if test="${param.action.equals('add')}">
+	            <c:if test='${param.action.equals("add")}'>
 	            <div class="col-lg-4">
 	                <div class="row">
 	                    <div class="col-6">
-	                        <a href="#" class="btn btn-block btn-light btn-md"></a>
 	                    </div>
 	                    <div class="col-6">
 	                        <button type="submit" class="btn btn-block btn-primary btn-md">Đăng</button>
@@ -177,7 +176,7 @@
 	                        <form:select class="form-control" path="category" >
                             	<form:option value="">Chọn danh mục công việc</form:option>
 	                            <c:forEach var="cat" items="${categories}">
-	                                 <form:option value="${cat}">${cat}</form:option>
+	                                 <form:option value="${cat.name}">${cat.name}</form:option>
 	                            </c:forEach>
 	                        </form:select>
 							<form:errors cssClass="text-danger" path="category" />

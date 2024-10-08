@@ -70,7 +70,7 @@ public class BaseController {
 		Integer numberCandidate = applyPosts.size();
 		Long numberRecruitment = recruitmentService.count();
 		List<Category> categories = categoryService.getTop4Categories();
-
+		
 		model.addAttribute("numberCandidate", numberCandidate);
 		model.addAttribute("numberCompany", numberCompany);
 		model.addAttribute("numberRecruitment", numberRecruitment);
@@ -146,7 +146,7 @@ public class BaseController {
 				userService.updateImage(fileName, Integer.parseInt(recruiterId));
 				user.setImage(fileName);
 			} 
-			else if(company != null) {
+			if(company != null) {
 				companyService.updateImage(fileName, Integer.parseInt(recruiterId));
 				company.setLogo(fileName);
 			}

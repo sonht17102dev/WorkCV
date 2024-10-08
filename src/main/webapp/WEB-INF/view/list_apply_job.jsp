@@ -28,6 +28,20 @@
 		</script>
 	</div> 
 	</c:if>
+	<c:if test='${ delete_success != null}'>
+	<div class="toast" data-delay="2500"
+		style="position: fixed; top: 100PX; right: 10PX; z-index: 2000; width: 300px">
+		<script>
+			swal({
+				title : 'Xoá công việc đã ứng tuyển thành công',
+				icon : 'success',
+				timer : 2000,
+				buttons : true,
+				type : 'success'
+			})
+		</script>
+	</div> 
+	</c:if>
 	<div class="hero-wrap hero-wrap-2" style="background-image: url('/resources/assets/images/bg_1.jpg');" data-stellar-background-ratio="0.5" th:if="${session.user.role.id == 1 }">
 	    <div class="overlay"></div>
 	    <div class="container">
@@ -71,11 +85,41 @@
                                     	<p style="color: #1e7e34;font-weight: bold;margin-top: 10px">Đã duyệt</p>
                                     </c:if>
                                     <c:if test="${applyJob.status == 0}">
+	                                    <div>
+	                                        <a data-toggle="modal" data-target="#deleteModal${applyJob.id}"
+	                                        class="icon text-center d-flex justify-content-center align-items-center icon mr-2">
+	                                            <span class="icon-delete"></span>
+	                                        </a>
+	                                    </div>
                                     	<p style="color: red;font-weight: bold;margin-top: 10px">Đợi duyệt</p>
                                     </c:if>
                                 </div>
                             </div>
                         </div><!-- end -->
+                         <!-- Modal delete-->
+                        <div class="modal fade" id="deleteModal${applyJob.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Bạn có chắc chắn muốn xóa ?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Công việc đang ứng tuyển: <span>${applyJob.recruitment.title}</span>
+                                        <form action="${contextPath}/user/delete-apply/" method="post">
+                                            <input type="hidden" name="id" value="${applyJob.id}">
+                                            <div class="modal-footer mt-1">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                <button type="submit" class="btn btn-danger">Xóa</button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
 						</c:forEach>
 	                </div>
 	                </c:if>
@@ -84,25 +128,7 @@
 	                    <p style="color:red;">Danh sách trống</p>
 	                </div>
 	                </c:if>
-	                <%-- <div class="row mt-5">
-	                    <div class="col text-center">
-	                        <div class="block-27">
-	                            <ul>
-	                            	<c:if test="${numberPage>0}">
-	                                	<li><a href="${contextPath}/save-job/get-list?page=${saveJobList.number - 1}">&lt;</a></li>
-	                                </c:if>
-	                                <c:forEach var= "recruitment" items="${recruitmentList}">
-	                                    <li class="${numberPage == state.index  ? 'active' : null }">
-	                                   		<a href="${contextPath}/save-job/get-list?page=${state.index}">${state.index + 1}</a>
-	                                    </li>
-	                                </c:forEach>
-	                                <c:if test="${numberPage<saveJobList.totalPages - 1}">
-	                                	<li><a href="${contextPath}/save-job/get-list?page=${saveJobList.number + 1}">&gt;</a></li>
-	                                </c:if>
-	                            </ul>
-	                        </div>
-	                    </div>
-	                </div> --%>
+	                
 	            </div>
 	
 	        </div>
@@ -115,7 +141,7 @@
         <div class="row">
             <div class="col-lg-12 pr-lg-4">
                 <div class="row">
-                	<c:if test="${listApplyPosts.size() > 1}">
+                	<c:if test="${listApplyPosts.size() > 0}">
                     <c:forEach var="applyPost" items="${listApplyPosts}">
                         <div class="col-md-12" style="box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 10px;margin: 20px auto;">
                             <div class="team d-md-flex p-4 bg-white">
@@ -150,7 +176,7 @@
                         </div>
                     </c:forEach>
                     </c:if>
-                    <c:if test='${userLogin.role.roleName.equals("recruiter") && listApplyPosts.size() < 1}'>
+                    <c:if test='${userLogin.role.roleName.equals("recruiter") && listApplyPosts.size() == 0}'>
                         <p>Chưa có ứng cử viên nào ứng tuyển</p>
 					</c:if>
                 </div>

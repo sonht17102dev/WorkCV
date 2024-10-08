@@ -54,7 +54,7 @@ public class AuthenController {
 		// nếu email không tồn tại
 		if(user == null) {
 			// trả về lỗi trên form và điều hướng về trang login
-			result.rejectValue("emailLogin", "error.userLoginDTO", "Email không tồn tại trong hệ thống");
+			result.rejectValue("emailLogin", "error.userLoginDTO", "Email không tồn tại trong hệ thống! Hãy đăng kí tài khoản mới!");
 			model.addAttribute("msg_login_error", "error");
 			request.setAttribute("action", "login");
 			return "authenPage";
@@ -79,8 +79,9 @@ public class AuthenController {
 		// Cài đặt phiên đăng nhập người dùng
 		HttpSession session  = request.getSession();
 		session.setAttribute("userLogin", user); // Đặt đối tượng vào session
-//		session.setMaxInactiveInterval(15*60);  // phiên 15 phút
+		session.setMaxInactiveInterval(60*60*24);  // phiên 1 ngày
 		if(user.getRole().getRoleName().equals("user")) {
+			user.setIsVerified(1);
 			redirectAttributes.addFlashAttribute("msg_userLogin_success", "success");
 			return "redirect:/";
 		}

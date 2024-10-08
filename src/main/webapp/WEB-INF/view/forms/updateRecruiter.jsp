@@ -34,8 +34,7 @@
 					</div>
 					<div class="form-group">
 						<label for="job-location">Mô tả bản thân</label>
-						<form:textarea path="description" class="form-control" id="editor"
-							rows="5" cols="30" />
+						<form:textarea path="description" class="form-control" id="editor1"/>
 						<form:errors cssClass="text-danger" path="description" />
 
 					</div>

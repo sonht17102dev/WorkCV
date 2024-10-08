@@ -74,5 +74,11 @@ public class ApplyPostServiceImpl implements ApplyPostService {
 		applyPostDAO.save(aPost);
 	}
 
+	@Override
+	@Transactional
+	public void deleteApplyJob(int applyJobId) {
+		applyPostDAO.deleteApplyJob(applyJobId);
+	}
+
 
 }

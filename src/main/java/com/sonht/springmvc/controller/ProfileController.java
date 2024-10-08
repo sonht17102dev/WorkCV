@@ -48,7 +48,7 @@ public class ProfileController extends BaseController {
 		super(categoryService, applyPostService, companyService, recruitmentService, userService, cvService);
 	}
 
-	@ModelAttribute("recruiterDTO")
+	@ModelAttribute("userDTO")
 	public RecruiterDTO recruiterDTO() {
 		return new RecruiterDTO();
 	}
@@ -68,8 +68,8 @@ public class ProfileController extends BaseController {
 		if (id != null) {
 			User user = userService.getUser(Integer.parseInt(id));
 			model.addAttribute("userDTO", user);
-			Company company = companyService.getCompany(Integer.parseInt(id));
-			model.addAttribute("companyInformation", company);
+			Company company = companyService.getCompanyByUserId(Integer.parseInt(id));
+			model.addAttribute("companyDTO", company);
 		}
 	}
 
@@ -102,28 +102,25 @@ public class ProfileController extends BaseController {
 	
 	@PostMapping("/update-profile")
 	public String processFormRecruiter(@Valid @ModelAttribute("userDTO") RecruiterDTO user, BindingResult rs,
-			Model model, @RequestParam("id") int id, HttpServletRequest request) throws UnsupportedEncodingException {
+			Model model, RedirectAttributes redirectAttributes) {
 		if (rs.hasErrors()) {
 			// trả về lỗi trên form và điều hướng về trang profile
-			model.addAttribute("recruiterDTO", user);
+			model.addAttribute("userDTO", user);
 			model.addAttribute("msg_update_user_error", "error");
-			Company company = companyService.getCompany(id);
-			model.addAttribute("companyInformation", company);
+			Company company = companyService.getCompanyByUserId(user.getId());
+			model.addAttribute("companyDTO", company);
 			return "profile";
 		}
-		User userFromDB = userService.getUser(id);
+		User userFromDB = userService.getUser(user.getId());
 		userFromDB.setAddress(user.getAddress());
 		userFromDB.setDescription(user.getDescription());
 		userFromDB.setEmail(user.getEmail());
 		userFromDB.setFullName(user.getFullName());
 		userFromDB.setPhoneNumber(user.getPhoneNumber());
-		userFromDB.setImage(user.getImage());
 		userService.saveUser(userFromDB);
 
-		model.addAttribute("msg_update_user_success", "success");
-		Company company = companyService.getCompany(id);
-		model.addAttribute("companyInformation", company);
-		return "profile";
+		redirectAttributes.addFlashAttribute("msg_update_user_success", "success");
+		return "redirect:/user/profile/" + user.getId();
 	}
 
 	@PostMapping("/upload")
@@ -141,21 +138,24 @@ public class ProfileController extends BaseController {
 
 	@PostMapping("/uploadCV")
 	public String uploadCVUser(@RequestParam("file") MultipartFile file, HttpSession session,
-			@RequestParam("userIdUpload") String userId, @RequestParam("idCv") String idCv, Model model) {
+			@RequestParam("userIdUpload") String userId, @RequestParam("idCv") String idCv, Model model, RedirectAttributes redirectAttributes) {
 		User user = (User) session.getAttribute("userLogin");
 		if (file.isEmpty()) {
 			pushDataProfile(userId, model);
 			model.addAttribute("message_upload_cv", "error");
 			return "profile";
 		}
-		System.out.println(file.getOriginalFilename());
-		Cv cv = cvService.getCv(idCv);
+		Cv cv = null;
+		if(idCv.isEmpty()) {
+			cv = new Cv(file.getOriginalFilename());
+		} else {
+			cv = cvService.getCv(idCv);
+		}
 		cv.setFileName(file.getOriginalFilename());
 		user.setCv(cv);
 		userService.saveUser(user);
-		pushDataProfile(userId, model);
-		model.addAttribute("message_upload_cv", "success");
-		return "profile";
+		redirectAttributes.addFlashAttribute("message_upload_cv", "success");
+		return "redirect:/user/profile/" + user.getId();
 	}
 
 	@PostMapping("/deleteCv")
@@ -164,23 +164,26 @@ public class ProfileController extends BaseController {
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("userLogin");
 		user.setCv(null);
-		cvService.deleteCv(idCv);
+		userService.saveUser(user);
 		Map<String, String> map = new HashMap<String, String>();
 
-		map.put("status", "success");
 		map.put("msg_delete_success", "Xoá CV cá nhân thành công!");
 		return map;
 	}
 
 	@PostMapping("/update-company")
 	public String processFormCompany(@Valid @ModelAttribute("companyDTO") CompanyDTO companyDTO, BindingResult rs,
-			Model model) {
+			Model model, RedirectAttributes redirectAttributes, HttpSession session) {
+		User userSession = (User) session.getAttribute("userLogin");
 		if (rs.hasErrors()) {
 			// trả về lỗi trên form và điều hướng về trang profile
-			model.addAttribute("companyInformation", companyDTO);
-			model.addAttribute("msg_update_company_error", "error");
+			model.addAttribute("userDTO", userSession);
+			model.addAttribute("msg_update_user_error", "error");
+			Company company = companyService.getCompanyByUserId(userSession.getId());
+			model.addAttribute("companyDTO", company);
+			return "profile";
 		}
-		Company company = companyService.getCompany(companyDTO.getUserId());
+		Company company = companyService.getCompanyByUserId(userSession.getId());
 		company.setEmail(companyDTO.getEmail());
 		company.setNameCompany(companyDTO.getNameCompany());
 		company.setAddress(companyDTO.getAddress());
@@ -188,8 +191,8 @@ public class ProfileController extends BaseController {
 		company.setDescription(companyDTO.getDescription());
 
 		companyService.saveCompany(company);
-		model.addAttribute("msg_update_company_success", "success");
-		return "profile";
+		redirectAttributes.addFlashAttribute("msg_update_company_success", "success");
+		return "redirect:/user/profile/" + userSession.getId();
 	}
 
 	@PostMapping("/uploadImgCompany")

@@ -23,4 +23,6 @@ public interface ApplyPostDAO {
 	ApplyPost getApplyPostByRecruitmentIdAndUserId(int recruitmentId, int userId);
 
 	void save(ApplyPost aPost);
+
+	void deleteApplyJob(int applyJobId);
 }

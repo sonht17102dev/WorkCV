@@ -332,12 +332,12 @@
 					<c:forEach items="${companiesMap}" var="entry">
 						<div class="sidebar-box">
 							<div class="">
-								<a href="${contextPath}/detail-company/${entry.key.id}"
+								<a href="${contextPath}/user/detail-company/${entry.key.id}"
 									class="company-wrap"><img src="${contextPath}/resources/assets/images/${entry.key.logo}"
 									class="img-fluid" alt="Colorlib Free Template"></a>
 								<div class="text p-3">
 									<h3>
-										<a href="${contextPath}/detail-company/${entry.key.id}">${entry.key.nameCompany}</a>
+										<a href="${contextPath}/user/detail-company/${entry.key.id}">${entry.key.nameCompany}</a>
 									</h3>
 									<p>
 										<span class="number" style="color: black">${entry.value}</span> 

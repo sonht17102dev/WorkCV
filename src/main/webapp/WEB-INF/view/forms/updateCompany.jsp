@@ -5,24 +5,21 @@
 	<h2 class="mb-4">Thông tin công ty</h2>
 	<div class="form-group">
 		<label for="company-website-tw d-block1">Cập nhật Logo</label> <br>
-		<!-- <label class="btn btn-primary btn-md btn-file">
-                        <input type="file" name="file" id="fileUpload2" >
-                    </label> -->
-		<c:url value="/resources/assets/images/${companyInformation.logo}"
+		<c:url value="/resources/assets/images/${companyDTO.logo}"
 			var="urlCompanyImg" />
 		<form
 			action="${pageContext.request.contextPath}/user/uploadImgCompany"
 			method="post" enctype="multipart/form-data">
-			<label class="btn btn-dark btn-md btn-file"> <input
+			<label class="btn btn-primary btn-md btn-file"> <input
 				type="file" name="file" id="fileUpload2">
 			</label> <input type="hidden" name="recruiterId" value="${userLogin.id}" />
-			<button class="btn btn-primary btn-md btn-file" type="submit">Tải
+			<button class="btn btn-warning btn-md btn-file" type="submit">Tải
 				lên</button>
 		</form>
 		<div id="divLogo">
 			<img id="avatar1" height="100" width="100"
 				style="border-radius: 50px"
-				src="${companyInformation.logo != null ? urlCompanyImg : 
+				src="${companyDTO.logo != null ? urlCompanyImg : 
                         'https://st.quantrimang.com/photos/image/072015/22/avatar.jpg'}">
 		</div>
 	</div>
@@ -30,52 +27,40 @@
 		action="${pageContext.request.contextPath}/user/update-company"
 		modelAttribute="companyDTO" method="post"
 		enctype="multipart/form-data">
-
 		<div class="row mb-5">
 			<div class="col-lg-12">
-				<div class="p-4 p-md-5 border rounded" method="post">
+				<div class="p-4 p-md-5 border rounded">
 					<div class="form-group">
 						<label for="email">Email</label>
-						<form:input type="text" class="form-control" id="email1"
-							path="email"
-							value="${companyInformation.email != null ? companyInformation.email : null }" />
+						<form:input type="text" class="form-control"
+							path="email" />
 						<form:errors cssClass="text-danger" path="email" />
 					</div>
 					<div class="form-group">
 						<label for="job-title">Tên công ty</label>
-						<form:input type="text" class="form-control" path="nameCompany"
-							value="${companyInformation.nameCompany != null ? companyInformation.nameCompany : null }" />
-						<form:input type="hidden" class="form-control" path="userId"
-							value="${userLogin.id != null ? userLogin.id : null}" />
-						<form:input type="hidden" class="form-control" path="id"
-							value="${companyInformation.id !=null ? companyInformation.id : null}" />
+						<form:input type="text" class="form-control" path="nameCompany" />
 						<form:errors cssClass="text-danger" path="nameCompany" />
-
 					</div>
 					<div class="form-group">
 						<label for="job-location">Địa chỉ</label>
-						<form:input type="text" path="address"
-							value="${companyInformation.address != null ? companyInformation.address : null}"
-							class="form-control" />
+						<form:input type="text" path="address" class="form-control" />
 						<form:errors cssClass="text-danger" path="address" />
 					</div>
 					<div class="form-group">
 						<label for="job-location">Số điện thoại công ty</label>
-						<form:input type="text" path="phoneNumber"
-							value="${companyInformation.phoneNumber != null ? companyInformation.phoneNumber : null}"
-							class="form-control" />
+						<form:input type="text" path="phoneNumber" class="form-control" />
 						<form:errors cssClass="text-danger" path="phoneNumber" />
 					</div>
 					<div class="form-group">
 						<label for="job-location">Mô tả công ty</label>
 						<form:textarea path="description" class="form-control"
-							id="editorN" />
+							id="editor2"  />
 						<form:errors cssClass="text-danger" path="description" />
 					</div>
 
-					<c:url value="/resources/assets/images/${companyInformation.logo}"
+					<c:url value="/resources/assets/images/${companyDTO.logo}"
 						var="urlCompanyImg" />
-					<c:if test="${companyInformation.logo != null}">
+					<c:if test="${companyDTO.logo != null}">
 						<div style="margin-left: 0px" id="divImag1">
 							<img id="avatar" height="100" width="100"
 								style="border-radius: 50px; margin-bottom: 15px"
@@ -93,11 +78,3 @@
 		</div>
 	</form:form>
 </div>
-<script>
-    ClassicEditor.create(document.querySelector('#editorN')).then(eidt => {
-        eidt.setData("${companyInformation.description}")
-    })
-    .catch(error => {
-        console.error(error);
-    });
-</script>
