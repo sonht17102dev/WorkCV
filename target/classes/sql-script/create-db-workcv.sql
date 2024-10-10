@@ -47,6 +47,7 @@ CREATE TABLE `category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `number_choose` int(11) DEFAULT NULL,
+  `recruitment_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1;
 
@@ -83,12 +84,14 @@ CREATE TABLE `recruitment` (
   `title` varchar(255) DEFAULT NULL,
   `type` varchar(255) DEFAULT NULL,
   `view` int(11) DEFAULT NULL,
-  `category` varchar(255) DEFAULT NULL,
+  `category_id` int(11) DEFAULT NULL,
   `company_id` int(11) DEFAULT NULL,
   `deadline` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `FK_COMPANY` FOREIGN KEY (`company_id`) 
-  REFERENCES `company` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  REFERENCES `company` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_RECRUITMENT_CATEGORY` FOREIGN KEY (`category_id`) 
+  REFERENCES `category` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION 
 ) ENGINE=InnoDB AUTO_INCREMENT=1;
 
 DROP TABLE IF EXISTS `applypost`;
@@ -171,12 +174,12 @@ INSERT INTO category (name, number_choose) VALUES
 
 INSERT INTO recruitment 
 (`address`, `created_at`, `description`, `experience`, `quantity`, `ranked`, `salary`, 
-`status`, `title`, `type`, `view`, `category`, `company_id`, `deadline`) 
+`status`, `title`, `type`, `view`, `category_id`, `company_id`, `deadline`) 
 VALUES
 ('Đà Nẵng', '2024-09-16', '.NET > 2 năm kinh nghiệm', '2 năm', 12, 1, '12 triệu', 'active', 'Tuyển lập trình viên .NET',
-'fulltime', 0, '.NET', 1, '2024-09-30'),
+'fulltime', 0, 5, 1, '2024-10-30'),
 ('Hà Nội', '2024-09-19', 'JAVA > 5 năm kinh nghiệm', '5 năm', 5, 2, '30 triệu', 'active', 'Tuyển JAVA DEVELOPER 5 năm exp',
-'fulltime', 0, 'JAVA', 2, '2024-09-30');
+'fulltime', 0, 3, 2, '2024-10-30');
 
 INSERT INTO applypost (created_at, recruitment_id, user_id, name_cv, status, text) VALUES 
 ('2024-09-16', 1, 1, '1636909614848chotot.pdf', 0, 'Giới thiệu 1'),

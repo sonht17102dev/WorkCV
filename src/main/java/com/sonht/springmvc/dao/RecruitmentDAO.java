@@ -14,7 +14,7 @@ public interface RecruitmentDAO {
 
 	public void deleteRecruitment(String id);
 
-	public List<Recruitment> findPaginated(int page, int pageSize);
+	public List<Recruitment> findPaginated(int page, int pageSize, int companyId);
 
 	public long count();
 
@@ -25,5 +25,7 @@ public interface RecruitmentDAO {
 	public List<Recruitment> searchByAddress(String keyword);
 
 	public List<Recruitment> getRecruitmentsByCompany(String companyId);
+
+	public List<Recruitment> findPaginated(int page, int size);
 
 }

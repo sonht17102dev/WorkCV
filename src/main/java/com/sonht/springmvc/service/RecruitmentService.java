@@ -14,6 +14,8 @@ public interface RecruitmentService {
 
 	public void deleteRecruitment(String id);
 	
+	public List<Recruitment> findPaginated(int page, int pageSize, int companyId);
+	
 	public List<Recruitment> findPaginated(int page, int pageSize);
 	
 	public long count();
@@ -27,5 +29,6 @@ public interface RecruitmentService {
 	public List<Recruitment> searchByAddress(String keyword);
 
 	public List<Recruitment> getRecruitmentsByCompany(String companyId);
+
 
 }

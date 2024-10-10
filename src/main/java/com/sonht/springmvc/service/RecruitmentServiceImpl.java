@@ -19,42 +19,36 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 	@Override
 	@Transactional
 	public List<Recruitment> getRecruitments() {
-		// TODO Auto-generated method stub
 		return recruitmentDAO.getRecruitments();
 	}
 
 	@Override
 	@Transactional
 	public void saveRecruitment(Recruitment recruitment) {
-		// TODO Auto-generated method stub
 		recruitmentDAO.saveRecruitment(recruitment);
 	}
 
 	@Override
 	@Transactional
 	public Recruitment getRecruitment(int id) {
-		// TODO Auto-generated method stub
 		return recruitmentDAO.getRecruitment(id);
 	}
 
 	@Override
 	@Transactional
 	public void deleteRecruitment(String id) {
-		// TODO Auto-generated method stub
 		recruitmentDAO.deleteRecruitment(id);
 	}
 
 	@Override
 	@Transactional
-	public List<Recruitment> findPaginated(int page, int pageSize) {
-		// TODO Auto-generated method stub
-		return recruitmentDAO.findPaginated(page, pageSize);
+	public List<Recruitment> findPaginated(int page, int pageSize, int companyId) {
+		return recruitmentDAO.findPaginated(page, pageSize, companyId);
 	}
 
 	@Override
 	@Transactional
 	public long count() {
-		// TODO Auto-generated method stub
 		return recruitmentDAO.count();
 	}
 
@@ -89,6 +83,13 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 	public List<Recruitment> getRecruitmentsByCompany(String companyId) {
 		return recruitmentDAO.getRecruitmentsByCompany(companyId);
 	}
+
+	@Override
+	@Transactional
+	public List<Recruitment> findPaginated(int page, int size) {
+		return recruitmentDAO.findPaginated(page, size);
+	}
+
 
 
 }

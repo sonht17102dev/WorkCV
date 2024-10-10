@@ -13,32 +13,32 @@ public class RecruitmentDTO {
 	private int id;
 
 	@NotEmpty(message = "Hãy nhập địa chỉ")
-	private String address; //
+	private String address; 
 
 	@NotEmpty(message = "Hãy nhập mô tả công việc")
-	private String description; //
+	private String description; 
 
 	@NotEmpty(message = "Hãy nhập kinh nghiệm")
-	private String experience; //
+	private String experience; 
 
-	@Min(value = 1, message = "Số người cần tuyển phải lớn hơn 0")
-	private int quantity; //
+	@Min(value = 1, message= "Số người cần tuyển phải lớn hơn 0")
+	private int quantity; 
 
 	@NotEmpty(message = "Hãy nhập lương")
-	private String salary; //
+	private String salary; 
 
 	@NotEmpty(message = "Hãy nhập tiêu đề bài tuyển dụng")
-	private String title; //
+	private String title; 
 
 	@NotEmpty(message = "Hãy chọn loại công việc")
-	private String type; //
+	private String type; 
 
 	@NotEmpty(message = "Hãy chọn công việc")
-	private String category; //
+	private String category; 
 
 	@NotNull(message = "Hãy chọn hạn ứng tuyển")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date deadline; //
+	private Date deadline; 
 
 	public RecruitmentDTO() {
 
@@ -74,11 +74,13 @@ public class RecruitmentDTO {
 		this.deadline = deadline;
 	}
 
-	@Override
-	public String toString() {
-		return "RecruitmentDTO [userId=" + userId + ", id=" + id + ", address=" + address + ", description="
-				+ description + ", experience=" + experience + ", quantity=" + quantity + ", salary=" + salary
-				+ ", title=" + title + ", type=" + type + ", category=" + category + ", deadline=" + deadline + "]";
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public int getId() {
@@ -97,13 +99,6 @@ public class RecruitmentDTO {
 		this.userId = userId;
 	}
 
-	public String getCategory() {
-		return category;
-	}
-
-	public void setCategory(String category) {
-		this.category = category;
-	}
 
 	public String getAddress() {
 		return address;

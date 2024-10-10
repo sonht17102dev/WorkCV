@@ -50,8 +50,14 @@ public class BaseController {
 		this.userService = userService;
 		this.cvService = cvService;
 	}
-	protected void listRecruitment(HttpServletRequest request, int page, int size) {
-		List<Recruitment> recruitments = recruitmentService.findPaginated(page, size);
+	
+	protected void listRecruitment(HttpServletRequest request, int page, int size, int companyId) {
+		List<Recruitment> recruitments = null;
+		if(companyId == 0) {
+			recruitments = recruitmentService.findPaginated(page, size);
+		} else {
+			recruitments = recruitmentService.findPaginated(page, size, companyId);
+		}
 		int totalPages = recruitmentService.getTotalPages(size);
 		long totalItems = recruitmentService.count();
 

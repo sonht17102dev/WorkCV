@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -54,20 +55,21 @@ public class Recruitment {
 	@Column(name = "view")
 	private int view;
 
-	@Column(name = "category")
-	private String category;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "category_id")
+	private Category category;
 
 	@ManyToOne
 	@JoinColumn(name = "company_id")
 	private Company company;
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "recruitment", cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
+			CascadeType.REFRESH })
 	private List<ApplyPost> applyPosts;
-	
+
 	@OneToMany(mappedBy = "recruitment", cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
 			CascadeType.REFRESH })
 	private List<SaveJob> saveJobs;
-
 
 	@Column(name = "deadline")
 	private String deadline;
@@ -76,7 +78,7 @@ public class Recruitment {
 	}
 
 	public Recruitment(String address, String createdAt, String description, String experience, int quantity,
-			String salary, String status, String title, String type, String category, Company company,
+			String salary, String status, String title, String type, Category category, Company company,
 			String deadline) {
 		this.address = address;
 		this.createdAt = createdAt;
@@ -91,12 +93,19 @@ public class Recruitment {
 		this.company = company;
 		this.deadline = deadline;
 	}
-	
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
 
 	public List<ApplyPost> getApplyPosts() {
 		return applyPosts;
 	}
-	
+
 	public List<SaveJob> getSaveJobs() {
 		return saveJobs;
 	}
@@ -108,16 +117,17 @@ public class Recruitment {
 	public void setApplyPosts(List<ApplyPost> applyPosts) {
 		this.applyPosts = applyPosts;
 	}
-	
+
 	public void setRanked(String ranked) {
 		this.ranked = ranked;
 	}
+
 	@Override
 	public String toString() {
 		return "Recruitment [id=" + id + ", address=" + address + ", createdAt=" + createdAt + ", description="
 				+ description + ", experience=" + experience + ", quantity=" + quantity + ", ranked=" + ranked
 				+ ", salary=" + salary + ", status=" + status + ", title=" + title + ", type=" + type + ", view=" + view
-				+ ", deadline=" + deadline + "]";
+				+ ", category=" + category + ", deadline=" + deadline + "]";
 	}
 
 	public int getId() {
@@ -214,14 +224,6 @@ public class Recruitment {
 
 	public void setView(int view) {
 		this.view = view;
-	}
-
-	public String getCategory() {
-		return category;
-	}
-
-	public void setCategory(String category) {
-		this.category = category;
 	}
 
 	public Company getCompany() {

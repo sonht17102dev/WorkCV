@@ -1,6 +1,7 @@
 package com.sonht.springmvc.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,10 +25,9 @@ public class RecruitmentController extends BaseController {
 	
 	@GetMapping("/user/list-post")
 	public String listPosts(HttpServletRequest request, @RequestParam(defaultValue = "1") int page,
-			@RequestParam(defaultValue = "5") int size) {
+			@RequestParam(defaultValue = "5") int size, HttpSession session) {
 		request.removeAttribute("mgs_delete_success");
-		listRecruitment(request, page, size);
-		
-		return "list-recruitment";
+		listRecruitment(request, page, size, 0);
+		return "managePosts";
 	}
 }

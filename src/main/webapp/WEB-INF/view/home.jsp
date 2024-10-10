@@ -224,9 +224,11 @@
 												<span class="icon-heart"></span>
 											</a>
 										</div>
+										<c:if test='${!userLogin.role.roleName.equals("recruiter")}'>
 										<a data-toggle="modal"
 											data-target="#exampleModal${recruitment.id}"
 											class="btn btn-primary py-2">Apply Job</a>
+										</c:if>
 									</div>
 									</c:if>
 									<c:if test='${userLogin == null}'>

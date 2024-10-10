@@ -106,11 +106,6 @@ public class ApplyPost {
 		this.text = text;
 	}
 
-	@Override
-	public String toString() {
-		return "ApplyPost [id=" + id + ", createdAt=" + createdAt + ", recruitment=" + recruitment + ", user=" + user
-				+ ", nameCv=" + nameCv + ", status=" + status + ", text=" + text + "]";
-	}
 
 
 }

@@ -1,10 +1,13 @@
 package com.sonht.springmvc.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -21,6 +24,10 @@ public class Category {
 
 	@Column(name = "number_choose")
 	private int numberChoose;
+	
+	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "recruitment_id")
+	private Recruitment recruitment;
 
 	public Category() {
 	}
@@ -52,6 +59,14 @@ public class Category {
 
 	public void setNumberChoose(int numberChoose) {
 		this.numberChoose = numberChoose;
+	}
+
+	public Recruitment getRecruitment() {
+		return recruitment;
+	}
+
+	public void setRecruitment(Recruitment recruitment) {
+		this.recruitment = recruitment;
 	}
 
 }

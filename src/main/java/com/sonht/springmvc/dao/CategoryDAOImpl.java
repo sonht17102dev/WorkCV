@@ -33,4 +33,12 @@ public class CategoryDAOImpl implements CategoryDAO {
 		return query.getResultList();
 	}
 
+	@Override
+	public Category findByName(String name) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		Query<Category> query = currentSession.createQuery("From Category where name=:theName", Category.class);
+		query.setParameter("theName", name);
+		return query.getResultList().get(0);
+	}
+
 }

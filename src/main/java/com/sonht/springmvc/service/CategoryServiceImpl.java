@@ -19,15 +19,19 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	@Transactional
 	public List<Category> getAlls() {
-		// TODO Auto-generated method stub
 		return categoryDAO.getAlls();
 	}
 
 	@Override
 	@Transactional
 	public List<Category> getTop4Categories() {
-		// TODO Auto-generated method stub
 		return categoryDAO.getTop4Categories();
+	}
+
+	@Override
+	@Transactional
+	public Category findByName(String name) {
+		return categoryDAO.findByName(name);
 	}
 
 }

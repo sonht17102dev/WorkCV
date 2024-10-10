@@ -54,11 +54,21 @@ public class RecruitmentDAOImpl implements RecruitmentDAO {
 	}
 
 	@Override
-	public List<Recruitment> findPaginated(int page, int pageSize) {
+	public List<Recruitment> findPaginated(int page, int pageSize, int companyId) {
 		Session session = sessionFactory.getCurrentSession();
-        Query<Recruitment> query = session.createQuery("FROM Recruitment", Recruitment.class);
+        Query<Recruitment> query = session.createQuery("FROM Recruitment r where r.company.id=:theId", Recruitment.class);
+        query.setParameter("theId", companyId);
         query.setFirstResult((page - 1) * pageSize);
         query.setMaxResults(pageSize);
+        return query.getResultList();
+	}
+	
+	@Override
+	public List<Recruitment> findPaginated(int page, int size) {
+		Session session = sessionFactory.getCurrentSession();
+        Query<Recruitment> query = session.createQuery("FROM Recruitment", Recruitment.class);
+        query.setFirstResult((page - 1) * size);
+        query.setMaxResults(size);
         return query.getResultList();
 	}
 
@@ -72,7 +82,7 @@ public class RecruitmentDAOImpl implements RecruitmentDAO {
 	@Override
 	public List<Recruitment> getRecruitmentsByCategory(String category) {
 		Session session = sessionFactory.getCurrentSession();
-		Query<Recruitment> query = session.createQuery("from Recruitment where category=:theCategory", Recruitment.class);
+		Query<Recruitment> query = session.createQuery("from Recruitment r where r.category.name=:theCategory", Recruitment.class);
 		query.setParameter("theCategory", category);
 		return query.getResultList();
 	}
@@ -100,5 +110,6 @@ public class RecruitmentDAOImpl implements RecruitmentDAO {
 		query.setParameter("companyId", Integer.parseInt(companyId));
 		return query.getResultList();
 	}
+	
 
 }

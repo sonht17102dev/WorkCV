@@ -10,4 +10,6 @@ public interface CategoryService {
 
 	List<Category> getTop4Categories();
 
+	Category findByName(String name);
+
 }

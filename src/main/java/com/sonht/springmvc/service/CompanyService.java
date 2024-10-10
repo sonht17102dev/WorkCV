@@ -23,4 +23,5 @@ public interface CompanyService {
 	int getTotalPages(int size);
 
 	long count();
+
 }

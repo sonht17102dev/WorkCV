@@ -7,9 +7,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sonht.springmvc.dto.RecruitmentDTO;
 import com.sonht.springmvc.entity.ApplyPost;
@@ -45,86 +44,88 @@ public class PostController extends BaseController{
 
 	@GetMapping("/list-post")
 	public String listPosts(HttpServletRequest request, @RequestParam(defaultValue = "1") int page,
-			@RequestParam(defaultValue = "5") int size) {
+			@RequestParam(defaultValue = "5") int size, HttpSession session,
+			@ModelAttribute("recruitment_of_company") Recruitment recruitmentGlobal) {
 		request.removeAttribute("mgs_delete_success");
-		listRecruitment(request, page, size);
+		if(recruitmentGlobal != null)
+			listRecruitment(request, page, size, recruitmentGlobal.getCompany().getId());
 		
 		return "managePosts";
 	}
 	
+	@GetMapping("/detail/{id}")
+	public String detailPost(@PathVariable("id") String id, Model model) {
+		Recruitment recruitment = recruitmentService.getRecruitment(Integer.parseInt(id));
+		List<Recruitment> recruitmentsCategory = recruitmentService.getRecruitmentsByCategory(recruitment.getCategory().getName());
+		List<ApplyPost> applyPostsByRecruitmentId = applyPostService.getApplyPostsByRecruitmentId(Integer.parseInt(id));
+		model.addAttribute("recruitment", recruitment);
+		model.addAttribute("company", recruitment.getCompany());
+		model.addAttribute("recruitment_list", recruitmentsCategory);
+		model.addAttribute("applyPosts", applyPostsByRecruitmentId);
+		model.addAttribute("recruitmentId", id);
+		return "detailPost";
+	}
 	
-	@GetMapping("/post")
-	public String addPostGet(@RequestParam("action") String action, Model model,
-			HttpServletRequest request) throws NumberFormatException, ParseException {
+	@GetMapping("/post/{action}")
+	public String addPostGet(@PathVariable("action") String action, Model model,
+			HttpServletRequest request)  throws NumberFormatException, ParseException {
 		List<Category> categories = categoryService.getAlls();
 		model.addAttribute("categories", categories);
 		model.addAttribute("types", new String[] { "fulltime", "parttime", "freelancer" });
-		
-		if (action != null && action.equals("add")) {
+		if(action.equals("add")) {
 			model.addAttribute("recruitmentDTO", new RecruitmentDTO());
-		} else {
-			
+			model.addAttribute("action", "add");
+		}
+		if(action.equals("update")) {
 			int idd = Integer.parseInt(request.getParameter("id"));
 			Recruitment re = recruitmentService.getRecruitment(idd);
 			SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd");
 			RecruitmentDTO reDTO = new RecruitmentDTO(idd, Integer.parseInt(request.getParameter("userId")), re.getAddress(),
 					re.getDescription(), re.getExperience(), re.getQuantity(), re.getSalary(), re.getTitle(),
-					re.getType(), re.getCategory(), sim.parse(re.getDeadline()));
+					re.getType(), re.getCategory().getName(), sim.parse(re.getDeadline()));
 			
 			model.addAttribute("recruitmentDTO", reDTO);
+			model.addAttribute("action", "update");
 		}
 		return "post";
 	}
-	@GetMapping("/detail/{id}")
-	public String detailPost(@PathVariable("id") String id, Model model) {
-		loadDetail(id, model);
-		model.addAttribute("recruitmentId", id);
-		return "detailPost";
-	}
 
-	@PostMapping("/add")
+	@PostMapping("/post")
 	public String addPost(@Valid @ModelAttribute("recruitmentDTO") RecruitmentDTO reDTO, BindingResult bindingResult,
-			Model model, @RequestParam("id") String id) {
+			Model model, @RequestParam("id") String id, HttpServletRequest request) {
+		String actionParam = request.getParameter("action");
+		List<Category> categories = categoryService.getAlls();
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("recruitmentDTO", reDTO);
-			model.addAttribute("categories", new String[] { "Java", "NodeJS", ".NET", "React" });
+			model.addAttribute("categories", categories);
 			model.addAttribute("types", new String[] { "fulltime", "parttime", "freelancer" });
 			model.addAttribute("msg_error", "Đăng bài thất bại");
+			model.addAttribute("action", actionParam.equals("add") ? "add" : "update");
 			return "post";
 		}
 		LocalDate currentDate = LocalDate.now();
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
 		SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd");
 		Company company = companyService.getCompanyByUserId(reDTO.getUserId());
+		Category category = categoryService.findByName(reDTO.getCategory());
 		Recruitment re = new Recruitment(reDTO.getAddress(), currentDate.format(dateTimeFormatter),
 				reDTO.getDescription(), reDTO.getExperience(), reDTO.getQuantity(), reDTO.getSalary(), "active",
-				reDTO.getTitle(), reDTO.getType(), reDTO.getCategory(), company, sim.format(reDTO.getDeadline()));
+				reDTO.getTitle(), reDTO.getType(), category, company, sim.format(reDTO.getDeadline()));
 		re.setId(Integer.parseInt(id));
 		
 		recruitmentService.saveRecruitment(re);
 		System.out.println(re);
-		model.addAttribute("msg_success", "Đăng bài thành công");
+		model.addAttribute("msg_success", actionParam.equals("add") ? "Đăng bài thành công" : "Cập nhật thành công");
 		return "post";
 	}
 	
-	private void loadDetail(String id, Model model) {
-		Recruitment recruitment = recruitmentService.getRecruitment(Integer.parseInt(id));
-		List<Recruitment> recruitmentsCategory = recruitmentService.getRecruitmentsByCategory(recruitment.getCategory());
-		List<ApplyPost> applyPostsByRecruitmentId = applyPostService.getApplyPostsByRecruitmentId(Integer.parseInt(id));
-		model.addAttribute("recruitment", recruitment);
-		model.addAttribute("company", recruitment.getCompany());
-		model.addAttribute("recruitment_list", recruitmentsCategory);
-		model.addAttribute("applyPosts", applyPostsByRecruitmentId);
-		
-	}
-	
-	
-	
 	@PostMapping("/delete")
-	public String deleteRecruitment(@RequestParam("id") String id, HttpServletRequest request) {
+	public String deleteRecruitment(@RequestParam("id") String id, HttpServletRequest request, HttpSession session,
+			@ModelAttribute("recruitment_of_company") Recruitment recruitmentGlobal) {
 		recruitmentService.deleteRecruitment(id);
 		request.setAttribute("mgs_delete_success", "Bài đăng đã xoá thành công!");
-		listRecruitment(request, 1, 5);
+		if(recruitmentGlobal != null)
+			listRecruitment(request, 1, 5, recruitmentGlobal.getCompany().getId());
 		return "managePosts";
 	}
 }
