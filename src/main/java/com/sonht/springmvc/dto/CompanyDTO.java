@@ -22,6 +22,16 @@ public class CompanyDTO {
 	
 	@NotEmpty(message = "Hãy nhập số điện thoại")
 	private String phoneNumber;
+	
+	private String logo;
+
+	public String getLogo() {
+		return logo;
+	}
+
+	public void setLogo(String logo) {
+		this.logo = logo;
+	}
 
 	public String getAddress() {
 		return address;

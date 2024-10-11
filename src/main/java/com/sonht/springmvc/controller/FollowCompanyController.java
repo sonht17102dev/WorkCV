@@ -44,17 +44,7 @@ public class FollowCompanyController extends BaseController {
 		listFollowCompanies(session, model);
 		return "list-follow-company";
 	}
-	
 
-	
-	@GetMapping("/company-post/{companyId}")
-	public String listRecruitmentOfCompany(@PathVariable("companyId") String companyId, Model model) {
-		Company companyFromDB = companyService.getCompany(Integer.parseInt(companyId));
-		model.addAttribute("company", companyFromDB);
-		List<Recruitment> recruitments = recruitmentService.getRecruitmentsByCompany(companyId);
-		model.addAttribute("recruitment_list", recruitments);
-		return "managePosts";
-	}
 	
 	@PostMapping("/delete-follow")
 	public String deleteFollow(@RequestParam("id") String followCompanyId, Model model, HttpSession session) {

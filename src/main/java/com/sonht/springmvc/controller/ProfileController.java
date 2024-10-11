@@ -103,8 +103,8 @@ public class ProfileController extends BaseController {
 			Model model, RedirectAttributes redirectAttributes) {
 		if (rs.hasErrors()) {
 			// trả về lỗi trên form và điều hướng về trang profile
-			model.addAttribute("userDTO", user);
 			model.addAttribute("msg_update_user_error", "error");
+			model.addAttribute("userDTO", user);
 			Company company = companyService.getCompanyByUserId(user.getId());
 			model.addAttribute("companyDTO", company);
 			return "profile";
@@ -175,10 +175,9 @@ public class ProfileController extends BaseController {
 		User userSession = (User) session.getAttribute("userLogin");
 		if (rs.hasErrors()) {
 			// trả về lỗi trên form và điều hướng về trang profile
+			model.addAttribute("msg_update_company_error", "error");
 			model.addAttribute("userDTO", userSession);
-			model.addAttribute("msg_update_user_error", "error");
-			Company company = companyService.getCompanyByUserId(userSession.getId());
-			model.addAttribute("companyDTO", company);
+			model.addAttribute("companyDTO", companyDTO);
 			return "profile";
 		}
 		Company company = companyService.getCompanyByUserId(userSession.getId());

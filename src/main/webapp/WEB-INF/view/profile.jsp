@@ -153,6 +153,22 @@
 		</script>
 		</div>
 	</c:if>
+	<c:if test='${ msg_update_company_error != null}'>
+		<div class="toast" data-delay="2500"
+			style="position: fixed; top: 100PX; right: 10PX; z-index: 2000; width: 300px">
+
+			<script>
+			swal({
+				title : 'Cập nhật thông tin công ty thất bại!',
+				text : 'Có gì đó sai sai, bạn nhập lại nhé',
+				icon : 'error',
+				timer : 1000,
+				buttons : true,
+				type : 'error'
+			})
+		</script>
+		</div>
+	</c:if>
 
 	<div class="hero-wrap hero-wrap-2"
 		style="background-image: url('${contextPath}/resources/assets/images/bg_1.jpg');"

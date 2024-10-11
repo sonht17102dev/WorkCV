@@ -170,6 +170,9 @@
 								</div>
 							</div>
 							<!-- Modal delete-->
+							<!-- Modal ApplyJob -->
+							<%@ include file="/WEB-INF/view/forms/modalApply.jsp"%>
+							<!-- Modal ApplyJob end-->
 						</c:forEach>
 					</div>
 					<div class="row mt-5">
@@ -206,6 +209,249 @@
 			</div>
 		</div>
 	</section>
+	<script>
+
+	var isSaved = true;
+	function save(id) {
+		var name = "#idRe" + id;
+		var idRe = $(name).val();
+		var userIdInput = "#userLoginId";
+		var userId = $(userIdInput).val();
+		var formData = new FormData();
+		formData.append('idRe', idRe);
+		formData.append('userLoginId', userId);
+		if (isSaved) {
+			$.ajax({
+				type: 'POST',
+				url: '${contextPath}/save-job/save/',
+				contentType: false,
+				processData: false,
+				data: formData,
+				success: function(data) {
+					console.log(data);
+					if (data.message == 'error') {
+						swal({
+							title: 'Bạn cần phải đăng nhập!',
+							icon: 'error',
+							timer: 3000,
+							buttons: true,
+							type: 'error'
+						})
+					} else if (data.message == 'saveSuccess') {
+
+						swal({
+							title: 'Lưu thành công!',
+							icon: 'success',
+							timer: 3000,
+							buttons: true,
+							type: 'success'
+						})
+					} else if (data.message == "errorSaveDuplicated") {
+						swal({
+							title: 'Bạn đã lưu công việc này rồi!',
+							icon: 'error',
+							timer: 3000,
+							buttons: true,
+							type: 'error'
+						})
+					}
+
+				},
+				error: function(err) {
+					alert(err);
+				}
+			})
+		} else {
+			$.ajax({
+				type: 'POST',
+				url: '${contextPath}/save-job/unsave/',
+				contentType: false,
+				processData: false,
+				data: formData,
+				success: function(data) {
+					console.log(data);
+					if (data.message == 'error') {
+						swal({
+							title: 'Bạn cần phải đăng nhập!',
+							icon: 'error',
+							timer: 3000,
+							buttons: true,
+							type: 'error'
+						})
+					} else if (data.message == 'unSaveSuccess') {
+
+						swal({
+							title: 'Bỏ lưu thành công!',
+							icon: 'success',
+							timer: 3000,
+							buttons: true,
+							type: 'success'
+						})
+					}
+				},
+				error: function(err) {
+					alert(err);
+				}
+			})
+
+		}
+		isSaved = !isSaved; // Đảo trạng thái lưu
+
+	}
+
+	function choosed(id) {
+		var name = '#choose' + id;
+		var name1 = 'loai1' + id;
+		var name2 = 'loai2' + id;
+		var button1 = 'button1' + id;
+		var button2 = 'button2' + id;
+		var giaitri = $(name).val();
+		if (giaitri == 1) {
+			document.getElementById(name1).style.display = 'block'
+			document.getElementById(name2).style.display = 'none'
+			document.getElementById(button1).style.display = 'block'
+			document.getElementById(button2).style.display = 'none'
+		} else {
+			document.getElementById(name2).style.display = 'block'
+			document.getElementById(name1).style.display = 'none'
+			document.getElementById(button2).style.display = 'block'
+			document.getElementById(button1).style.display = 'none'
+		}
+	}
+
+	function apply(id) {
+		var name = "#idRe" + id;
+		var userIdInput = "#userLoginId";
+		var userId = $(userIdInput).val();
+		var nameModal = "#exampleModal" + id;
+		var nameFile = "#fileUpload" + id;
+		var nameText = "#text" + id;
+		var idRe = $(name).val();
+		var textvalue = $(nameText).val();
+		var fileUpload = $(nameFile).get(0);
+		var files = fileUpload.files;
+		var formData = new FormData();
+		formData.append('file', files[0]);
+		formData.append('idRe', idRe);
+		formData.append('text', textvalue);
+		formData.append('userLoginId', userId);
+		console.log(textvalue);
+		if (files[0] == null) {
+			swal({
+				title: 'Bạn cần phải chọn cv!',
+				icon: 'error',
+				timer: 3000,
+				buttons: true,
+				type: 'error'
+			})
+		} else {
+			$.ajax({
+				type: 'POST',
+				url: '${contextPath}/user/apply-job/',
+				contentType: false,
+				processData: false,
+				data: formData,
+				success: function(data) {
+					console.log(data)
+					if (data.message == 'errorNotLogin') {
+						swal({
+							title: 'Bạn cần phải đăng nhập!',
+							icon: 'error',
+							timer: 3000,
+							buttons: true,
+							type: 'error'
+						})
+					}
+					else if (data.message == "success") {
+						swal({
+							title: 'Ứng tuyển thành công!',
+							icon: 'success',
+							timer: 3000,
+							buttons: true,
+							type: 'success'
+						})
+						$(nameModal).modal('hide');
+						$('#fileUpload').val("");
+					}
+					else {
+						swal({
+							title: 'Bạn đã ứng tuyển công việc này!',
+							icon: 'error',
+							timer: 3000,
+							buttons: true,
+							type: 'error'
+						})
+						$(nameModal).modal('hide');
+						$('#fileUpload').val("");
+					}
+				},
+				error: function(err) {
+					alert(err);
+				}
+			})
+		}
+
+	}
+	function apply1(id) {
+		var name = "#idRe" + id;
+		var userIdInput = "#userLoginId";
+		var userId = $(userIdInput).val();
+		var nameModal = "#exampleModal" + id;
+		var nameFile = "#fileUpload" + id;
+		var nameText = "#text" + id;
+		var idRe = $(name).val();
+		var textvalue = $(nameText).val();
+		var formData = new FormData();
+		formData.append('idRe', idRe);
+		formData.append('text', textvalue);
+		formData.append('userLoginId', userId);
+		$.ajax({
+			type: 'POST',
+			url: '${contextPath}/user/apply-job1/',
+			contentType: false,
+			processData: false,
+			data: formData,
+			success: function(data) {
+				console.log(data);
+				if (data.message == 'errorNotLogin') {
+					swal({
+						title: 'Bạn cần phải đăng nhập!',
+						icon: 'error',
+						timer: 1000,
+						buttons: true,
+						type: 'error'
+					})
+				}
+				else if (data.message == 'success') {
+					swal({
+						title: 'Ứng tuyển thành công!',
+						icon: 'success',
+						timer: 1000,
+						buttons: true,
+						type: 'success'
+					})
+					$(nameModal).modal('hide');
+					$('#fileUpload').val("");
+				}
+				else {
+					swal({
+						title: 'Bạn đã ứng tuyển công việc này!',
+						icon: 'error',
+						timer: 1000,
+						buttons: true,
+						type: 'error'
+					})
+					$(nameModal).modal('hide');
+					$('#fileUpload').val("");
+				}
+			},
+			error: function(err) {
+				alert(err);
+			}
+		})
+
+	}		
+	</script>
 	<%@ include file="/WEB-INF/view/layouts/footer.jsp"%>
 </body>
 </html>

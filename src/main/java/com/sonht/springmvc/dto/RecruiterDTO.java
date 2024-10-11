@@ -21,6 +21,16 @@ public class RecruiterDTO {
 	@NotEmpty(message = "Hãy nhập số điện thoại")
 	@Pattern(regexp = "^[0-9]{10}", message = "Vui lòng nhập 10 kí tự dạng số")
 	private String phoneNumber;
+	
+	private String image;
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
 
 	@NotEmpty(message = "Hãy chọn mô tả bản thân")
 	private String description;
@@ -74,10 +84,5 @@ public class RecruiterDTO {
 		this.id = id;
 	}
 
-	@Override
-	public String toString() {
-		return "RecruiterDTO [id=" + id + ", email=" + email + ", fullName=" + fullName + ", address=" + address
-				+ ", phoneNumber=" + phoneNumber + ", description=" + description + "]";
-	}
 
 }

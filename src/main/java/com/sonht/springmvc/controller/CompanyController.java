@@ -41,6 +41,16 @@ public class CompanyController extends BaseController {
 		
 		return "list-company";
 	}
+
+	
+	@GetMapping("/company-post/{companyId}")
+	public String listRecruitmentOfCompany(@PathVariable("companyId") String companyId, Model model) {
+		Company companyFromDB = companyService.getCompany(Integer.parseInt(companyId));
+		model.addAttribute("company", companyFromDB);
+		List<Recruitment> recruitments = recruitmentService.getRecruitmentsByCompany(companyId);
+		model.addAttribute("recruitment_list", recruitments);
+		return "list-company";
+	}
 	
 	@GetMapping("/user/detail-company/{companyId}")
 	public String detailCompany(@PathVariable("companyId") String companyId, Model model) {

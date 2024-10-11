@@ -67,7 +67,6 @@ public class SaveJobController extends BaseController {
 	public Map<String, String> applyJob1(@RequestParam("userLoginId") String userLoginId,
 			@RequestParam("idRe") String idRe, @RequestParam("text") String text, HttpSession session) {
 		Map<String, String> messages = new HashMap<String, String>();
-
 		if (userLoginId.isEmpty()) {
 			messages.put("message", "errorNotLogin");
 			return messages;
@@ -79,11 +78,6 @@ public class SaveJobController extends BaseController {
 			return messages;
 		}
 
-//		ApplyPost aPost = applyPostService.getApplyPostByRecruitmentIdAndUserId(Integer.parseInt(idRe), Integer.parseInt(userLoginId));
-//		if(aPost != null) {
-//			aPost.setText(text);
-//			applyPostService.save(aPost);
-//		} else {
 		User user = userService.getUser(Integer.parseInt(userLoginId));
 		Recruitment recruitment = recruitmentService.getRecruitment(Integer.parseInt(idRe));
 		ApplyPost newApplyPost = new ApplyPost(java.time.LocalDate.now().toString(), user.getCv().getFileName(), 0,
@@ -91,7 +85,7 @@ public class SaveJobController extends BaseController {
 		newApplyPost.setRecruitment(recruitment);
 		newApplyPost.setUser(user);
 		applyPostService.save(newApplyPost);
-//		}
+		
 		messages.put("message", "success");
 		return messages;
 	}
@@ -140,10 +134,10 @@ public class SaveJobController extends BaseController {
 		}
 		SaveJob saveJobDuplicated = saveJobService.findSaveJobByUserIdAndRecruitmentId(Integer.parseInt(idRe), Integer.parseInt(userLoginId));
 		if (saveJobDuplicated != null) {
+			saveJobService.deleteSaveJob(saveJobDuplicated.getId());
 			messages.put("message", "errorSaveDuplicated");
 			return messages;
 		} else {
-		
 			Recruitment recruitmentFromDB = recruitmentService.getRecruitment(Integer.parseInt(idRe));
 			User userFromDB = userService.getUser(Integer.parseInt(userLoginId));
 	
@@ -167,8 +161,9 @@ public class SaveJobController extends BaseController {
 
 			SaveJob saveJob = saveJobService.findSaveJobByUserIdAndRecruitmentId(Integer.parseInt(userLoginId),
 					Integer.parseInt(idRe));
-			saveJobService.deleteSaveJob(saveJob.getId());
-		
+			if(saveJob != null) {
+				saveJobService.deleteSaveJob(saveJob.getId());
+			}
 			messages.put("message", "unSaveSuccess");
 			return messages;
 		}

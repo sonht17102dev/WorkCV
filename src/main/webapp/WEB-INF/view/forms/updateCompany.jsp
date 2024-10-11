@@ -25,8 +25,7 @@
 	</div>
 	<form:form
 		action="${pageContext.request.contextPath}/user/update-company"
-		modelAttribute="companyDTO" method="post"
-		enctype="multipart/form-data">
+		modelAttribute="companyDTO" method="post">
 		<div class="row mb-5">
 			<div class="col-lg-12">
 				<div class="p-4 p-md-5 border rounded">
