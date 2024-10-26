@@ -65,28 +65,19 @@ public class FollowCompanyController extends BaseController {
 			messages.put("message", "error");
 			return messages;
 		}
-		User userFromDB = userService.getUser(Integer.parseInt(userLoginId));
-		Company companyFromDB = companyService.getCompany(Integer.parseInt(companyId));
-		FollowCompany fc = new FollowCompany(companyFromDB, userFromDB);
-		followCompanyService.save(fc);
-		
-		messages.put("message", "saveSuccess");
-		return messages;
-	}
-	@PostMapping("/user/unfollow-company/")
-	@ResponseBody
-	public Map<String, String> unFollowCompany(@RequestParam("idUser") String userLoginId,
-			@RequestParam("idCompany") String companyId, HttpSession session) {
-		Map<String, String> messages = new HashMap<String, String>();
-		System.out.println("companyId =" + companyId + " " + "userId = " + userLoginId );
-		if(userLoginId.isEmpty()) {
-			messages.put("message", "error");
+		FollowCompany fcExisted = followCompanyService.findByCompanyIdAndUserId(Integer.parseInt(companyId), Integer.parseInt(userLoginId));
+		if(fcExisted != null) {
+			followCompanyService.delete(fcExisted);
+			messages.put("message", "unSaveSuccess");
 			return messages;
 		}
-		FollowCompany fc = followCompanyService.findByCompanyIdAndUserId(Integer.parseInt(companyId), Integer.parseInt(userLoginId));
-		followCompanyService.delete(fc);
 		
-		messages.put("message", "unSaveSuccess");
+		User userFromDB = userService.getUser(Integer.parseInt(userLoginId));
+		Company companyFromDB = companyService.getCompany(Integer.parseInt(companyId));
+		FollowCompany newfc = new FollowCompany(companyFromDB, userFromDB);
+		followCompanyService.save(newfc);
+		
+		messages.put("message", "saveSuccess");
 		return messages;
 	}
 	

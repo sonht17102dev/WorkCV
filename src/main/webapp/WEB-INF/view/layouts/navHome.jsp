@@ -46,11 +46,11 @@
 							Đăng Tuyển </a></li>
 				</c:if>
 				<c:if test='${userLogin.role.roleName.equals("user")}'>
-					<li class="nav-item"><a href="${contextPath}/user/list-post"
-						class="nav-link">Công việc</a></li>
-					<li class="nav-item"><a
+					<%-- <li class="nav-item"><a href="${contextPath}/user/list-post"
+						class="nav-link">Công việc</a></li> --%>
+					<%-- <li class="nav-item"><a
 						href="${contextPath}/user/list-company" class="nav-link">Công
-							ty</a></li>
+							ty</a></li> --%>
 					<li class="nav-item cta cta-colored"><a
 						class="dropdown-toggle nav-link" href="#" role="button"
 						data-toggle="dropdown" aria-expanded="false">

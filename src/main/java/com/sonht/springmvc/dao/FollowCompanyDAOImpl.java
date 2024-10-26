@@ -29,7 +29,9 @@ public class FollowCompanyDAOImpl implements FollowCompanyDAO {
 		Query<FollowCompany> query = currentSession.createQuery(hql, FollowCompany.class);
 		query.setParameter("companyId", companyId);
 		query.setParameter("userId", userId);
-		return query.getResultList().get(0);
+		if(!query.getResultList().isEmpty())
+			return query.getResultList().get(0);
+		return null;
 	}
 
 	@Override

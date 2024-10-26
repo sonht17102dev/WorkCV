@@ -30,4 +30,6 @@ public class RecruitmentController extends BaseController {
 		listRecruitment(request, page, size, 0);
 		return "managePosts";
 	}
+	
+	
 }

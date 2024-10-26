@@ -20,9 +20,9 @@
 				<div class="col-md-12 text-center mb-5">
 					<p class="breadcrumbs mb-0">
 						<span class="mr-3"><a href="/">Trang chủ <i
-								class="ion-ios-arrow-forward"></i></a></span>Công ty <span></span>
+								class="ion-ios-arrow-forward"></i></a></span>Công việc <span></span>
 					</p>
-					<h1 class="mb-3 bread">Danh sách công ty</h1>
+					<h1 class="mb-3 bread">Danh sách công việc của công ty : ${company.nameCompany}</h1>
 				</div>
 			</div>
 		</div>
@@ -93,7 +93,7 @@
 										</div>
 									</div>
 								</div>
-								<input type="text" id="idRe${recruitment.id}" value="${recruitment.id}"/>
+								<input type="hidden" id="idRe${recruitment.id}" value="${recruitment.id}"/>
 										
 								<div
 									class="one-forth ml-auto d-flex align-items-center mt-4 md-md-0"
@@ -163,35 +163,7 @@
 							<p style="color: red;">Danh sách trống</p>
 						</div>
 					</c:if>
-					<div class="row mt-5">
-						<div class="col text-center d-flex justify-content-center">
-							<!-- Pagination -->
-							<%-- <c:if test="${totalPages > 1}"> --%>
-							<nav aria-label="Page navigation">
-								<ul class="pagination justify-content-center">
-									<li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
-										<a class="page-link"
-										href="<c:url value='/recruitment/list-post?page=${currentPage - 1}&size=${pageSize}'/>">&lt;</a>
-									</li>
-
-									<c:forEach begin="1" end="${totalPages}" var="i">
-										<li class="page-item ${currentPage == i ? 'active' : ''}">
-											<a class="page-link"
-											href="<c:url value='/recruitment/list-post?page=${i}&size=${pageSize}'/>">${i}</a>
-										</li>
-									</c:forEach>
-
-									<li
-										class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
-										<a class="page-link"
-										href="<c:url value='/recruitment/list-post?page=${currentPage + 1}&size=${pageSize}'/>">&gt;</a>
-									</li>
-								</ul>
-							</nav>
-							<%--    </c:if> --%>
-
-						</div>
-					</div>
+					
 				</div>
 
 			</div>

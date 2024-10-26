@@ -14,15 +14,15 @@
 		<div class="toast" data-delay="2000"
 			style="position: fixed; top: 100PX; right: 10PX; z-index: 2000; width: 300px">
 			<script>
-        swal({
-            title: 'Xóa thành công!',
-            /* text: 'Redirecting...', */
-            icon: 'success',
-            timer: 3000,
-            buttons: true,
-            type: 'success'
-        })
-    </script>
+		        swal({
+		            title: 'Xóa thành công!',
+		            /* text: 'Redirecting...', */
+		            icon: 'success',
+		            timer: 3000,
+		            buttons: true,
+		            type: 'success'
+		        })
+		    </script>
 		</div>
 	</c:if>
 	<!-- END nav -->
@@ -39,7 +39,7 @@
 								<i class="ion-ios-arrow-forward"></i>
 						</a></span>Công việc <span></span>
 					</p>
-					<h1 class="mb-3 bread">Danh sách công việc đã lưu</h1>
+					<h1 class="mb-3 bread">Danh sách công việc đã theo dõi</h1>
 				</div>
 			</div>
 		</div>

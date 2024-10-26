@@ -53,6 +53,21 @@ public class PostController extends BaseController{
 		return "managePosts";
 	}
 	
+	@GetMapping("/category/{id}")
+	public String showRecruitmentByCategory(@PathVariable("id") int id, Model model) {
+		List<Recruitment> recruitments = categoryService.findRecruitmentsByCategory(id);
+		String nameJob = "";
+		for(Recruitment recruitment: recruitments) {
+			if(recruitment.getCategory().getId()==id) {
+				nameJob = recruitment.getCategory().getName();
+				break;
+			}
+		}
+		model.addAttribute("nameJob", nameJob);
+		model.addAttribute("recruitment_list", recruitments);
+		return "list-recruitment";
+	}
+	
 	@GetMapping("/detail/{id}")
 	public String detailPost(@PathVariable("id") String id, Model model) {
 		Recruitment recruitment = recruitmentService.getRecruitment(Integer.parseInt(id));

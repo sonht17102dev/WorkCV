@@ -170,7 +170,7 @@ INSERT INTO company (address, description, email, logo, name_company, phone_numb
 'Viettel Digital', '0989888888', 'active', 4);
 
 INSERT INTO category (name, number_choose) VALUES
-('NODEJS', 4), ('PHP', 2), ('JAVA', 2), ('ASP.NET', 1), ('.NET', 1), ('REACT', 1);
+('NODEJS', 0), ('PHP', 0), ('JAVA', 1), ('ASP.NET', 0), ('.NET', 1), ('REACT', 0);
 
 INSERT INTO recruitment 
 (`address`, `created_at`, `description`, `experience`, `quantity`, `ranked`, `salary`, 

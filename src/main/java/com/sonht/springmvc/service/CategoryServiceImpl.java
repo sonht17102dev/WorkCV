@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.sonht.springmvc.dao.CategoryDAO;
 import com.sonht.springmvc.entity.Category;
+import com.sonht.springmvc.entity.Recruitment;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -32,6 +33,12 @@ public class CategoryServiceImpl implements CategoryService {
 	@Transactional
 	public Category findByName(String name) {
 		return categoryDAO.findByName(name);
+	}
+
+	@Override
+	@Transactional
+	public List<Recruitment> findRecruitmentsByCategory(int id) {
+		return categoryDAO.findRecruitmentsByCategory(id);
 	}
 
 }

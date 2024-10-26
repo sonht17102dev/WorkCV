@@ -12,80 +12,30 @@
 <body>
 	<%@ include file="/WEB-INF/view/layouts/navHome.jsp"%>
 	<c:set var="contextPath" value="${pageContext.request.contextPath}" />
-
-	<c:if test='${userLogin.role.roleName.equals("recruiter")}'>
-		<div class="hero-wrap hero-wrap-2"
-			style="background-image: url('${contextPath}/resources/assets/images/bg_1.jpg');"
-			data-stellar-background-ratio="0.5">
-			<div class="overlay"></div>
-			<div class="container">
-				<div
-					class="row no-gutters slider-text align-items-end justify-content-start">
-					<div class="col-md-12 text-center mb-5">
-						<p class="breadcrumbs mb-0">
-							<span class="mr-3"><a href="${contextPath}/">Trang chủ
-									<i class="ion-ios-arrow-forward"></i>
-							</a></span>Danh sách <span></span>
-						</p>
-						<h1 class="mb-3 bread">Danh sách bài đăng</h1>
-					</div>
+	<div class="hero-wrap hero-wrap-2"
+		style="background-image: url('${contextPath}/resources/assets/images/bg_1.jpg');"
+		data-stellar-background-ratio="0.5">
+		<div class="overlay"></div>
+		<div class="container">
+			<div
+				class="row no-gutters slider-text align-items-end justify-content-start">
+				<div class="col-md-12 text-center mb-5">
+					<p class="breadcrumbs mb-0">
+						<span class="mr-3"><a href="${contextPath}/">Trang chủ <i
+								class="ion-ios-arrow-forward"></i></a></span>Danh sách <span></span>
+					</p>
+					<h1 class="mb-3 bread">
+						Danh sách công việc theo danh mục: <strong>${nameJob}</strong>
+					</h1>
 				</div>
 			</div>
 		</div>
-	</c:if>
-	<c:if test='${userLogin.role.roleName.equals("user")}'>
-		<div class="hero-wrap hero-wrap-2"
-			style="background-image: url('${contextPath}/resources/assets/images/bg_1.jpg');"
-			data-stellar-background-ratio="0.5">
-			<div class="overlay"></div>
-			<div class="container">
-				<div
-					class="row no-gutters slider-text align-items-end justify-content-start">
-					<div class="col-md-12 text-center mb-5">
-						<p class="breadcrumbs mb-0">
-							<span class="mr-3"><a href="/">Trang chủ <i
-									class="ion-ios-arrow-forward"></i></a></span>Công việc <span></span>
-						</p>
-						<h1 class="mb-3 bread">
-							Danh sách công việc của công ty : <strong>${company.nameCompany}</strong>
-						</h1>
-					</div>
-				</div>
-			</div>
-		</div>
-
-	</c:if>
-	<c:if test='${mgs_delete_success != null }'>
-		<div class="toast" data-delay="2500"
-			style="position: fixed; top: 100PX; left: 10PX; z-index: 2000; width: 300px">
-			<script>
-				swal({
-					title : 'Bài đăng đã xoá thành công!',
-					text : 'Chuyển hướng về trang danh sách bài đăng...',
-					icon : 'success',
-					timer : 1000,
-					buttons : true,
-					type : 'success'
-				})
-			</script>
-		</div>
-	</c:if>
+	</div>
 	<section class="ftco-section bg-light">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12 pr-lg-4">
 					<div class="row">
-						<c:if test='${userLogin.role.roleName.equals("recruiter")}'>
-							<div class="row form-group">
-								<label for="company-website-tw d-block">Danh sách bài
-									tuyển dụng </label> <br>
-								<div class="col-md-12">
-
-									<a href="${contextPath}/recruitment/post/add"
-										class="btn px-4 btn-primary text-white">Đăng tuyển</a>
-								</div>
-							</div>
-						</c:if>
 						<c:forEach var="recruitment" items="${recruitment_list}">
 							<div class="col-md-12 ">
 								<div
@@ -114,101 +64,90 @@
 										class="one-forth ml-auto d-flex align-items-center mt-4 md-md-0"
 										style="width: 330px !important;">
 
-										<c:if test='${userLogin.role.roleName.equals("recruiter")}'>
-											<a href="${contextPath}/recruitment/detail/${recruitment.id}"
-												class="btn btn-primary py-2 ml-2">Xem chi tiết</a>
-											<c:url var="urlUpdate" value="/recruitment/post/update">
-												<%-- <c:param name="action" value="update"/> --%>
-												<c:param name="id" value="${recruitment.id}" />
-												<c:param name="userId" value="${userLogin.id}" />
-											</c:url>
-											<a href="${urlUpdate}" class="btn btn-warning py-2 ml-2">Cập
-												nhật</a>
-											<button class="btn btn-danger py-2 ml-2" data-toggle="modal"
-												data-target="#modalDelete${recruitment.id}">Xóa</button>
-										</c:if>
-										<c:if test='${userLogin.role.roleName.equals("user")}'>
-											<a href="${contextPath}/recruitment/detail/${recruitment.id}"
-												class="btn btn-primary py-2 mr-2">Xem chi tiết</a>
-											<a data-toggle="modal"
-												data-target="#exampleModal${recruitment.id}"
-												class="btn btn-primary py-2 ml-2">Apply Job</a>
-										</c:if>
+										<a href="${contextPath}/recruitment/detail/${recruitment.id}"
+											class="btn btn-primary py-2 mr-2">Xem chi tiết</a> <a
+											data-toggle="modal"
+											data-target="#exampleModal${recruitment.id}"
+											class="btn btn-primary py-2 ml-2">Apply Job</a>
 									</div>
 								</div>
 							</div>
-							<!-- end -->
-							<!-- Modal delete-->
-							<div class="modal fade" id="modalDelete${recruitment.id}"
-								tabindex="-1" aria-labelledby="exampleModalLabel"
+							
+							<!-- Modal ApplyJob -->
+							<div class="modal fade" id="exampleModal${recruitment.id}"
+								tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 								aria-hidden="true">
 								<div class="modal-dialog" role="document">
 									<div class="modal-content">
 										<div class="modal-header">
-											<h5 class="modal-title" id="exampleModalLabel">Bạn có
-												chắc chắn muốn xóa ?</h5>
+											<h5 class="modal-title" id="exampleModalLabel">
+												Ứng tuyển: <span>${recruitment.title}</span>
+											</h5>
 											<button type="button" class="close" data-dismiss="modal"
 												aria-label="Close">
 												<span aria-hidden="true">&times;</span>
 											</button>
 										</div>
-										<div class="modal-body">
-											Bài đăng : <span>${recruitment.title}</span>
-											<form action="${contextPath}/recruitment/delete"
-												method="post">
-												<input type="hidden" class="form-control" id="id" name="id"
-													value="${recruitment.id}">
-												<div class="modal-footer mt-1">
+										<form method="post" action="/user/apply-job">
+											<input type="hidden" id="userLoginId" value="${userLogin.id}" />
+											<div class="modal-body">
+												<div class="row">
+													<div class="col-12">
+														<select id="choose${recruitment.id}"
+															onchange="choosed(${recruitment.id})"
+															class="form-control" aria-label="Default select example">
+															<option selected>Chọn phương thức nộp</option>
+															<option value="1">Dùng cv đã cập nhật</option>
+															<option value="2">Nộp cv mới</option>
+														</select>
+													</div>
+													<div id="loai1${recruitment.id}" style="display: none"
+														class="col-12">
+														<label for="fileUpload" class="col-form-label">Giới
+															thiệu:</label>
+														<textarea rows="10" cols="3" class="form-control"
+															id="text${recruitment.id}"></textarea>
+													</div>
+													<div id="loai2${recruitment.id}" style="display: none"
+														class="col-12">
+
+														<label for="fileUpload" class="col-form-label">Chọn
+															cv:</label> <input type="file" class="form-control"
+															id="fileUpload${recruitment.id}" name="file" required>
+														<p class="text-error" id="errorFile"></p>
+														<label for="fileUpload" class="col-form-label">Giới
+															thiệu:</label>
+														<p class="text-error" id="errorText"></p>
+														<textarea rows="10" cols="3" class="form-control"
+															id="text${recruitment.id}"></textarea>
+													</div>
+
+												</div>
+												<div class="modal-footer">
 													<button type="button" class="btn btn-secondary"
 														data-dismiss="modal">Đóng</button>
-													<button type="submit" class="btn btn-danger">Xóa</button>
+													<button type="button" id="button1${recruitment.id}"
+														style="display: none" onclick="apply1(${recruitment.id})"
+														class="btn btn-primary">Nộp</button>
+													<button type="button" id="button2${recruitment.id}"
+														style="display: none" onclick="apply(${recruitment.id})"
+														class="btn btn-primary">Nộp</button>
 												</div>
-											</form>
-										</div>
+											</div>
+										</form>
+
 
 									</div>
 								</div>
 							</div>
-							<!-- Modal delete-->
-							<!-- Modal ApplyJob -->
-							<%@ include file="/WEB-INF/view/forms/modalApply.jsp"%>
 							<!-- Modal ApplyJob end-->
 						</c:forEach>
 					</div>
-					<div class="row mt-5">
-						<div class="col text-center d-flex justify-content-center">
-							<!-- Pagination -->
-							<c:if test="${totalPages > 1}">
-								<nav aria-label="Page navigation">
-									<ul class="pagination justify-content-center">
-										<li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
-											<a class="page-link"
-											href="<c:url value='/recruitment/list-post?page=${currentPage - 1}&size=${pageSize}'/>">&lt;</a>
-										</li>
-
-										<c:forEach begin="1" end="${totalPages}" var="i">
-											<li class="page-item ${currentPage == i ? 'active' : ''}">
-												<a class="page-link"
-												href="<c:url value='/recruitment/list-post?page=${i}&size=${pageSize}'/>">${i}</a>
-											</li>
-										</c:forEach>
-
-										<li
-											class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
-											<a class="page-link"
-											href="<c:url value='/recruitment/list-post?page=${currentPage + 1}&size=${pageSize}'/>">&gt;</a>
-										</li>
-									</ul>
-								</nav>
-							</c:if>
-
-						</div>
-					</div>
 				</div>
-
 			</div>
 		</div>
 	</section>
+
 	<script>
 
 	function save(id) {

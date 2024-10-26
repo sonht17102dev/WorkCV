@@ -69,4 +69,10 @@ public class Category {
 		this.recruitment = recruitment;
 	}
 
+	@Override
+	public String toString() {
+		return "Category [id=" + id + ", name=" + name + ", numberChoose=" + numberChoose + "]";
+	}
+
+	
 }

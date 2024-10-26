@@ -15,7 +15,7 @@
     <div class="container">
         <div class="row no-gutters slider-text align-items-end justify-content-start">
             <div class="col-md-12 text-center mb-5">
-                <p class="breadcrumbs mb-0"><span class="mr-3"><a href="index.html">Trang chủ <i class="ion-ios-arrow-forward"></i></a></span>Chi tiết <span></span></p>
+                <p class="breadcrumbs mb-0"><span class="mr-3"><a href="${contextPath}/">Trang chủ <i class="ion-ios-arrow-forward"></i></a></span>Chi tiết <span></span></p>
                 <h1 class="mb-3 bread">Chi tiết công ty</h1>
             </div>
         </div>
@@ -98,7 +98,6 @@
         </div>
     </div>
     <script>
-    	var isFollowed = true;
         function follow(){
             var name = "#idCompany";
             var userLoginId = "#userLoginId";
@@ -107,68 +106,44 @@
             var formData = new FormData();
             formData.append('idCompany', idCompany);
             formData.append('idUser', idUser);
-            if(isFollowed) {
-	            $.ajax({
-	               type: 'POST',
-	               url: '${contextPath}/user/follow-company/',
-	               contentType: false,
-	               processData: false,
-	               data: formData,
-	               success: function (data) {
-		               if (data.message == 'error') {
-		                       swal({
-		                           title: 'Bạn cần phải đăng nhập!',
-		                           icon: 'error',
-		                           timer: 3000,
-		                           buttons: true,
-		                           type: 'error'
-		                       })
-	                   }else if (data.message == 'saveSuccess') {
-	                       swal({
-	                           title: 'Theo dõi thành công!',
-	                           icon: 'success',
-	                           timer: 3000,
-	                           buttons: true,
-	                           type: 'success'
-	                       })
-	                   }
-	               },
-	               error: function (err) {
-	                   alert(err);
-	               }
-	            })
-            } else {
-            	$.ajax({
- 	               type: 'POST',
- 	               url: '${contextPath}/user/unfollow-company/',
- 	               contentType: false,
- 	               processData: false,
- 	               data: formData,
- 	               success: function (data) {
- 	               	if (data.message == 'error') {
- 	                       swal({
- 	                           title: 'Bạn cần phải đăng nhập!',
- 	                           icon: 'error',
- 	                           timer: 3000,
- 	                           buttons: true,
- 	                           type: 'error'
- 	                       })
- 	                   }else if (data.message == 'unSaveSuccess') {
- 	                       swal({
- 	                           title: 'Bỏ theo dõi thành công!',
- 	                           icon: 'success',
- 	                           timer: 3000,
- 	                           buttons: true,
- 	                           type: 'success'
- 	                       })
- 	                   }
- 	               },
- 	               error: function (err) {
- 	                   alert(err);
- 	               }
- 	            })
-            }
-            isFollowed = !isFollowed;
+            $.ajax({
+               type: 'POST',
+               url: '${contextPath}/user/follow-company/',
+               contentType: false,
+               processData: false,
+               data: formData,
+               success: function (data) {
+					console.log(data.message)
+	               if (data.message == 'error') {
+                       swal({
+                           title: 'Bạn cần phải đăng nhập!',
+                           icon: 'error',
+                           timer: 3000,
+                           buttons: true,
+                           type: 'error'
+                       })
+                   } else if (data.message == 'saveSuccess') {
+                       swal({
+                           title: 'Theo dõi thành công!',
+                           icon: 'success',
+                           timer: 3000,
+                           buttons: true,
+                           type: 'success'
+                       })
+                   } else if (data.message == 'unSaveSuccess') {
+                       swal({
+                           title: 'Bỏ theo dõi thành công!',
+                           icon: 'success',
+                           timer: 3000,
+                           buttons: true,
+                           type: 'success'
+                       })
+                   }
+               },
+               error: function (err) {
+                   alert(err);
+               }
+            })
         }
         
     </script>

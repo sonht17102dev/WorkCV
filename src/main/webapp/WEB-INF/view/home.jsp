@@ -6,29 +6,26 @@
 <head>
 <title>Work CV</title>
 <%@ include file="/WEB-INF/view/layouts/head.jsp"%>
-<script src="${contextPath}/resources/assets/js/saveJob.js">
-		
-	</script>
 </head>
 <body>
 	<%@ include file="/WEB-INF/view/layouts/navHome.jsp"%>
 	<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 	
 	<c:if test='${ msg_userLogin_success != null}'>
-	<div class="toast" data-delay="2500"
-		style="position: fixed; top: 100PX; right: 10PX; z-index: 2000; width: 300px">
-		
-		<script>
-			swal({
-				title : 'Đăng nhập thành công',
-				text: `Chào mừng ${userLogin.fullName} đã quay trở lại.`,
-				icon : 'success',
-				timer : 2000,
-				buttons : true,
-				type : 'success'
-			})
-		</script>
-	</div> 
+		<div class="toast" data-delay="2500"
+			style="position: fixed; top: 100PX; right: 10PX; z-index: 2000; width: 300px">
+			
+			<script>
+				swal({
+					title : 'Đăng nhập thành công',
+					text: `Chào mừng ${userLogin.fullName} đã quay trở lại.`,
+					icon : 'success',
+					timer : 2000,
+					buttons : true,
+					type : 'success'
+				})
+			</script>
+		</div> 
 	</c:if>
 	<div class="hero-wrap img"
 		style="background-image: url(${contextPath}/resources/assets/images/bg_1.jpg);">
@@ -112,7 +109,7 @@
 					<div class="col-md-3 ">
 						<ul class="category text-center">
 							<li><a style="text-decoration: none !important;"
-								href="/recruitment/category/${category.id}">
+								href="${contextPath}/recruitment/category/${category.id}">
 									<p>${category.name}</p>
 									<span class="number">${category.numberChoose}</span>
 									<span>Vị trí</span><i class="ion-ios-arrow-forward"></i>
@@ -217,39 +214,38 @@
 									<input type="hidden" id="idRe${recruitment.id}"
 										value="${recruitment.id}">
 									<c:if test="${userLogin != null}">
-									<div class="one-forth ml-auto d-flex align-items-center mt-4 md-md-0">
-										
-										<c:if test='${!userLogin.role.roleName.equals("recruiter")}'>
-										<div>
-											<a onclick="save(${recruitment.id})"
-												class="icon text-center d-flex justify-content-center align-items-center icon mr-2">
-												<span class="icon-heart"></span>
-											</a>
+										<div class="one-forth ml-auto d-flex align-items-center mt-4 md-md-0">
+											<c:if test='${!userLogin.role.roleName.equals("recruiter")}'>
+												<div>
+													<a onclick="save(${recruitment.id})" 
+														class="icon text-center d-flex justify-content-center align-items-center icon mr-2">
+														<span class="icon-heart"></span>
+													</a>
+												</div>
+												<a data-toggle="modal"
+													data-target="#exampleModal${recruitment.id}"
+													class="btn btn-primary py-2">Apply Job</a>
+											</c:if>
+											<c:if test='${!userLogin.role.roleName.equals("user")}'>
+												<div>
+													<a href="${contextPath}/recruitment/detail/${recruitment.id}"
+															class="btn btn-primary py-2 ml-2">Xem chi tiết</a>
+												</div>
+											</c:if>
 										</div>
-										<a data-toggle="modal"
-											data-target="#exampleModal${recruitment.id}"
-											class="btn btn-primary py-2">Apply Job</a>
-										</c:if>
-										<c:if test='${!userLogin.role.roleName.equals("user")}'>
-										<div>
-											<a href="${contextPath}/recruitment/detail/${recruitment.id}"
-													class="btn btn-primary py-2 ml-2">Xem chi tiết</a>
-											</div>
-										</c:if>
-									</div>
 									</c:if>
 									<c:if test='${userLogin == null}'>
-									<div class="one-forth ml-auto d-flex align-items-center mt-4 md-md-0">
-										<div>
-											<a onclick="save(${recruitment.id})"
-												class="icon text-center d-flex justify-content-center align-items-center icon mr-2">
-												<span class="icon-heart"></span>
-											</a>
+										<div class="one-forth ml-auto d-flex align-items-center mt-4 md-md-0">
+											<div>
+												<a onclick="save(${recruitment.id})"
+													class="icon text-center d-flex justify-content-center align-items-center icon mr-2">
+													<span class="icon-heart"></span>
+												</a>
+											</div>
+											<a data-toggle="modal"
+												data-target="#exampleModal${recruitment.id}"
+												class="btn btn-primary py-2">Apply Job</a>
 										</div>
-										<a data-toggle="modal"
-											data-target="#exampleModal${recruitment.id}"
-											class="btn btn-primary py-2">Apply Job</a>
-									</div>
 									</c:if>
 								</div>
 							</div>
@@ -291,7 +287,6 @@
 	</section>
 	<script>
 
-	var isSaved = true;
 	function save(id) {
 		var name = "#idRe" + id;
 		var idRe = $(name).val();
@@ -300,83 +295,45 @@
 		var formData = new FormData();
 		formData.append('idRe', idRe);
 		formData.append('userLoginId', userId);
-		if (isSaved) {
-			$.ajax({
-				type: 'POST',
-				url: '${contextPath}/save-job/save/',
-				contentType: false,
-				processData: false,
-				data: formData,
-				success: function(data) {
-					console.log(data);
-					if (data.message == 'error') {
-						swal({
-							title: 'Bạn cần phải đăng nhập!',
-							icon: 'error',
-							timer: 3000,
-							buttons: true,
-							type: 'error'
-						})
-					} else if (data.message == 'saveSuccess') {
+		$.ajax({
+			type: 'POST',
+			url: '${contextPath}/save-job/save/',
+			contentType: false,
+			processData: false,
+			data: formData,
+			success: function(data) {
+				console.log(data);
+				if (data.message === 'error') {
+					swal({
+						title: 'Bạn cần phải đăng nhập!',
+						icon: 'error',
+						timer: 3000,
+						buttons: true,
+						type: 'error'
+					})
+				} else if (data.message === 'saveSuccess') {
+					swal({
+						title: 'Lưu thành công!',
+						icon: 'success',
+						timer: 3000,
+						buttons: true,
+						type: 'success'
+					})
+				} else if (data.message === 'unSaveSuccess') {
+					swal({
+						title: 'Bỏ lưu thành công!',
+						icon: 'success',
+						timer: 3000,
+						buttons: true,
+						type: 'success'
+					})
+				} 
 
-						swal({
-							title: 'Lưu thành công!',
-							icon: 'success',
-							timer: 3000,
-							buttons: true,
-							type: 'success'
-						})
-					} else if (data.message == "errorSaveDuplicated") {
-						swal({
-							title: 'Bạn đã lưu công việc này rồi!',
-							icon: 'error',
-							timer: 3000,
-							buttons: true,
-							type: 'error'
-						})
-					}
-
-				},
-				error: function(err) {
-					alert(err);
-				}
-			})
-		} else {
-			$.ajax({
-				type: 'POST',
-				url: '${contextPath}/save-job/unsave/',
-				contentType: false,
-				processData: false,
-				data: formData,
-				success: function(data) {
-					console.log(data);
-					if (data.message == 'error') {
-						swal({
-							title: 'Bạn cần phải đăng nhập!',
-							icon: 'error',
-							timer: 3000,
-							buttons: true,
-							type: 'error'
-						})
-					} else if (data.message == 'unSaveSuccess') {
-
-						swal({
-							title: 'Bỏ lưu thành công!',
-							icon: 'success',
-							timer: 3000,
-							buttons: true,
-							type: 'success'
-						})
-					}
-				},
-				error: function(err) {
-					alert(err);
-				}
-			})
-
-		}
-		isSaved = !isSaved; // Đảo trạng thái lưu
-
+			},
+			error: function(err) {
+				alert(err);
+			}
+		})
 	}
 
 	function choosed(id) {

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.sonht.springmvc.entity.Category;
+import com.sonht.springmvc.entity.Recruitment;
 
 @Repository
 public class CategoryDAOImpl implements CategoryDAO {
@@ -39,6 +40,14 @@ public class CategoryDAOImpl implements CategoryDAO {
 		Query<Category> query = currentSession.createQuery("From Category where name=:theName", Category.class);
 		query.setParameter("theName", name);
 		return query.getResultList().get(0);
+	}
+
+	@Override
+	public List<Recruitment> findRecruitmentsByCategory(int id) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		Query<Recruitment> query = currentSession.createQuery("From Recruitment where category_id=:theId", Recruitment.class);
+		query.setParameter("theId", id);
+		return query.getResultList();
 	}
 
 }

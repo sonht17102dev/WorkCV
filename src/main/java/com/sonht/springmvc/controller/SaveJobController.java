@@ -132,40 +132,21 @@ public class SaveJobController extends BaseController {
 			messages.put("message", "error");
 			return messages;
 		}
-		SaveJob saveJobDuplicated = saveJobService.findSaveJobByUserIdAndRecruitmentId(Integer.parseInt(idRe), Integer.parseInt(userLoginId));
-		if (saveJobDuplicated != null) {
-			saveJobService.deleteSaveJob(saveJobDuplicated.getId());
-			messages.put("message", "errorSaveDuplicated");
-			return messages;
-		} else {
-			Recruitment recruitmentFromDB = recruitmentService.getRecruitment(Integer.parseInt(idRe));
-			User userFromDB = userService.getUser(Integer.parseInt(userLoginId));
-	
-			SaveJob saveJob = new SaveJob(recruitmentFromDB, userFromDB);
-			saveJobService.saveSaveJob(saveJob);
-	
-			messages.put("message", "saveSuccess");
-			return messages;
-		}
-	}
-
-	@PostMapping("/save-job/unsave/")
-	@ResponseBody
-	public Map<String, String> unsaveJob(@RequestParam("userLoginId") String userLoginId,
-			@RequestParam("idRe") String idRe) {
-		Map<String, String> messages = new HashMap<String, String>();
-		if (userLoginId.isEmpty()) {
-			messages.put("message", "error");
-			return messages;
-		} else {
-
-			SaveJob saveJob = saveJobService.findSaveJobByUserIdAndRecruitmentId(Integer.parseInt(userLoginId),
-					Integer.parseInt(idRe));
-			if(saveJob != null) {
-				saveJobService.deleteSaveJob(saveJob.getId());
-			}
+		SaveJob saveJob = saveJobService.findSaveJobByUserIdAndRecruitmentId(Integer.parseInt(userLoginId),
+				Integer.parseInt(idRe));
+		if(saveJob != null) {
+			saveJobService.deleteSaveJob(saveJob.getId());
 			messages.put("message", "unSaveSuccess");
 			return messages;
 		}
+		Recruitment recruitmentFromDB = recruitmentService.getRecruitment(Integer.parseInt(idRe));
+		User userFromDB = userService.getUser(Integer.parseInt(userLoginId));
+
+		SaveJob newSaveJob = new SaveJob(recruitmentFromDB, userFromDB);
+		saveJobService.saveSaveJob(newSaveJob);
+
+		messages.put("message", "saveSuccess");
+		return messages;
 	}
+
 }
